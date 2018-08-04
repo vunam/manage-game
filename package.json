@@ -5,5 +5,18 @@
   "main": "index.js",
   "repository": "git@git.toptal.com:Vu-Nam-Nguyen/vu-nam-nguyen.git",
   "author": "Vu Nam Nguyen <vu@strangelab.co.uk>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.2",
+    "lowdb": "^1.0.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "recompose": "^0.28.1",
+    "redux": "^4.0.0",
+    "styled-components": "^3.4.0",
+    "typescript": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
 }
