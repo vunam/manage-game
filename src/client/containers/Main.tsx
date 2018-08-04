@@ -3,6 +3,7 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
+import PlayerMarket from './PlayerMarket';
 import Header from '../components/Header';
 import Notification from '../components/Notification';
 import {typography, layout} from '../constants/styles';
@@ -28,6 +29,7 @@ const Main = () => (
         <Notification />
         <Switch>
           <Route exact path="/" component={Dashboard} />
+          <Route exact path="/market" component={PlayerMarket} />
           <Route exact path="/login" component={Login} />
         </Switch>
       </Scrollable>

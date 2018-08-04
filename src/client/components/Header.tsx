@@ -15,19 +15,31 @@ const Header = styled.header`
 const Logo = styled.h1`
   margin: 0;
   color: ${color.light};
+  flex-shrink: 0;
 `;
 
 const Nav = styled.nav`
   color: ${color.light};
 `;
 
+const StyledLink = styled(Link)`
+  padding: ${spaces.m};
+  color: ${color.light};
+  font-weight: bold;
+  text-decoration: none;
+  &:last-child {
+    padding-right: 0;
+  }
+`;
+
 export default () => (
   <Header>
-    <Logo>Football</Logo>
+    <Logo>Football Manager</Logo>
     <Nav>
-      <Link to="/">Dashboard</Link>
-      <Link to="/market">Player market</Link>
-      <Link to="/logout">Log out</Link>
+      <StyledLink to="/">Dashboard</StyledLink>
+      <StyledLink to="/market">Player market</StyledLink>
+      <StyledLink to="/settings">Settings</StyledLink>
+      <StyledLink to="/logout">Log out</StyledLink>
     </Nav>
   </Header>
 );
