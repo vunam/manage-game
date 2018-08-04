@@ -1,7 +1,6 @@
 import { createActions, handleActions } from 'redux-actions';
 
 const SET = 'players/set';
-const LOGOUT = 'players/logout';
 
 const initialState = {
   list: null,
