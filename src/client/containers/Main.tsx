@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Header from '../components/Header';
-import Notification from '../components/Notification';;;
-import { typography, layout } from '../constants/styles';
+import Notification from '../components/Notification';
+import {typography, layout} from '../constants/styles';
 
 const Layout = styled.section`
   position: relative;
@@ -14,26 +14,25 @@ const Layout = styled.section`
 
 const Scrollable = styled.div`
   position: absolute;
-  top: 0;
+  top: ${layout.header};
   left: 0;
   width: 100%;
-  height: 100%;
-  padding-top: ${layout.header};
+  height: calc(100% - ${layout.header});
 `;
 
 const Main = () => (
-  <Layout>
-    <Header />
-    <Notification />
-    <Scrollable>
-      <BrowserRouter>
+  <BrowserRouter>
+    <Layout>
+      <Header />
+      <Scrollable>
+        <Notification />
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route exact path="/login" component={Login} />
-        </Switch> 
-      </BrowserRouter>
-    </Scrollable>
-  </Layout>
+        </Switch>
+      </Scrollable>
+    </Layout>
+  </BrowserRouter>
 );
 
 export default Main;
