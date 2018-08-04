@@ -1,0 +1,9 @@
+{
+  "name": "toptal",
+  "version": "0.0.1",
+  "description": "Football game",
+  "main": "index.js",
+  "repository": "git@git.toptal.com:Vu-Nam-Nguyen/vu-nam-nguyen.git",
+  "author": "Vu Nam Nguyen <vu@strangelab.co.uk>",
+  "license": "MIT"
+}
