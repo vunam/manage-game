@@ -1,7 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Player from './Player';
-import { spaces, color } from '../constants/styles';
+import {spaces, color} from '../constants/styles';
+
+type Props = {
+  list: [Object],
+};
 
 const PlayerList = styled.ul`
   width: 100%;
@@ -26,8 +30,9 @@ const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default () => (
+export default ({list}) => (
   <PlayerList>
+    {JSON.stringify(list)}
     <Head>
       <ItemWide>First name</ItemWide>
       <ItemWide>Last name</ItemWide>
@@ -36,9 +41,8 @@ export default () => (
       <ItemWide>Market value</ItemWide>
       <ItemSmall>Transfer list</ItemSmall>
     </Head>
-    <Player />
-    <Player />
-    <Player />
-    <Player />
+    {list && list.map(player => (
+      <Player key={player.id} {...player} />
+    ))}
   </PlayerList>
 );

@@ -23,7 +23,7 @@ export default () => (
       <h2>Player market</h2>
       <MarketLayout>
         <Filter />
-        <PlayerList />
+        <PlayerList list={[]} />
       </MarketLayout>
     </Inner>
   </StyledPage>

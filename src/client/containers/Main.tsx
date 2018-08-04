@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
@@ -7,6 +8,7 @@ import PlayerMarket from './PlayerMarket';
 import Header from '../components/Header';
 import Notification from '../components/Notification';
 import {typography, layout} from '../constants/styles';
+import { actions } from '../redux/players';
 
 const Layout = styled.section`
   position: relative;
@@ -37,4 +39,15 @@ const Main = () => (
   </BrowserRouter>
 );
 
-export default Main;
+const mapStateToProps = state => ({
+  
+});
+
+const mapDispatchToProps = dispatch => ({
+  getPlayers: () => dispatch(actions.getPlayersAttempt()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Main);
