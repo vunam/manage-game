@@ -1,3 +1,11 @@
 import * as React from 'react';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Login from './Login';
 
-export default () => <div>It works</div>
+const Main = () => (
+  <BrowserRouter>
+    <Route exact path="/" component={Login} />
+  </BrowserRouter>
+);
+
+export default Main;
