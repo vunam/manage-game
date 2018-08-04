@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "baseUrl": "../",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "react",
+    "types" : [ "node" ]
+  },
+  "include": ["../src/client/**/*"]
+}

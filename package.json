@@ -6,15 +6,30 @@
   "repository": "git@git.toptal.com:Vu-Nam-Nguyen/vu-nam-nguyen.git",
   "author": "Vu Nam Nguyen <vu@strangelab.co.uk>",
   "license": "MIT",
+  "scripts": {
+    "dev": "yarn dev:server & webpack-dev-server --config ./webpack/config.js",
+    "dev:server": "nodemon --watch 'src/server/**/*.ts' --exec 'ts-node --project ./typescript/server.conf.json' ./src/server/index.ts"
+  },
   "dependencies": {
+    "@types/node": "^10.5.6",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
     "koa": "^2.5.2",
+    "koa-send": "^5.0.0",
     "lowdb": "^1.0.0",
+    "prettier": "^1.14.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "recompose": "^0.28.1",
     "redux": "^4.0.0",
+    "rxjs": "^6.2.2",
     "styled-components": "^3.4.0",
-    "typescript": "^3.0.1"
+    "ts-loader": "^4.4.2",
+    "ts-node": "^7.0.0",
+    "typescript": "^3.0.1",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
