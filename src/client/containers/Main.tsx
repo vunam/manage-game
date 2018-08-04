@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Header from '../components/Header';
-import Notification from '../components/Notification';
+import Notification from '../components/Notification';;;
+import { typography, layout } from '../constants/styles';
+
+const Layout = styled.section`
+  position: relative;
+  font-size: ${typography.normal};
+`;
 
 const Scrollable = styled.div`
   position: absolute;
@@ -12,10 +18,11 @@ const Scrollable = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  padding-top: ${layout.header};
 `;
 
 const Main = () => (
-  <section>
+  <Layout>
     <Header />
     <Notification />
     <Scrollable>
@@ -26,7 +33,7 @@ const Main = () => (
         </Switch> 
       </BrowserRouter>
     </Scrollable>
-  </section>
+  </Layout>
 );
 
 export default Main;
