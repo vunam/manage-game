@@ -1,8 +1,10 @@
 
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import defaultReducers from '../redux';
+import { createEpicMiddleware } from 'redux-observable';
+import defaultReducers, { rootEpic } from '../redux';
 
-const middleware = [];
+const epicMiddleware = createEpicMiddleware(rootEpic);
+const middleware = [epicMiddleware];
 
 export default (initialState) => {
   const combinedReducer = combineReducers(defaultReducers);
