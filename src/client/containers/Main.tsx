@@ -12,12 +12,19 @@ import Notification from '../components/Notification';
 import {typography, layout} from '../constants/styles';
 import {actions} from '../redux/players';
 import {selectors as historySelectors} from '../redux/history';
+import {selectors as userSelectors, actions as userActions} from '../redux/user';
 
 interface Props {
   nextRoute?: string;
+  location: {
+    pathname: string;
+  },
+  verifying: boolean;
+  user: Object;
   history: {
     push: (string) => void;
   };
+  verifyAccess: () => void;
 }
 
 const Layout = styled.section`
@@ -34,6 +41,14 @@ const Scrollable = styled.div`
 `;
 
 class Main extends React.Component<Props> {
+  componentDidMount() {
+    const { location, user, verifyAccess } = this.props;
+
+    if (location.pathname !== '/' && !user) {
+      verifyAccess();
+      console.log('do check', location)
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const { nextRoute, history } = this.props;
 
@@ -43,6 +58,10 @@ class Main extends React.Component<Props> {
   }
 
   render() {
+    const { user, verifying } = this.props;
+
+    if (verifying) return 'Loading';
+
     return (
       <Layout>
         <Header />
@@ -50,9 +69,11 @@ class Main extends React.Component<Props> {
           <Notification />
           <Switch>
             <Route exact path="/" component={Login} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/market" component={PlayerMarket} />
-            <Route exact path="/signup" component={Signup} />
+            {user && [
+              <Route exact path="/dashboard" component={Dashboard} />,
+              <Route exact path="/market" component={PlayerMarket} />,
+              <Route exact path="/signup" component={Signup} />,
+            ]}
           </Switch>
         </Scrollable>
       </Layout>
@@ -61,10 +82,13 @@ class Main extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
+  user: userSelectors.getUser(state.user),
+  verifying: userSelectors.getVerifying(state.user),
   nextRoute: historySelectors.getNextRoute(state.history),
 });
 
 const mapDispatchToProps = dispatch => ({
+  verifyAccess: () => dispatch(userActions.verifyAttempt()),
   getPlayers: () => dispatch(actions.getPlayersAttempt()),
 });
 

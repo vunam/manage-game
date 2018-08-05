@@ -4,7 +4,7 @@ import * as body from 'koa-body';
 import * as Router from 'koa-router';
 import * as path from "path";
 import { getPlayers } from "./handlers/players";
-import { postUserLogin, postUserCreate } from "./handlers/user";
+import { postUserLogin, postUserTokens, postUserCreate } from "./handlers/user";
 import htmlPage from './html';
 
 const app = new Koa();
@@ -23,6 +23,7 @@ app.use(async (ctx, next) => {
 router.get('/api/players', getPlayers);
 router.post('/api/user/create', postUserCreate);
 router.post('/api/user/login', postUserLogin);
+router.post('/api/user/tokens', postUserTokens);
 router.get('/api/user', getPlayers);
 router.get('/*', (ctx) => {
   ctx.body = htmlPage();

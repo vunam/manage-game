@@ -50,6 +50,14 @@ const createTeam = async (userId, name) => {
   return newTeam;
 };
 
+export const postUserTokens = async ctx => {
+  // verify access token
+
+  ctx.body = {
+    data: {},
+  }
+};
+
 export const postUserLogin = async ctx => {
   const {
     body: {user, password},
@@ -81,10 +89,21 @@ export const postUserLogin = async ctx => {
     return;
   }
 
+  const team = 
+    await db
+      .get('teams')
+      .find({ user: userData.id })
+      .value();
+
   // TODO set jwt
 
   ctx.body = {  
-    data: userData,
+    data: {
+      id: userData.id,
+      role: userData.role,
+      username: userData.username,
+      team,
+    }
   };
 }
 

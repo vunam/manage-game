@@ -5,12 +5,17 @@ import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
+import {selectors as userSelectors} from '../redux/user';
 
 import PlayerType from '../types/player';
+import TeamType from '../types/team';
 
 interface Props {
   getPlayers: () => void;
-  players: [PlayerType],
+  players: [PlayerType];
+  user: {
+    team: TeamType;
+  };
 }
 
 const StyledPage = styled.div``;
@@ -25,11 +30,11 @@ class Dashboard extends React.Component<Props> {
   }
 
   render() {
-    const { players } = this.props;
-
+    const { players, user } = this.props;
+    if (!user) return null;
     return (
       <StyledPage>
-        <QuickProfile />
+        <QuickProfile {...user.team} />
         <Inner>
           <h2>Current players</h2>
           <PlayerList list={players} />
@@ -40,6 +45,7 @@ class Dashboard extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
+  user: userSelectors.getUser(state.user),
   players: selectors.getPlayers(state.players),
 });
 

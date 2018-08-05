@@ -6,12 +6,17 @@ import QuickProfile from '../components/QuickProfile';
 import Filter from '../components/Filter';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
+import {selectors as userSelectors} from '../redux/user';
 
 import PlayerType from '../types/player';
+import TeamType from '../types/team';
 
 interface Props {
   getPlayers: () => void;
-  players: [PlayerType],
+  players: [PlayerType];
+  user: {
+    team: TeamType;
+  };
 }
 
 const StyledPage = styled.div``;
@@ -31,11 +36,11 @@ class PlayerMarket extends React.Component<Props> {
   }
 
   render() {
-    const { players } = this.props;
+    const { players, user } = this.props;
 
     return (
       <StyledPage>
-        <QuickProfile />
+        <QuickProfile {...user.team} />
         <Inner>
           <h2>Player market</h2>
           <MarketLayout>
@@ -49,6 +54,7 @@ class PlayerMarket extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
+  user: userSelectors.getUser(state.user),
   players: selectors.getPlayers(state.players),
 });
 

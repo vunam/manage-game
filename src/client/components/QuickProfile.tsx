@@ -12,12 +12,16 @@ const Stat = styled.div`
   padding: ${spaces.m} ${spaces.sm};
 `;
 
-export default () => (
+export default ({
+  name,
+  country,
+  money,
+  value,
+}) => (
   <QuickProfile>
-    <Stat>Team name</Stat>
-    <Stat>Country</Stat>
-    <Stat>Money</Stat>
-    <Stat>Value</Stat>
-    <button>Edit</button>
+    <Stat>{name}</Stat>
+    <Stat>{country}</Stat>
+    <Stat>{money}</Stat>
+    <Stat>{value}</Stat>
   </QuickProfile>
 );
