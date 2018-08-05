@@ -50,8 +50,42 @@ const createTeam = async (userId, name) => {
   return newTeam;
 };
 
-export const postLogin = async ctx => {
+export const postUserLogin = async ctx => {
+  const {
+    body: {user, password},
+  } = ctx.request;
+
+  if (!user || !password) {
+    ctx.status = 422;
+    ctx.body = {error: 'Missing data'};
+    return;
+  }
+
+  const userData = 
+    await db
+      .get('users')
+      .find({ username: user })
+      .value();
   
+  if (!userData) {
+    ctx.status = 401;
+    ctx.body = {error: 'No user  found'};
+    return;
+  }
+
+  const validated = await bcrypt.compare(password, userData.hashed).then(res => res)
+
+  if (!validated) {
+    ctx.status = 401;
+    ctx.body = {error: 'Password is incorrect'};
+    return;
+  }
+
+  // TODO set jwt
+
+  ctx.body = {  
+    data: userData,
+  };
 }
 
 export const postUserCreate = async ctx => {

@@ -8,6 +8,9 @@ export interface RootState {
   user?: Object;
 }
 
+const LOGIN_ATTEMPT = 'user/login-attempt';
+const LOGIN_SUCCESS = 'user/login-success';
+
 const CREATE_ATTEMPT = 'user/create-attempt';
 const CREATE_SUCCESS = 'user/create-success';
 
@@ -19,6 +22,8 @@ const initialState = {
 };
 
 export const {user: actions} = createActions({
+  [LOGIN_ATTEMPT]: null,
+  [LOGIN_SUCCESS]: null,
   [CREATE_ATTEMPT]: null,
   [CREATE_SUCCESS]: null,
   [SET]: null,
@@ -43,6 +48,21 @@ export const selectors = {
   getUser: state => state.user,
 };
 
+const loginEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(LOGIN_ATTEMPT).pipe(
+    mergeMap(({ payload }) =>
+      ajax.post('/api/user/login', payload).pipe(
+        mergeMap(({response}) => {
+          return [
+            historyActions.nextRoute('/dashboard'),
+            actions.loginSuccess(response.data),
+          ];
+        }),
+        catchError(() => []),
+      ),
+    ),
+  );
+
 const createUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(CREATE_ATTEMPT).pipe(
     mergeMap(({ payload }) =>
@@ -58,4 +78,4 @@ const createUserEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-export const epics = combineEpics(createUserEpic);
+export const epics = combineEpics(loginEpic, createUserEpic);
