@@ -6,20 +6,18 @@ import QuickProfile from '../components/QuickProfile';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 
-type Player = {
-  id: string
-}
+import PlayerType from '../types/player';
 
 interface Props {
   getPlayers: () => void;
-  players: [Player],
+  players: [PlayerType],
 }
 
 const StyledPage = styled.div``;
 
 const Inner = styled.div`
   padding: ${spaces.sm};
-`;
+`;  
 
 class Dashboard extends React.Component<Props> {
   componentDidMount() {

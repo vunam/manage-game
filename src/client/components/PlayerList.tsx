@@ -2,9 +2,10 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Player from './Player';
 import {spaces, color} from '../constants/styles';
+import PlayerType from '../types/player';
 
 type Props = {
-  list: [Object],
+  list: [PlayerType],
 };
 
 const PlayerList = styled.ul`
@@ -30,9 +31,8 @@ const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default ({list}) => (
+export default ({list}: Props) => (
   <PlayerList>
-    {JSON.stringify(list)}
     <Head>
       <ItemWide>First name</ItemWide>
       <ItemWide>Last name</ItemWide>

@@ -18,8 +18,8 @@ app.use(async (ctx, next) => {
 })
 
 router.get('/api/players', getPlayers);
-
-router.get('/', (ctx) => {
+router.get('/api/user', getPlayers);
+router.get('/*', (ctx) => {
   ctx.body = htmlPage();
 });
 
