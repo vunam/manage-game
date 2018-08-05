@@ -21,4 +21,5 @@ export const generateTeam = (userId, name) => ({
   name,
   user: userId,
   money: 5000000,
+  value: 20000000,
 })

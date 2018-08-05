@@ -50,6 +50,10 @@ const createTeam = async (userId, name) => {
   return newTeam;
 };
 
+export const postLogin = async ctx => {
+  
+}
+
 export const postUserCreate = async ctx => {
   const {
     body: {user, team, password},
@@ -84,10 +88,7 @@ export const postUserCreate = async ctx => {
   ctx.body = {
     data: {
       ...userData,
-      team: {
-        ...newTeam,
-        value: 20000000,
-      },
+      team: newTeam,
     },
   };
 };

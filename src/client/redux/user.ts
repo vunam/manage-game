@@ -2,6 +2,7 @@ import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
 import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
+import { actions as historyActions } from './history';
 
 export interface RootState {
   user?: Object;
@@ -46,7 +47,12 @@ const createUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(CREATE_ATTEMPT).pipe(
     mergeMap(({ payload }) =>
       ajax.post('/api/user/create', payload).pipe(
-        map(({response}) => actions.createSuccess(response.data)),
+        mergeMap(({response}) => {
+          return [
+            historyActions.nextRoute('/dashboard'),
+            actions.createSuccess(response.data),
+          ];
+        }),
         catchError(() => []),
       ),
     ),
