@@ -1,7 +1,7 @@
-import { createActions, handleActions } from 'redux-actions';
-import { combineEpics, Epic } from 'redux-observable';
-import { map, mergeMap, catchError } from 'rxjs/operators';
-import { ajax } from 'rxjs/ajax';
+import {createActions, handleActions} from 'redux-actions';
+import {combineEpics, Epic} from 'redux-observable';
+import {map, mergeMap, catchError} from 'rxjs/operators';
+import {ajax} from 'rxjs/ajax';
 
 export interface RootState {
   list?: [Object];
@@ -14,7 +14,7 @@ const initialState = {
   list: null,
 };
 
-export const { players: actions } = createActions({
+export const {players: actions} = createActions({
   [GET_PLAYERS_ATTEMPT]: null,
   [GET_PLAYERS_SUCCESS]: null,
 });
@@ -34,21 +34,14 @@ export const selectors = {
   getTeam: state => state.list,
 };
 
-const getPlayersEpic: Epic<any, RootState> = (action$) =>
-  action$.ofType(GET_PLAYERS_ATTEMPT)
-    .pipe(
-      mergeMap(() => ajax
-        .get('/api/players')
-        .pipe(
-          map(({ response }) => {
-            return actions.getPlayersSuccess(response.data);
-          }),
-          catchError(() => [])
-        )
-        
-      )
-    );
+const getPlayersEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(GET_PLAYERS_ATTEMPT).pipe(
+    mergeMap(() =>
+      ajax.get('/api/players').pipe(
+        map(({response}) => actions.getPlayersSuccess(response.data)),
+        catchError(() => []),
+      ),
+    ),
+  );
 
-export const epics = combineEpics(
-  getPlayersEpic,
-);
+export const epics = combineEpics(getPlayersEpic);

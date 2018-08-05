@@ -1,8 +1,6 @@
-import * as low from 'lowdb';
-import * as FileSync from 'lowdb/adapters/FileSync';
+import getDb from '../helpers/db';
 
-const adapter = new FileSync('db.json');
-const db = low(adapter)
+const db = getDb();
 
-db.defaults({ players: [], user: {}, teams: [], })
-  .write()
+db.defaults({ players: [], users: [], teams: [], })
+  .write();

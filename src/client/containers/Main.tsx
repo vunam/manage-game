@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
+import Signup from './Signup';
 import PlayerMarket from './PlayerMarket';
 import Header from '../components/Header';
 import Notification from '../components/Notification';
-import {typography, layout} from '../constants/styles';
+import { typography, layout } from '../constants/styles';
 import { actions } from '../redux/players';
 
 const Layout = styled.section`
@@ -33,6 +34,7 @@ const Main = () => (
           <Route exact path="/" component={Dashboard} />
           <Route exact path="/market" component={PlayerMarket} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
         </Switch>
       </Scrollable>
     </Layout>
