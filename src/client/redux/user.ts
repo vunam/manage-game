@@ -45,7 +45,7 @@ export const selectors = {
 const createUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(CREATE_ATTEMPT).pipe(
     mergeMap(({ payload }) =>
-      ajax.post('/api/signup', payload).pipe(
+      ajax.post('/api/user/create', payload).pipe(
         map(({response}) => actions.createSuccess(response.data)),
         catchError(() => []),
       ),
