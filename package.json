@@ -7,6 +7,7 @@
   "author": "Vu Nam Nguyen <vu@strangelab.co.uk>",
   "license": "MIT",
   "scripts": {
+    "db:init": "ts-node --project ./typescript/server.conf.json ./src/server/db/migration.ts",
     "dev": "yarn dev:server & webpack-dev-server --config ./webpack/config.js",
     "dev:server": "nodemon --watch 'src/server/**/*.ts' --exec 'ts-node --project ./typescript/server.conf.json' ./src/server/index.ts"
   },
@@ -16,6 +17,7 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-router": "^4.0.30",
     "@types/react-router-dom": "^4.3.0",
+    "chance": "^1.0.16",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
@@ -35,6 +37,7 @@
     "ts-loader": "^4.4.2",
     "ts-node": "^7.0.0",
     "typescript": "^3.0.1",
+    "uniqid": "^5.0.3",
     "webpack": "^4.16.4",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"

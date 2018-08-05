@@ -5,4 +5,6 @@ export default interface PlayerType {
   country: string,
   age: number,
   value: number,
+  team: number,
+  teamName: string,
 }
