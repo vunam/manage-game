@@ -14,6 +14,9 @@ export interface RootState {
 const GET_PLAYERS_ATTEMPT = 'players/get-players-attempt';
 const GET_PLAYERS_SUCCESS = 'players/get-players-success';
 
+const TRANSFER_PLAYER_ATTEMPT = 'players/transfer-player-attempt';
+const TRANSFER_PLAYER_SUCCESS = 'players/transfer-player-success';
+
 const initialState = {
   list: null,
 };
@@ -21,6 +24,8 @@ const initialState = {
 export const {players: actions} = createActions({
   [GET_PLAYERS_ATTEMPT]: null,
   [GET_PLAYERS_SUCCESS]: null,
+  [TRANSFER_PLAYER_ATTEMPT]: null,
+  [TRANSFER_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -42,11 +47,14 @@ export const selectors = {
     items =>
       items &&
       items.map(item => {
-        const countryName = countryList.find(country => country.code === item.country);
+        const countryName = countryList.find(
+          country => country.code === item.country,
+        );
         return {
-        ...item,
-        countryName: countryName ? countryName.name : item.country,
-      }}),
+          ...item,
+          countryName: countryName ? countryName.name : item.country,
+        };
+      }),
   ),
 };
 
@@ -62,4 +70,21 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-export const epics = combineEpics(getPlayersEpic);
+const transferPlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(TRANSFER_PLAYER_ATTEMPT).pipe(
+    mergeMap(({payload}) =>
+      ajax
+        .post(`/api/players/${payload.player}/transfer`, {
+          available: payload.available,
+        })
+        .pipe(
+          mergeMap(({response}) => [
+            actions.getPlayersAttempt({ team: payload.team }),
+            actions.transferPlayerSuccess(response.data),
+          ]),
+          catchError(() => []),
+        ),
+    ),
+  );
+
+export const epics = combineEpics(getPlayersEpic, transferPlayerEpic);

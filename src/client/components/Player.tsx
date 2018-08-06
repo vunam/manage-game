@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { spaces } from '../constants/styles';
+import {spaces} from '../constants/styles';
 import PlayerType from '../types/player';
 
 interface Props {
   withTeam?: boolean;
+  clickHandler?: (number: number, available: boolean) => void;
 }
 
 const Player = styled.li`
@@ -22,6 +23,7 @@ const ItemSmall = styled.div`
 `;
 
 export default ({
+  id,
   teamName,
   firstName,
   lastName,
@@ -30,6 +32,8 @@ export default ({
   age,
   value,
   withTeam,
+  clickHandler,
+  status,
 }: PlayerType & Props) => (
   <Player>
     {withTeam && <ItemWide>{teamName}</ItemWide>}
@@ -39,6 +43,10 @@ export default ({
     <ItemWide>{countryName}</ItemWide>
     <ItemSmall>{age}</ItemSmall>
     <ItemSmall>{value}</ItemSmall>
-    <ItemSmall><button>Add to transfer list</button></ItemSmall>
+    <ItemSmall>
+      <button onClick={() => clickHandler(id, status === 'NONE')}>
+        {status === 'NONE' ? 'Add Transfer' : 'Retract'}
+      </button>
+    </ItemSmall>
   </Player>
 );

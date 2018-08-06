@@ -7,6 +7,7 @@ import PlayerType from '../types/player';
 type Props = {
   list: [PlayerType];
   withTeam?: boolean;
+  clickHandler?: (number: number, available: boolean) => void;
 };
 
 const PlayerList = styled.ul`
@@ -32,7 +33,7 @@ const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default ({list, withTeam = false}: Props) => (
+export default ({list, withTeam = false, clickHandler}: Props) => (
   <PlayerList>
     <Head>
       {withTeam && <ItemWide>Team</ItemWide>}
@@ -45,7 +46,7 @@ export default ({list, withTeam = false}: Props) => (
       <ItemSmall>Transfer list</ItemSmall>
     </Head>
     {list && list.map(player => (
-      <Player key={player.id} {...player} withTeam={withTeam} />
+      <Player key={player.id} {...player} withTeam={withTeam} clickHandler={clickHandler} />
     ))}
   </PlayerList>
 );

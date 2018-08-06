@@ -33,11 +33,15 @@ export const getPlayers = async ctx => {
   }
 
   if (firstName) {
-    result = result.filter(item => item.firstName.toLowerCase().startsWith(firstName.toLowerCase()));
+    result = result.filter(item =>
+      item.firstName.toLowerCase().startsWith(firstName.toLowerCase()),
+    );
   }
 
   if (lastName) {
-    result = result.filter(item => item.lastName.toLowerCase().startsWith(lastName.toLowerCase()));
+    result = result.filter(item =>
+      item.lastName.toLowerCase().startsWith(lastName.toLowerCase()),
+    );
   }
 
   if (min) {
@@ -51,5 +55,26 @@ export const getPlayers = async ctx => {
   ctx.body = {
     meta: {},
     data: result,
+  };
+};
+
+export const postAddTransfer = ctx => {
+  const {id} = ctx.params;
+  const {available} = ctx.request.body;
+
+
+  if (!id) {
+    ctx.status = 422;
+    ctx.body = {error: 'Missing data'};
+    return;
+  }
+
+  const playerUpdated = db.get('players')
+    .find({ id })
+    .assign({status: available === 'true' ? 'AVAILABLE' : 'NONE'})
+    .write();
+
+  ctx.body = {
+    data: 'success',
   };
 };

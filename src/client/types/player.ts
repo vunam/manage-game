@@ -9,4 +9,5 @@ export default interface PlayerType {
   type: string;
   teamName?: string;
   countryName?: string;
+  status: string;
 }

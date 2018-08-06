@@ -12,6 +12,7 @@ import TeamType from '../types/team';
 
 interface Props {
   getPlayers: (team: number) => void;
+  transferPlayer: (player: number, team: number, available: boolean) => void;
   players: [PlayerType];
   user: {
     team: TeamType;
@@ -22,27 +23,32 @@ const StyledPage = styled.div``;
 
 const Inner = styled.div`
   padding: ${spaces.sm};
-`;  
+`;
 
 class Dashboard extends React.Component<Props> {
   componentDidMount() {
-    const { user, getPlayers } = this.props;
+    const {user, getPlayers} = this.props;
     if (user) getPlayers(user.team.id);
   }
   componentWillReceiveProps(nextProps) {
-    const { user, getPlayers } = this.props;
+    const {user, getPlayers} = this.props;
     if (!user && nextProps.user) getPlayers(user.team.id);
   }
 
   render() {
-    const { players, user } = this.props;
+    const {players, user, transferPlayer} = this.props;
     if (!user) return null;
     return (
       <StyledPage>
         <QuickProfile {...user.team} />
         <Inner>
           <h2>My players</h2>
-          <PlayerList list={players} />
+          <PlayerList
+            list={players}
+            clickHandler={(player, available) =>
+              transferPlayer(player, user.team.id, available)
+            }
+          />
         </Inner>
       </StyledPage>
     );
@@ -55,7 +61,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPlayers: (team) => dispatch(actions.getPlayersAttempt({ team })),
+  transferPlayer: (player, team, available) =>
+    dispatch(actions.transferPlayerAttempt({player, team, available})),
+  getPlayers: team => dispatch(actions.getPlayersAttempt({team})),
 });
 
 export default connect(

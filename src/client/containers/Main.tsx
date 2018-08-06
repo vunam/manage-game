@@ -27,6 +27,7 @@ interface Props {
   };
   verifyAccess: () => void;
   doLogout: () => void;
+  clearNextRoute: () => void;
 }
 
 const Layout = styled.section`
@@ -51,11 +52,11 @@ class Main extends React.Component<Props> {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const { nextRoute, history, doLogout, setNextRoute } = this.props;
+    const { nextRoute, history, doLogout, clearNextRoute } = this.props;
 
     if (nextRoute !== nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
-      setNextRoute(null);
+      clearNextRoute();
     }
 
     if (nextProps.location.pathname === '/logout') doLogout();
@@ -96,7 +97,7 @@ const mapDispatchToProps = dispatch => ({
   verifyAccess: () => dispatch(userActions.verifyAttempt()),
   getPlayers: () => dispatch(actions.getPlayersAttempt()),
   doLogout: () => dispatch(userActions.logout()),
-  setNextRoute: () => dispatch(historyActions.nextRoute()),
+  clearNextRoute: () => dispatch(historyActions.nextRoute(null)),
 });
 
 export default compose(
