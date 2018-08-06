@@ -8,11 +8,12 @@ export const generatePlayer = (teamId, type) => ({
     firstName: chance.first(),
     lastName: chance.last(),
     age: chance.integer({ min: 18, max: 40 }),
-    country: chance.country({ full: true }),
+    country: chance.country().toUpperCase(),
     value: 1000000,
     team: teamId,
     type,
-    status: 'ACTIVE',
+    status: 'NONE',
+    sellValue: 0,
   });
 
 export const generateTeam = (userId, name) => ({

@@ -7,4 +7,5 @@ export default interface PlayerType {
   value: number;
   team: number;
   teamName?: string;
+  countryName?: string;
 }

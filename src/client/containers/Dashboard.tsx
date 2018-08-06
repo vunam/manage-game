@@ -51,7 +51,7 @@ class Dashboard extends React.Component<Props> {
 
 const mapStateToProps = state => ({
   user: userSelectors.getUser(state.user),
-  players: selectors.getPlayers(state.players),
+  players: selectors.getPlayersFull(state.players),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -3,6 +3,8 @@ import {combineEpics, Epic} from 'redux-observable';
 import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
 import * as qs from 'qs';
+import {createSelector} from 'reselect';
+import countryList from '../constants/countryList';
 
 export interface RootState {
   list?: [Object];
@@ -30,18 +32,32 @@ export default handleActions(
   initialState,
 );
 
+const getPlayers = state => state.list;
+
 export const selectors = {
-  getPlayers: state => state.list,
-  getTeam: state => state.list,
+  getPlayers,
+  getPlayersFull: createSelector(
+    getPlayers,
+    items =>
+      items &&
+      items.map(item => {
+        const countryName = countryList.find(country => country.code === item.country);
+        return {
+        ...item,
+        countryName: countryName ? countryName.name : 'NONE',
+      }}),
+  ),
 };
 
 const getPlayersEpic: Epic<any, RootState> = action$ =>
   action$.ofType(GET_PLAYERS_ATTEMPT).pipe(
-    mergeMap(({ payload }) =>
-      ajax.get(`/api/players${payload ? `?${qs.stringify(payload)}` : ''}`).pipe(
-        map(({response}) => actions.getPlayersSuccess(response.data)),
-        catchError(() => []),
-      ),
+    mergeMap(({payload}) =>
+      ajax
+        .get(`/api/players${payload ? `?${qs.stringify(payload)}` : ''}`)
+        .pipe(
+          map(({response}) => actions.getPlayersSuccess(response.data)),
+          catchError(() => []),
+        ),
     ),
   );
 

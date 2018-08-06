@@ -25,7 +25,7 @@ export default ({
   teamName,
   firstName,
   lastName,
-  country,
+  countryName,
   age,
   value,
   withTeam,
@@ -34,7 +34,7 @@ export default ({
     {withTeam && <ItemWide>{teamName}</ItemWide>}
     <ItemWide>{firstName}</ItemWide>
     <ItemWide>{lastName}</ItemWide>
-    <ItemWide>{country}</ItemWide>
+    <ItemWide>{countryName}</ItemWide>
     <ItemWide>{age}</ItemWide>
     <ItemWide>{value}</ItemWide>
     <ItemSmall><button>Add to transfer list</button></ItemSmall>
