@@ -36,7 +36,7 @@ export default () => (
   <Header>
     <Logo>Football Manager</Logo>
     <Nav>
-      <StyledLink to="/">Dashboard</StyledLink>
+      <StyledLink to="/dashboard">Dashboard</StyledLink>
       <StyledLink to="/market">Player market</StyledLink>
       <StyledLink to="/settings">Settings</StyledLink>
       <StyledLink to="/logout">Log out</StyledLink>

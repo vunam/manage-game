@@ -32,6 +32,7 @@ export const {user: actions} = createActions({
   [LOGIN_SUCCESS]: null,
   [VERIFY_ATTEMPT]: null,
   [VERIFY_SUCCESS]: null,
+  [VERIFY_FAILED]: null,
   [CREATE_ATTEMPT]: null,
   [CREATE_SUCCESS]: null,
   [SET]: null,
@@ -113,6 +114,7 @@ const verifyEpic: Epic<any, RootState> = action$ =>
           ];
         }),
         catchError(() => [
+          historyActions.nextRoute('/'),
           actions.verifyFailed(),
         ]),
       ),

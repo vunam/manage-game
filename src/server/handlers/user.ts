@@ -1,11 +1,13 @@
 import * as uniq from 'uniqid';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import getDb from '../helpers/db';
 import {generatePlayer, generateTeam} from '../helpers/generate';
 
 const db = getDb();
 
-const saltRounds = 10;
+const SALT_ROUNDS = 10;
+const SECRET = 'something';
 
 const createUser = async (
   id,
@@ -52,9 +54,26 @@ const createTeam = async (userId, name) => {
 
 export const postUserTokens = async ctx => {
   // verify access token
+  const access = ctx.cookies.get('access_token');
+  if (!access) {
+    ctx.status = 401;
+    ctx.body = {
+      error: 'No access token',
+    };
+    return;
+  }
 
-  ctx.body = {
-    data: {},
+  try {
+    const decoded = jwt.verify(access, SECRET);
+
+    ctx.body = {
+      data: decoded,
+    };
+  } catch (e) {
+    ctx.status = 401;
+    ctx.body = {
+      error: 'No access',
+    };
   }
 };
 
@@ -69,19 +88,20 @@ export const postUserLogin = async ctx => {
     return;
   }
 
-  const userData = 
-    await db
-      .get('users')
-      .find({ username: user })
-      .value();
-  
+  const userData = await db
+    .get('users')
+    .find({username: user})
+    .value();
+
   if (!userData) {
     ctx.status = 401;
     ctx.body = {error: 'No user  found'};
     return;
   }
 
-  const validated = await bcrypt.compare(password, userData.hashed).then(res => res)
+  const validated = await bcrypt
+    .compare(password, userData.hashed)
+    .then(res => res);
 
   if (!validated) {
     ctx.status = 401;
@@ -89,23 +109,26 @@ export const postUserLogin = async ctx => {
     return;
   }
 
-  const team = 
-    await db
-      .get('teams')
-      .find({ user: userData.id })
-      .value();
+  const team = await db
+    .get('teams')
+    .find({user: userData.id})
+    .value();
+
+  const data = {
+    id: userData.id,
+    role: userData.role,
+    username: userData.username,
+    team,
+  };
 
   // TODO set jwt
+  const token = jwt.sign(data, SECRET);
+  ctx.cookies.set('access_token', token, {maxAge: 300000});
 
-  ctx.body = {  
-    data: {
-      id: userData.id,
-      role: userData.role,
-      username: userData.username,
-      team,
-    }
+  ctx.body = {
+    data,
   };
-}
+};
 
 export const postUserCreate = async ctx => {
   const {
@@ -126,7 +149,7 @@ export const postUserCreate = async ctx => {
 
   // TODO check if user exists?
 
-  const hashed = await bcrypt.hash(password, saltRounds);
+  const hashed = await bcrypt.hash(password, SALT_ROUNDS);
   const uniqId = uniq();
   const userData = {
     id: uniqId,
