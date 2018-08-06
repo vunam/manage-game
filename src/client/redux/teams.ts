@@ -1,0 +1,49 @@
+import {createActions, handleActions} from 'redux-actions';
+import {combineEpics, Epic} from 'redux-observable';
+import {map, mergeMap, catchError} from 'rxjs/operators';
+import {ajax} from 'rxjs/ajax';
+import TeamType from '../types/team';
+
+export interface RootState {
+  list?: [TeamType];
+}
+
+const GET_TEAMS_ATTEMPT = 'teams/get-teams-attempt';
+const GET_TEAMS_SUCCESS = 'teams/get-teams-success';
+
+const initialState = {
+  list: null,
+};
+
+export const {teams: actions} = createActions({
+  [GET_TEAMS_ATTEMPT]: null,
+  [GET_TEAMS_SUCCESS]: null,
+});
+
+export default handleActions(
+  {
+    [GET_TEAMS_SUCCESS]: (state, action) => ({
+      ...state,
+      list: action.payload,
+    }),
+  },
+  initialState,
+);
+
+export const selectors = {
+  getTeams: state => state.list,
+};
+
+const getTeamsEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(GET_TEAMS_ATTEMPT).pipe(
+    mergeMap(({payload}) =>
+      ajax
+        .get(`/api/teams`)
+        .pipe(
+          map(({response}) => actions.getTeamsSuccess(response.data)),
+          catchError(() => []),
+        ),
+    ),
+  );
+
+export const epics = combineEpics(getTeamsEpic);

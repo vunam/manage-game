@@ -1,9 +1,10 @@
 import {isEqual} from 'lodash';
 import getDb from '../helpers/db';
 
+const db = getDb();
+
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
-  const db = getDb();
 
   const {withTeam, min, max, firstName, lastName, ...search} = query;
 

@@ -7,6 +7,7 @@ import QuickProfile from '../components/QuickProfile';
 import Filter from '../components/Filter';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
+import {actions as teamsActions, selectors as teamsSelectors} from '../redux/teams';
 import {selectors as userSelectors} from '../redux/user';
 
 import PlayerType from '../types/player';
@@ -14,10 +15,12 @@ import TeamType from '../types/team';
 
 interface Props {
   getPlayers: (Object?) => void;
+  getTeams: () => void;
   players: [PlayerType];
   user: {
     team: TeamType;
   };
+  teams: [TeamType],
 }
 
 interface State {
@@ -52,6 +55,7 @@ class PlayerMarket extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.getPlayers();
+    this.props.getTeams();
   }
 
   componentDidUpdate(_, prevState) {
@@ -76,7 +80,7 @@ class PlayerMarket extends React.Component<Props, State> {
   };
 
   render() {
-    const {players, user} = this.props;
+    const {players, user, teams} = this.props;
 
     return (
       <StyledPage>
@@ -84,7 +88,7 @@ class PlayerMarket extends React.Component<Props, State> {
         <Inner>
           <h2>Player market</h2>
           <MarketLayout>
-            <Filter changeHandler={this.setFilter} />
+            <Filter changeHandler={this.setFilter} teams={teams} />
             <PlayerList list={players} withTeam />
           </MarketLayout>
         </Inner>
@@ -95,10 +99,15 @@ class PlayerMarket extends React.Component<Props, State> {
 
 const mapStateToProps = state => ({
   user: userSelectors.getUser(state.user),
+  teams: teamsSelectors.getTeams(state.teams),
   players: selectors.getPlayersFull(state.players),
 });
 
 const mapDispatchToProps = dispatch => ({
+  getTeams: () =>
+    dispatch(
+      teamsActions.getTeamsAttempt(),
+    ),
   getPlayers: (filters = {}) =>
     dispatch(
       actions.getPlayersAttempt({

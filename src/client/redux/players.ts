@@ -5,9 +5,10 @@ import {ajax} from 'rxjs/ajax';
 import * as qs from 'qs';
 import {createSelector} from 'reselect';
 import countryList from '../constants/countryList';
+import PlayerType from '../types/player';
 
 export interface RootState {
-  list?: [Object];
+  list?: [PlayerType];
 }
 
 const GET_PLAYERS_ATTEMPT = 'players/get-players-attempt';

@@ -3,6 +3,7 @@ import * as send from 'koa-send';
 import * as body from 'koa-body';
 import * as Router from 'koa-router';
 import * as path from "path";
+import { getTeams } from "./handlers/teams";
 import { getPlayers } from "./handlers/players";
 import { postUserLogin, postUserTokens, postUserCreate, postLogout } from "./handlers/user";
 import htmlPage from './html';
@@ -21,6 +22,7 @@ app.use(async (ctx, next) => {
 })
 
 router.get('/api/players', getPlayers);
+router.get('/api/teams', getTeams);
 router.post('/api/user/create', postUserCreate);
 router.post('/api/user/login', postUserLogin);
 router.post('/api/user/tokens', postUserTokens);

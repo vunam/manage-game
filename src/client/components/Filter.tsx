@@ -20,7 +20,7 @@ const Label = styled.label`
   margin: ${spaces.s} 0 ${spaces.xxs};
 `;
 
-export default ({changeHandler}) => (
+export default ({changeHandler, teams}) => (
   <FilterStyled>
     <InputGroup>
       <Label>Position</Label>
@@ -42,14 +42,15 @@ export default ({changeHandler}) => (
         ))}
       </select>
     </InputGroup>
-    <InputGroup>
-      <Label>Team</Label>
-      <select>
-        <option>Portugal</option>
-        <option>Spain</option>
-        <option>Netherlands</option>
-      </select>
-    </InputGroup>
+    {teams && (
+      <InputGroup>
+        <Label>Team</Label>
+        <select onChange={({target}) => changeHandler('team', target.value)}>
+          <option value="">All</option>
+          {teams.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+        </select>
+      </InputGroup>
+    )}
     <InputGroup>
       <Label>Minimum value</Label>
       <select onChange={({target}) => changeHandler('min', target.value)}>
@@ -64,7 +65,7 @@ export default ({changeHandler}) => (
     </InputGroup>
     <InputGroup>
       <Label>Maximum value</Label>
-      <select onChange={({target}) => changeHandler('max', target.value)}>
+      <select defaultValue="-1" onChange={({target}) => changeHandler('max', target.value)}>
         <option value="100000">100.000</option>
         <option value="250000">250.000</option>
         <option value="500000">500.000</option>
@@ -72,7 +73,7 @@ export default ({changeHandler}) => (
         <option value="2500000">2.500.000</option>
         <option value="5000000">5.000.000</option>
         <option value="10000000">10.000.000</option>
-        <option selected value="-1">
+        <option value="-1">
           10.000.000+
         </option>
       </select>
