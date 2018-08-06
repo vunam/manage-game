@@ -131,7 +131,7 @@ export const postUserLogin = async ctx => {
 
   // TODO set jwt
   const token = jwt.sign(data, SECRET);
-  ctx.cookies.set('access_token', token, {maxAge: 300000});
+  ctx.cookies.set('access_token', token, {maxAge: 30000000});
 
   ctx.body = {
     data,

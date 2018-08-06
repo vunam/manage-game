@@ -5,7 +5,8 @@ import {spaces, color} from '../constants/styles';
 import PlayerType from '../types/player';
 
 type Props = {
-  list: [PlayerType],
+  list: [PlayerType];
+  withTeam?: boolean;
 };
 
 const PlayerList = styled.ul`
@@ -24,25 +25,26 @@ const Head = styled.div`
 `;
 
 const ItemWide = styled.div`
-  flex: 3;
+  flex: 2;
 `;
 
 const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default ({list}: Props) => (
+export default ({list, withTeam = false}: Props) => (
   <PlayerList>
     <Head>
+      {withTeam && <ItemWide>Team</ItemWide>}
       <ItemWide>First name</ItemWide>
       <ItemWide>Last name</ItemWide>
-      <ItemSmall>Country</ItemSmall>
-      <ItemSmall>Age</ItemSmall>
+      <ItemWide>Country</ItemWide>
+      <ItemWide>Age</ItemWide>
       <ItemWide>Market value</ItemWide>
       <ItemSmall>Transfer list</ItemSmall>
     </Head>
     {list && list.map(player => (
-      <Player key={player.id} {...player} />
+      <Player key={player.id} {...player} withTeam={withTeam} />
     ))}
   </PlayerList>
 );

@@ -31,6 +31,18 @@ const MarketLayout = styled.div`
 `;
 
 class PlayerMarket extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      country: null,
+      team: null,
+      min: null,
+      max: null,
+      firstName: null,
+      lastName: null,
+    }
+  }
+
   componentDidMount() {
     this.props.getPlayers();
   }
@@ -45,7 +57,7 @@ class PlayerMarket extends React.Component<Props> {
           <h2>Player market</h2>
           <MarketLayout>
             <Filter />
-            <PlayerList list={players} />
+            <PlayerList list={players} withTeam />
           </MarketLayout>
         </Inner>
       </StyledPage>
@@ -59,7 +71,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPlayers: () => dispatch(actions.getPlayersAttempt()),
+  getPlayers: () => dispatch(actions.getPlayersAttempt({
+    withTeam: true,
+  })),
 });
 
 export default connect(

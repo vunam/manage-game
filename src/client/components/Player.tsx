@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import { spaces } from '../constants/styles';
 import PlayerType from '../types/player';
 
+interface Props {
+  withTeam?: boolean;
+}
+
 const Player = styled.li`
   display: flex;
   justify-content: space-between;
@@ -10,7 +14,7 @@ const Player = styled.li`
 `;
 
 const ItemWide = styled.div`
-  flex: 3;
+  flex: 2;
 `;
 
 const ItemSmall = styled.div`
@@ -18,17 +22,20 @@ const ItemSmall = styled.div`
 `;
 
 export default ({
+  teamName,
   firstName,
   lastName,
   country,
   age,
   value,
-}: PlayerType) => (
+  withTeam,
+}: PlayerType & Props) => (
   <Player>
+    {withTeam && <ItemWide>{teamName}</ItemWide>}
     <ItemWide>{firstName}</ItemWide>
     <ItemWide>{lastName}</ItemWide>
-    <ItemSmall>{country}</ItemSmall>
-    <ItemSmall>{age}</ItemSmall>
+    <ItemWide>{country}</ItemWide>
+    <ItemWide>{age}</ItemWide>
     <ItemWide>{value}</ItemWide>
     <ItemSmall><button>Add to transfer list</button></ItemSmall>
   </Player>
