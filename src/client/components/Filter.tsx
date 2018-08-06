@@ -1,17 +1,19 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import countryList from '../constants/countryList';
 import { spaces } from '../constants/styles';
 
-const FilterStyled = styled.div``;
+const FilterStyled = styled.div`
+  width: 400px;
+`;
 
 export default () => (
   <FilterStyled>
     <div>
       country
       <select>
-        <option>Portugal</option>
-        <option>Spain</option>
-        <option>Netherlands</option>
+        <option value="">All</option>
+        {countryList.map(({ name, code }) => (<option value={code}>{name}</option>))}
       </select>
     </div>
     <div>
@@ -25,15 +27,26 @@ export default () => (
     <div>
       Min
       <select>
-        <option>0-100.000</option>
-        <option>0-100.000</option>
+        <option value="0">0</option>
+        <option value="100000">100.000</option>
+        <option value="250000">250.000</option>
+        <option value="500000">500.000</option>
+        <option value="1000000">1.000.000</option>
+        <option value="2500000">2.500.000</option>
+        <option value="5000000">5.000.000</option>
       </select>
     </div>
     <div>
       Max
       <select>
-        <option>0-100.000</option>
-        <option>0-100.000</option>
+        <option value="100000">100.000</option>
+        <option value="250000">250.000</option>
+        <option value="500000">500.000</option>
+        <option value="1000000">1.000.000</option>
+        <option value="2500000">2.500.000</option>
+        <option value="5000000">5.000.000</option>
+        <option value="10000000">10.000.000</option>
+        <option value="-1">10.000.000+</option>
       </select>
     </div>
     <div>
