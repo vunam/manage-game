@@ -2,6 +2,7 @@ import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
 import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
+import * as qs from 'qs';
 
 export interface RootState {
   list?: [Object];
@@ -36,8 +37,8 @@ export const selectors = {
 
 const getPlayersEpic: Epic<any, RootState> = action$ =>
   action$.ofType(GET_PLAYERS_ATTEMPT).pipe(
-    mergeMap(() =>
-      ajax.get('/api/players').pipe(
+    mergeMap(({ payload }) =>
+      ajax.get(`/api/players${payload ? `?${qs.stringify(payload)}` : ''}`).pipe(
         map(({response}) => actions.getPlayersSuccess(response.data)),
         catchError(() => []),
       ),

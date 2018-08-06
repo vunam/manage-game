@@ -11,7 +11,7 @@ import PlayerType from '../types/player';
 import TeamType from '../types/team';
 
 interface Props {
-  getPlayers: () => void;
+  getPlayers: (team: number) => void;
   players: [PlayerType];
   user: {
     team: TeamType;
@@ -26,7 +26,12 @@ const Inner = styled.div`
 
 class Dashboard extends React.Component<Props> {
   componentDidMount() {
-    this.props.getPlayers();
+    const { user, getPlayers } = this.props;
+    if (user) getPlayers(user.team.id);
+  }
+  componentWillReceiveProps(nextProps) {
+    const { user, getPlayers } = this.props;
+    if (!user && nextProps.user) getPlayers(user.team.id);
   }
 
   render() {
@@ -50,7 +55,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPlayers: () => dispatch(actions.getPlayersAttempt()),
+  getPlayers: (team) => dispatch(actions.getPlayersAttempt({ team })),
 });
 
 export default connect(

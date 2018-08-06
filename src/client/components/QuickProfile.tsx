@@ -19,9 +19,9 @@ export default ({
   value,
 }) => (
   <QuickProfile>
-    <Stat>{name}</Stat>
-    <Stat>{country}</Stat>
-    <Stat>{money}</Stat>
-    <Stat>{value}</Stat>
+    <Stat>Team: {name}</Stat>
+    <Stat>Country: {country}</Stat>
+    <Stat>Cash: {money}</Stat>
+    <Stat>Value: {value}</Stat>
   </QuickProfile>
 );
