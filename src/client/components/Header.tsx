@@ -32,14 +32,16 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export default () => (
+export default ({ user }) => (
   <Header>
     <Logo>Football Manager</Logo>
-    <Nav>
-      <StyledLink to="/dashboard">Dashboard</StyledLink>
-      <StyledLink to="/market">Player market</StyledLink>
-      <StyledLink to="/settings">Settings</StyledLink>
-      <StyledLink to="/logout">Log out</StyledLink>
-    </Nav>
+    {user && (
+      <Nav>
+        <StyledLink to="/dashboard">Dashboard</StyledLink>
+        <StyledLink to="/market">Player market</StyledLink>
+        <StyledLink to="/settings">Settings</StyledLink>
+        <StyledLink to="/logout">Log out</StyledLink>
+      </Nav>
+    )}
   </Header>
 );

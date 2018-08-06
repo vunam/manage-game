@@ -25,6 +25,7 @@ interface Props {
     push: (string) => void;
   };
   verifyAccess: () => void;
+  doLogout: () => void;
 }
 
 const Layout = styled.section`
@@ -46,15 +47,16 @@ class Main extends React.Component<Props> {
 
     if (location.pathname !== '/' && !user) {
       verifyAccess();
-      console.log('do check', location)
     }
   }
   componentWillReceiveProps(nextProps) {
-    const { nextRoute, history } = this.props;
+    const { nextRoute, history, doLogout } = this.props;
 
     if (nextRoute !== nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
     }
+
+    if (nextProps.location.pathname === '/logout') doLogout();
   }
 
   render() {
@@ -64,16 +66,16 @@ class Main extends React.Component<Props> {
 
     return (
       <Layout>
-        <Header />
+        <Header user={user} />
         <Scrollable>
           <Notification />
           <Switch>
             <Route exact path="/" component={Login} />
             {user && [
-              <Route exact path="/dashboard" component={Dashboard} />,
-              <Route exact path="/market" component={PlayerMarket} />,
-              <Route exact path="/signup" component={Signup} />,
+              <Route key="dash" exact path="/dashboard" component={Dashboard} />,
+              <Route key="market" exact path="/market" component={PlayerMarket} />,
             ]}
+            <Route exact path="/signup" component={Signup} />,
           </Switch>
         </Scrollable>
       </Layout>
@@ -90,6 +92,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   verifyAccess: () => dispatch(userActions.verifyAttempt()),
   getPlayers: () => dispatch(actions.getPlayersAttempt()),
+  doLogout: () => dispatch(userActions.logout()),
 });
 
 export default compose(

@@ -77,6 +77,14 @@ export const postUserTokens = async ctx => {
   }
 };
 
+export const postLogout = async ctx => {
+  ctx.cookies.set('access_token', null);
+
+  ctx.body = {
+    data: 'done',
+  };
+};
+
 export const postUserLogin = async ctx => {
   const {
     body: {user, password},

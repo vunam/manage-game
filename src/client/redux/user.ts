@@ -121,4 +121,23 @@ const verifyEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-export const epics = combineEpics(loginEpic, createUserEpic, verifyEpic);
+
+const logoutEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(LOGOUT).pipe(
+    mergeMap(() =>
+      ajax.post('/api/user/logout', {}).pipe(
+        mergeMap(({response}) => {
+          return [
+            actions.set(null),
+            historyActions.nextRoute('/'),
+          ];
+        }),
+        catchError(() => [
+          actions.set(null),
+          historyActions.nextRoute('/'),
+        ]),
+      ),
+    ),
+  );
+
+export const epics = combineEpics(loginEpic, createUserEpic, verifyEpic, logoutEpic);
