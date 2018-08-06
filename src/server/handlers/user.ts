@@ -52,27 +52,40 @@ const createTeam = async (userId, name, country) => {
   return newTeam;
 };
 
-export const postUserTokens = async ctx => {
-  // verify access token
+const setJwt = (ctx, data) => {
+  const token = jwt.sign(data, SECRET);
+  ctx.cookies.set('access_token', token, {maxAge: 30000000});
+
+  return token;
+};
+
+const verifyAccess = ctx => {
   const access = ctx.cookies.get('access_token');
   if (!access) {
     ctx.status = 401;
     ctx.body = {
       error: 'No access token',
     };
-    return;
+    return false;
   }
 
   try {
-    const decoded = jwt.verify(access, SECRET);
-
-    ctx.body = {
-      data: decoded,
-    };
+    return jwt.verify(access, SECRET);
   } catch (e) {
     ctx.status = 401;
     ctx.body = {
       error: 'No access',
+    };
+    return false;
+  }
+};
+
+export const postUserTokens = async ctx => {
+  const decoded = verifyAccess(ctx);
+
+  if (decoded) {
+    ctx.body = {
+      data: decoded,
     };
   }
 };
@@ -129,13 +142,11 @@ export const postUserLogin = async ctx => {
     team,
   };
 
-  // TODO set jwt
-  const token = jwt.sign(data, SECRET);
-  ctx.cookies.set('access_token', token, {maxAge: 30000000});
+  setJwt(ctx, data);
 
-  ctx.body = {
+  const token = (ctx.body = {
     data,
-  };
+  });
 };
 
 export const postUserCreate = async ctx => {
@@ -163,17 +174,60 @@ export const postUserCreate = async ctx => {
     id: uniqId,
     username: user,
     country,
+    role: 'owner',
   };
 
   const newTeam = await createTeam(uniqId, team, country);
   await createUser(uniqId, user, hashed, newTeam.id);
 
-  // JWT here
-
-  ctx.body = {
-    data: {
-      ...userData,
-      team: newTeam,
-    },
+  const data = {
+    id: userData.id,
+    role: userData.role,
+    username: userData.username,
+    team: newTeam,
   };
+
+  setJwt(ctx, data);
+
+  ctx.body = {data};
+};
+
+export const postUserUpdate = async ctx => {
+  const decoded = verifyAccess(ctx);
+  const {
+    body: {user, team, country},
+  } = ctx.request;
+
+  if (!user || !team || !country) {
+    ctx.status = 422;
+    ctx.body = {error: 'Missing data'};
+    return;
+  }
+
+  if (user.length < 3 || team.length < 3) {
+    ctx.status = 422;
+    ctx.body = {error: 'username / team too short'};
+    return;
+  }
+
+  db.get('users')
+    .find({ id: decoded.id })
+    .assign({ username: user })
+    .write()
+
+  const newTeam = db.get('teams')
+    .find({ user: decoded.id })
+    .assign({ country: country, name: team })
+    .write()
+  
+  const data = {
+    id: decoded.id,
+    role: decoded.role,
+    username: user,
+    team: newTeam,
+  };
+
+  setJwt(ctx, data);
+
+  ctx.body = {data};
 };

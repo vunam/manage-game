@@ -2,7 +2,7 @@ import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
 import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
-import { actions as historyActions } from './history';
+import {actions as historyActions} from './history';
 
 export interface RootState {
   user?: Object;
@@ -18,6 +18,9 @@ const VERIFY_FAILED = 'user/verify-failed';
 
 const CREATE_ATTEMPT = 'user/create-attempt';
 const CREATE_SUCCESS = 'user/create-success';
+
+const UPDATE_ATTEMPT = 'user/update-attempt';
+const UPDATE_SUCCESS = 'user/update-success';
 
 const SET = 'user/set';
 const LOGOUT = 'user/logout';
@@ -35,6 +38,8 @@ export const {user: actions} = createActions({
   [VERIFY_FAILED]: null,
   [CREATE_ATTEMPT]: null,
   [CREATE_SUCCESS]: null,
+  [UPDATE_ATTEMPT]: null,
+  [UPDATE_SUCCESS]: null,
   [SET]: null,
   [LOGOUT]: null,
 });
@@ -72,7 +77,7 @@ export const selectors = {
 
 const loginEpic: Epic<any, RootState> = action$ =>
   action$.ofType(LOGIN_ATTEMPT).pipe(
-    mergeMap(({ payload }) =>
+    mergeMap(({payload}) =>
       ajax.post('/api/user/login', payload).pipe(
         mergeMap(({response}) => {
           return [
@@ -88,7 +93,7 @@ const loginEpic: Epic<any, RootState> = action$ =>
 
 const createUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(CREATE_ATTEMPT).pipe(
-    mergeMap(({ payload }) =>
+    mergeMap(({payload}) =>
       ajax.post('/api/user/create', payload).pipe(
         mergeMap(({response}) => {
           return [
@@ -102,16 +107,28 @@ const createUserEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
+const updateUserEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(UPDATE_ATTEMPT).pipe(
+    mergeMap(({payload}) =>
+      ajax.post('/api/user/update', payload).pipe(
+        mergeMap(({response}) => {
+          return [
+            historyActions.nextRoute('/dashboard'),
+            actions.set(response.data),
+            actions.updateSuccess(response.data),
+          ];
+        }),
+        catchError(() => []),
+      ),
+    ),
+  );
 
 const verifyEpic: Epic<any, RootState> = action$ =>
   action$.ofType(VERIFY_ATTEMPT).pipe(
     mergeMap(() =>
       ajax.post('/api/user/tokens', {}).pipe(
         mergeMap(({response}) => {
-          return [
-            actions.set(response.data),
-            actions.verifySuccess(),
-          ];
+          return [actions.set(response.data), actions.verifySuccess()];
         }),
         catchError(() => [
           historyActions.nextRoute('/'),
@@ -121,23 +138,22 @@ const verifyEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-
 const logoutEpic: Epic<any, RootState> = action$ =>
   action$.ofType(LOGOUT).pipe(
     mergeMap(() =>
       ajax.post('/api/user/logout', {}).pipe(
         mergeMap(({response}) => {
-          return [
-            actions.set(null),
-            historyActions.nextRoute('/'),
-          ];
+          return [actions.set(null), historyActions.nextRoute('/')];
         }),
-        catchError(() => [
-          actions.set(null),
-          historyActions.nextRoute('/'),
-        ]),
+        catchError(() => [actions.set(null), historyActions.nextRoute('/')]),
       ),
     ),
   );
 
-export const epics = combineEpics(loginEpic, createUserEpic, verifyEpic, logoutEpic);
+export const epics = combineEpics(
+  loginEpic,
+  createUserEpic,
+  updateUserEpic,
+  verifyEpic,
+  logoutEpic,
+);

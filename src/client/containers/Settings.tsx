@@ -11,11 +11,11 @@ const StyledPage = styled.div`
 
 const Settings = ({ user, submitHandler }) => (
   <StyledPage>
-    <h1>Settings</h1>
+    <h1>Team settings</h1>
     <p>Update your team settings here</p>
     {user && <SettingsForm submitHandler={submitHandler} initialValues={{
       team: user.team.name,
-      country: user.country,
+      country: user.team.country,
       user: user.username,
     }} />}
   </StyledPage>
@@ -26,7 +26,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  submitHandler: (formData) => dispatch(actions.createAttempt(formData)),
+  submitHandler: (formData) => dispatch(actions.updateAttempt(formData)),
 });
 
 export default connect(

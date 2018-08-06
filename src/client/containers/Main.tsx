@@ -12,7 +12,7 @@ import Header from '../components/Header';
 import Notification from '../components/Notification';
 import {typography, layout} from '../constants/styles';
 import {actions} from '../redux/players';
-import {selectors as historySelectors} from '../redux/history';
+import {actions as historyActions, selectors as historySelectors} from '../redux/history';
 import {selectors as userSelectors, actions as userActions} from '../redux/user';
 
 interface Props {
@@ -51,10 +51,11 @@ class Main extends React.Component<Props> {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const { nextRoute, history, doLogout } = this.props;
+    const { nextRoute, history, doLogout, setNextRoute } = this.props;
 
     if (nextRoute !== nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
+      setNextRoute(null);
     }
 
     if (nextProps.location.pathname === '/logout') doLogout();
@@ -95,6 +96,7 @@ const mapDispatchToProps = dispatch => ({
   verifyAccess: () => dispatch(userActions.verifyAttempt()),
   getPlayers: () => dispatch(actions.getPlayersAttempt()),
   doLogout: () => dispatch(userActions.logout()),
+  setNextRoute: () => dispatch(historyActions.nextRoute()),
 });
 
 export default compose(
