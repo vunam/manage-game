@@ -36,11 +36,12 @@ export default ({list, withTeam = false}: Props) => (
   <PlayerList>
     <Head>
       {withTeam && <ItemWide>Team</ItemWide>}
+      <ItemWide>Position</ItemWide>
       <ItemWide>First name</ItemWide>
       <ItemWide>Last name</ItemWide>
       <ItemWide>Country</ItemWide>
-      <ItemWide>Age</ItemWide>
-      <ItemWide>Market value</ItemWide>
+      <ItemSmall>Age</ItemSmall>
+      <ItemSmall>Market value</ItemSmall>
       <ItemSmall>Transfer list</ItemSmall>
     </Head>
     {list && list.map(player => (

@@ -26,17 +26,19 @@ export default ({
   firstName,
   lastName,
   countryName,
+  type,
   age,
   value,
   withTeam,
 }: PlayerType & Props) => (
   <Player>
     {withTeam && <ItemWide>{teamName}</ItemWide>}
+    <ItemWide>{type}</ItemWide>
     <ItemWide>{firstName}</ItemWide>
     <ItemWide>{lastName}</ItemWide>
     <ItemWide>{countryName}</ItemWide>
-    <ItemWide>{age}</ItemWide>
-    <ItemWide>{value}</ItemWide>
+    <ItemSmall>{age}</ItemSmall>
+    <ItemSmall>{value}</ItemSmall>
     <ItemSmall><button>Add to transfer list</button></ItemSmall>
   </Player>
 );

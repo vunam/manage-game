@@ -41,7 +41,7 @@ class Dashboard extends React.Component<Props> {
       <StyledPage>
         <QuickProfile {...user.team} />
         <Inner>
-          <h2>Current players</h2>
+          <h2>My players</h2>
           <PlayerList list={players} />
         </Inner>
       </StyledPage>

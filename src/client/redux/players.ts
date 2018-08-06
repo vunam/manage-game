@@ -44,7 +44,7 @@ export const selectors = {
         const countryName = countryList.find(country => country.code === item.country);
         return {
         ...item,
-        countryName: countryName ? countryName.name : 'NONE',
+        countryName: countryName ? countryName.name : item.country,
       }}),
   ),
 };
