@@ -28,8 +28,8 @@ const createUser = async (
     .write();
 };
 
-const createTeam = async (userId, name) => {
-  const newTeam = generateTeam(userId, name);
+const createTeam = async (userId, name, country) => {
+  const newTeam = generateTeam(userId, name, country);
 
   await db
     .get('teams')
@@ -140,10 +140,10 @@ export const postUserLogin = async ctx => {
 
 export const postUserCreate = async ctx => {
   const {
-    body: {user, team, password},
+    body: {user, team, password, country},
   } = ctx.request;
 
-  if (!user || !team || !password) {
+  if (!user || !team || !password || !country) {
     ctx.status = 422;
     ctx.body = {error: 'Missing data'};
     return;
@@ -162,9 +162,10 @@ export const postUserCreate = async ctx => {
   const userData = {
     id: uniqId,
     username: user,
+    country,
   };
 
-  const newTeam = await createTeam(uniqId, team);
+  const newTeam = await createTeam(uniqId, team, country);
   await createUser(uniqId, user, hashed, newTeam.id);
 
   // JWT here

@@ -4,7 +4,7 @@ import { Form, Field, reduxForm } from 'redux-form';
 import { spaces } from '../constants/styles';
 import countryList from '../constants/countryList';
 
-const FORM_NAME = 'signup';
+const FORM_NAME = 'settings';
 
 const StyledForm = styled(Form)`
 `;
@@ -35,10 +35,6 @@ const FormOuter = ({
     <Row>
       <label htmlFor="user">Username</label>
       <Field name="user" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="password">Password</label>
-      <Field name="password" component="input" type="password" />
     </Row>
     <button>Submit</button>
   </StyledForm>

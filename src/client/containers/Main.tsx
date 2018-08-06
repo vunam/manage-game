@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Signup from './Signup';
+import Settings from './Settings';
 import PlayerMarket from './PlayerMarket';
 import Header from '../components/Header';
 import Notification from '../components/Notification';
@@ -74,6 +75,7 @@ class Main extends React.Component<Props> {
             {user && [
               <Route key="dash" exact path="/dashboard" component={Dashboard} />,
               <Route key="market" exact path="/market" component={PlayerMarket} />,
+              <Route key="settings" exact path="/settings" component={Settings} />,
             ]}
             <Route exact path="/signup" component={Signup} />,
           </Switch>

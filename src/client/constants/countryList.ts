@@ -1,6 +1,6 @@
 export default [
   {name: 'Afghanistan', code: 'AF'},
-  {name: 'land Islands', code: 'AX'},
+  {name: 'Land Islands', code: 'AX'},
   {name: 'Albania', code: 'AL'},
   {name: 'Algeria', code: 'DZ'},
   {name: 'American Samoa', code: 'AS'},

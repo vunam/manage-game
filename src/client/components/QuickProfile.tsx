@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { color, layout, spaces } from '../constants/styles';
+import {color, spaces} from '../constants/styles';
+import countryList from '../constants/countryList';
 
 const QuickProfile = styled.div`
   display: flex;
@@ -12,15 +13,10 @@ const Stat = styled.div`
   padding: ${spaces.m} ${spaces.sm};
 `;
 
-export default ({
-  name,
-  country,
-  money,
-  value,
-}) => (
+export default ({name, country, money, value}) => (
   <QuickProfile>
     <Stat>Team: {name}</Stat>
-    <Stat>Country: {country}</Stat>
+    <Stat>Country: {countryList.find(item => item.code === country).name}</Stat>
     <Stat>Cash: {money}</Stat>
     <Stat>Value: {value}</Stat>
   </QuickProfile>
