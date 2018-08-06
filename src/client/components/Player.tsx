@@ -5,7 +5,9 @@ import PlayerType from '../types/player';
 
 interface Props {
   withTeam?: boolean;
-  clickHandler?: (number: number, available: boolean) => void;
+  currentTeam: number;
+  clickHandler: (number: number, available: boolean) => void;
+  buyHandler?: (number: number) => void;
 }
 
 const Player = styled.li`
@@ -34,6 +36,9 @@ export default ({
   withTeam,
   clickHandler,
   status,
+  team,
+  currentTeam,
+  buyHandler,
 }: PlayerType & Props) => (
   <Player>
     {withTeam && <ItemWide>{teamName}</ItemWide>}
@@ -44,9 +49,11 @@ export default ({
     <ItemSmall>{age}</ItemSmall>
     <ItemSmall>{value}</ItemSmall>
     <ItemSmall>
-      <button onClick={() => clickHandler(id, status === 'NONE')}>
-        {status === 'NONE' ? 'Add Transfer' : 'Retract'}
-      </button>
+      {currentTeam === team ? (
+        <button onClick={() => clickHandler(id, status === 'NONE')}>
+          {status === 'NONE' ? 'Add Transfer' : 'Retract'}
+        </button>
+      ) : status === 'AVAILABLE' && <button onClick={() => buyHandler(id)}>BUY</button>}
     </ItemSmall>
   </Player>
 );

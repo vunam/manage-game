@@ -7,7 +7,10 @@ import QuickProfile from '../components/QuickProfile';
 import Filter from '../components/Filter';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
-import {actions as teamsActions, selectors as teamsSelectors} from '../redux/teams';
+import {
+  actions as teamsActions,
+  selectors as teamsSelectors,
+} from '../redux/teams';
 import {selectors as userSelectors} from '../redux/user';
 
 import PlayerType from '../types/player';
@@ -15,12 +18,13 @@ import TeamType from '../types/team';
 
 interface Props {
   getPlayers: (Object?) => void;
+  transferPlayer: (player: number, available: boolean) => void;
   getTeams: () => void;
   players: [PlayerType];
   user: {
     team: TeamType;
   };
-  teams: [TeamType],
+  teams: [TeamType];
 }
 
 interface State {
@@ -80,7 +84,7 @@ class PlayerMarket extends React.Component<Props, State> {
   };
 
   render() {
-    const {players, user, teams} = this.props;
+    const {players, user, teams, transferPlayer} = this.props;
 
     return (
       <StyledPage>
@@ -89,7 +93,14 @@ class PlayerMarket extends React.Component<Props, State> {
           <h2>Player market</h2>
           <MarketLayout>
             <Filter changeHandler={this.setFilter} teams={teams} />
-            <PlayerList list={players} withTeam />
+            <PlayerList
+              currentTeam={user.team.id}
+              list={players}
+              clickHandler={(player, available) =>
+                transferPlayer(player, available)
+              }
+              withTeam
+            />
           </MarketLayout>
         </Inner>
       </StyledPage>
@@ -104,15 +115,20 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTeams: () =>
-    dispatch(
-      teamsActions.getTeamsAttempt(),
-    ),
+  getTeams: () => dispatch(teamsActions.getTeamsAttempt()),
   getPlayers: (filters = {}) =>
     dispatch(
       actions.getPlayersAttempt({
         withTeam: true,
         ...filters,
+      }),
+    ),
+  transferPlayer: (player, available) =>
+    dispatch(
+      actions.transferPlayerAttempt({
+        player,
+        available,
+        withTeam: true,
       }),
     ),
 });

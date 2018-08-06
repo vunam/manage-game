@@ -44,6 +44,7 @@ class Dashboard extends React.Component<Props> {
         <Inner>
           <h2>My players</h2>
           <PlayerList
+            currentTeam={user.team.id}
             list={players}
             clickHandler={(player, available) =>
               transferPlayer(player, user.team.id, available)

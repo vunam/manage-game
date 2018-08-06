@@ -72,14 +72,14 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
 
 const transferPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(TRANSFER_PLAYER_ATTEMPT).pipe(
-    mergeMap(({payload}) =>
+    mergeMap(({payload: { player, available, ...rest }}) =>
       ajax
-        .post(`/api/players/${payload.player}/transfer`, {
-          available: payload.available,
+        .post(`/api/players/${player}/transfer`, {
+          available,
         })
         .pipe(
           mergeMap(({response}) => [
-            actions.getPlayersAttempt({ team: payload.team }),
+            actions.getPlayersAttempt(rest),
             actions.transferPlayerSuccess(response.data),
           ]),
           catchError(() => []),
