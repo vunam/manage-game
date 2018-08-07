@@ -13,16 +13,11 @@ const MessagesList = styled.ul`
   padding: 0;
 `;
 
-export default ({
-  list,
-}: Props) =>
+export default ({list}: Props) =>
   list ? (
     <MessagesList>
-      {list.length ?
-        list.map(message => (
-          <Message
-            {...message}
-          />
-        )) : 'No messages.'}
+      {list.length
+        ? list.map(message => <Message {...message} />)
+        : 'No messages.'}
     </MessagesList>
   ) : null;

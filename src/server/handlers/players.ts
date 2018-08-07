@@ -117,7 +117,6 @@ export const postTransaction = ctx => {
   createMessage({
     date: new Date().toISOString(),
     team: currentTeam.id,
-    newTeam: newTeam.id,
     message: `${currentPlayer.firstName} ${currentPlayer.lastName} has been bought by ${newTeam.name} for $${currentPlayer.sellValue}.`,
   });
 

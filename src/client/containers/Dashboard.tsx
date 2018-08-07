@@ -21,6 +21,7 @@ interface Props {
     sellValue: number,
   ) => void;
   players: [PlayerType];
+  messages: [object],
   user: {
     team: TeamType;
   };
@@ -72,7 +73,7 @@ class Dashboard extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  messages: messagesSelectors.getUser(state.user),
+  messages: messagesSelectors.getMessages(state.messages),
   user: userSelectors.getUser(state.user),
   players: selectors.getPlayersFull(state.players),
 });
