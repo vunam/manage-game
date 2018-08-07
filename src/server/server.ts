@@ -12,6 +12,7 @@ import {
   postUserLogin,
   postUserTokens,
   putUserUpdate,
+  deleteUser,
 } from './handlers/user';
 import htmlPage from './html';
 
@@ -37,7 +38,8 @@ router.post('/api/players/:id/transfer', postAddTransfer);
 router.post('/api/players/:id/transaction/:team', postTransaction);
 
 router.post('/api/user/create', postUserCreate);
-router.put('/api/user/update/:id', putUserUpdate);
+router.put('/api/user/:id', putUserUpdate);
+router.delete('/api/user/:id', deleteUser);
 router.post('/api/user/login', postUserLogin);
 router.post('/api/user/tokens', postUserTokens);
 router.post('/api/user/logout', postLogout);

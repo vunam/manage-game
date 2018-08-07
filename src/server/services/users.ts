@@ -51,3 +51,9 @@ export const updateUserById = (id, data) =>
     .find({id})
     .assign(data)
     .write();
+
+export const deleteUserById = (id) =>
+  db
+    .get(table)
+    .remove({id})
+    .write();

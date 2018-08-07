@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import {showApiError} from '../helpers/response';
+import {showApiError} from './response';
 
 export const verifyAccess = ctx => {
   const access = ctx.cookies.get('access_token');

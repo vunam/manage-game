@@ -121,7 +121,7 @@ const updateUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(UPDATE_ATTEMPT).pipe(
     mergeMap(({payload: { id, ...body }}) =>
       ajax({
-        url: `/api/user/update/${id}`, method: 'PUT', body }).pipe(
+        url: `/api/user/${id}`, method: 'PUT', body }).pipe(
         mergeMap(({response}) => {
           return [
             historyActions.nextRoute('/dashboard'),
@@ -141,6 +141,7 @@ const deleteUserEpic: Epic<any, RootState> = action$ =>
       ajax.delete(`/api/user/${payload}`).pipe(
         mergeMap(({response}) => {
           return [
+            teamsActions.getTeamsAttempt(),
             actions.deleteSuccess(response.data),
           ];
         }),

@@ -4,12 +4,13 @@ import {generatePlayer, generateTeam} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
 import {verifyAccess, setJwt} from '../helpers/authentication';
 import {createPlayer} from '../services/players';
-import {createTeam, findTeamByUser, updateTeamByUser} from '../services/teams';
+import {createTeam, findTeamByUser, updateTeamByUser, deleteTeamByUser} from '../services/teams';
 import {
   createUser,
   findUserById,
   findUserByUsername,
   updateUserById,
+  deleteUserById,
 } from '../services/users';
 
 const createNewTeam = async (userId, name, country) => {
@@ -161,4 +162,24 @@ export const putUserUpdate = async ctx => {
     ...data,
     team: newTeam,
   });
+};
+
+export const deleteUser = async ctx => {
+  const { id } = ctx.params;
+
+  const user = verifyAccess(ctx);
+  const latestUserData = findUserById(user.id);
+
+  if (id === user.id) {
+    return showApiError(ctx, 'Not allowed to delete yourself', 403);
+  }
+
+  if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
+  deleteTeamByUser(id);
+  deleteUserById(id);
+
+  showApiResult(ctx, 'success');
 };
