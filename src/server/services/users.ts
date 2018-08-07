@@ -25,7 +25,6 @@ export const findUserById = id =>
     .find({id})
     .value();
 
-
 export const findUserByUsername = username =>
   db
     .get(table)

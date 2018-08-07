@@ -1,21 +1,17 @@
 import * as React from 'react';
+import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
-import { Form, Field, reduxForm } from 'redux-form';
-import { spaces } from '../constants/styles';
+import {spaces} from '../constants/styles';
 
 const FORM_NAME = 'login';
 
-const StyledForm = styled(Form)`
-`;
+const StyledForm = styled(Form)``;
 
 const Row = styled.div`
   margin: ${spaces.sm} 0;
 `;
 
-const FormOuter = ({
-  handleSubmit,
-  submitHandler,
-}) => (
+const FormOuter = ({handleSubmit, submitHandler}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
     <Row>
       <label htmlFor="user">Username</label>
@@ -31,4 +27,4 @@ const FormOuter = ({
 
 export default reduxForm({
   form: FORM_NAME,
-})(FormOuter)
+})(FormOuter);

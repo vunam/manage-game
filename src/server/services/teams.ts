@@ -23,10 +23,9 @@ export const findTeamByUser = user =>
     .find({user})
     .value();
 
-
 // WRITE
 
-export const createTeam = (data) =>
+export const createTeam = data =>
   db
     .get(table)
     .push(data)

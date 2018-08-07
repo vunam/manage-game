@@ -47,7 +47,11 @@ export default ({changeHandler, teams}) => (
         <Label>Team</Label>
         <select onChange={({target}) => changeHandler('team', target.value)}>
           <option value="">All</option>
-          {teams.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+          {teams.map(item => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
         </select>
       </InputGroup>
     )}
@@ -65,7 +69,10 @@ export default ({changeHandler, teams}) => (
     </InputGroup>
     <InputGroup>
       <Label>Maximum value</Label>
-      <select defaultValue="-1" onChange={({target}) => changeHandler('max', target.value)}>
+      <select
+        defaultValue="-1"
+        onChange={({target}) => changeHandler('max', target.value)}
+      >
         <option value="100000">100.000</option>
         <option value="250000">250.000</option>
         <option value="500000">500.000</option>
@@ -73,9 +80,7 @@ export default ({changeHandler, teams}) => (
         <option value="2500000">2.500.000</option>
         <option value="5000000">5.000.000</option>
         <option value="10000000">10.000.000</option>
-        <option value="-1">
-          10.000.000+
-        </option>
+        <option value="-1">10.000.000+</option>
       </select>
     </InputGroup>
     <InputGroup>

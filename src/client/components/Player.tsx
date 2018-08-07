@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {spaces} from '../constants/styles';
-import PlayerType from '../types/player';
+import PlayerType from '../types/Player';
 
 interface Props {
   withTeam?: boolean;
@@ -87,7 +87,8 @@ class Player extends React.Component<PlayerType & Props, State> {
           {sameTeam ? (
             <button
               key="button"
-              onClick={() => clickHandler(id, !available, currentSellValue)}>
+              onClick={() => clickHandler(id, !available, currentSellValue)}
+            >
               {!available ? 'Add Transfer' : 'Retract'}
             </button>
           ) : (

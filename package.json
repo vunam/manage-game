@@ -9,7 +9,10 @@
   "scripts": {
     "db:init": "ts-node --project ./typescript/server.conf.json ./src/server/db/migration.ts",
     "dev": "yarn dev:server & webpack-dev-server --config ./webpack/config.js",
-    "dev:server": "nodemon --watch 'src/server/**/*.ts' --exec 'ts-node --project ./typescript/server.conf.json' ./src/server/index.ts"
+    "dev:server": "nodemon --watch 'src/server/**/*.ts' --exec 'ts-node --project ./typescript/server.conf.json' ./src/server/index.ts",
+    "lint": "tslint -c ./tslint.json './src/**/*.ts*'",
+    "prettier": "prettier --write \"./src/**/*.t{s,sx}\"",
+    "prettylint": "yarn prettier && yarn lint"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.56",
@@ -45,6 +48,8 @@
     "styled-components": "^3.4.0",
     "ts-loader": "^4.4.2",
     "ts-node": "^7.0.0",
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.0.1",
     "uniqid": "^5.0.3",
     "webpack": "^4.16.4",

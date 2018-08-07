@@ -115,7 +115,7 @@ export default [
   {name: 'Kazakhstan', code: 'KZ'},
   {name: 'Kenya', code: 'KE'},
   {name: 'Kiribati', code: 'KI'},
-  {name: "North Korea", code: 'KP'},
+  {name: 'North Korea', code: 'KP'},
   {name: 'Korea, Republic of', code: 'KR'},
   {name: 'Kuwait', code: 'KW'},
   {name: 'Kyrgyzstan', code: 'KG'},

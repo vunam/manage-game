@@ -1,11 +1,11 @@
+import * as qs from 'qs';
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
-import {map, mergeMap, catchError} from 'rxjs/operators';
-import {ajax} from 'rxjs/ajax';
-import * as qs from 'qs';
 import {createSelector} from 'reselect';
+import {ajax} from 'rxjs/ajax';
+import {catchError, map, mergeMap} from 'rxjs/operators';
 import countryList from '../constants/countryList';
-import PlayerType from '../types/player';
+import PlayerType from '../types/Player';
 
 export interface RootState {
   list?: [PlayerType];
@@ -77,7 +77,7 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
 
 const transferPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(TRANSFER_PLAYER_ATTEMPT).pipe(
-    mergeMap(({payload: { player, available, sellValue, ...rest }}) =>
+    mergeMap(({payload: {player, available, sellValue, ...rest}}) =>
       ajax
         .post(`/api/players/${player}/transfer`, {
           available,
@@ -95,7 +95,7 @@ const transferPlayerEpic: Epic<any, RootState> = action$ =>
 
 const buyPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(BUY_PLAYER_ATTEMPT).pipe(
-    mergeMap(({payload: { player, team, available, ...rest }}) =>
+    mergeMap(({payload: {player, team, available, ...rest}}) =>
       ajax
         .post(`/api/players/${player}/transaction/${team}`, {
           available,
@@ -110,4 +110,8 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-export const epics = combineEpics(getPlayersEpic, transferPlayerEpic, buyPlayerEpic);
+export const epics = combineEpics(
+  getPlayersEpic,
+  transferPlayerEpic,
+  buyPlayerEpic,
+);

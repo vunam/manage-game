@@ -7,8 +7,8 @@ import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 import {selectors as userSelectors} from '../redux/user';
 
-import PlayerType from '../types/player';
-import TeamType from '../types/team';
+import PlayerType from '../types/Player';
+import TeamType from '../types/Team';
 
 interface Props {
   getPlayers: (team: string) => void;
@@ -33,16 +33,22 @@ const Inner = styled.div`
 class Dashboard extends React.Component<Props> {
   componentDidMount() {
     const {user, getPlayers} = this.props;
-    if (user) getPlayers(user.team.id);
+    if (user) {
+      getPlayers(user.team.id);
+    }
   }
   componentWillReceiveProps(nextProps) {
     const {user, getPlayers} = this.props;
-    if (!user && nextProps.user) getPlayers(user.team.id);
+    if (!user && nextProps.user) {
+      getPlayers(user.team.id);
+    }
   }
 
   render() {
     const {players, user, transferPlayer} = this.props;
-    if (!user) return null;
+    if (!user) {
+      return null;
+    }
     return (
       <StyledPage>
         <QuickProfile {...user.team} />

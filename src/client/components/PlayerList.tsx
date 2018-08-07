@@ -1,16 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Player from './Player';
-import {spaces, color} from '../constants/styles';
-import PlayerType from '../types/player';
+import Player from '../components/Player';
+import {color, spaces} from '../constants/styles';
+import PlayerType from '../types/Player';
 
-type Props = {
+interface Props {
   list: [PlayerType];
   withTeam?: boolean;
   currentTeam: string;
-  clickHandler?: (number: string, available: boolean, sellValue: number) => void;
-  buyHandler?: (number: string) => void;
-};
+  clickHandler?: (id: string, available: boolean, sellValue: number) => void;
+  buyHandler?: (id: string) => void;
+}
 
 const PlayerList = styled.ul`
   width: 100%;
@@ -35,7 +35,13 @@ const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default ({list, withTeam = false, clickHandler, currentTeam, buyHandler}: Props) => (
+export default ({
+  list,
+  withTeam = false,
+  clickHandler,
+  currentTeam,
+  buyHandler,
+}: Props) => (
   <PlayerList>
     <Head>
       {withTeam && <ItemWide>Team</ItemWide>}

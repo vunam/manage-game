@@ -19,15 +19,15 @@ export const queryPlayers = search =>
     .filter(search)
     .value();
 
-export const findPlayerById = (id) =>
+export const findPlayerById = id =>
   db
-  .get(table)
-  .find({id})
-  .value();
+    .get(table)
+    .find({id})
+    .value();
 
 // WRITE
 
-export const createPlayer = (data) =>
+export const createPlayer = data =>
   db
     .get(table)
     .push(data)
@@ -35,7 +35,7 @@ export const createPlayer = (data) =>
 
 export const updatePlayerById = (id, data) =>
   db
-  .get(table)
-  .find({id})
-  .assign(data)
-  .write();
+    .get(table)
+    .find({id})
+    .assign(data)
+    .write();

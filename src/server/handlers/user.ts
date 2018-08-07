@@ -1,15 +1,15 @@
-import * as uniq from 'uniqid';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import * as uniq from 'uniqid';
 import {generatePlayer, generateTeam} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
+import {createPlayer} from '../services/players';
 import {createTeam, findTeamByUser, updateTeamByUser} from '../services/teams';
 import {
   createUser,
   findUserByUsername,
   updateUserById,
 } from '../services/users';
-import {createPlayer} from '../services/players';
 
 const SALT_ROUNDS = 10;
 const SECRET = 'something';
@@ -58,7 +58,9 @@ const verifyAccess = ctx => {
 export const postUserTokens = async ctx => {
   const decoded = verifyAccess(ctx);
 
-  if (decoded) showApiResult(ctx, decoded);
+  if (decoded) {
+    showApiResult(ctx, decoded);
+  }
 };
 
 export const postLogout = async ctx => {
@@ -71,17 +73,23 @@ export const postUserLogin = async ctx => {
     body: {user, password},
   } = ctx.request;
 
-  if (!user || !password) return showApiError(ctx, 'Missing data', 422);
+  if (!user || !password) {
+    return showApiError(ctx, 'Missing data', 422);
+  }
 
   const userData = findUserByUsername(user);
 
-  if (!userData) return showApiError(ctx, 'No user  found', 401);
+  if (!userData) {
+    return showApiError(ctx, 'No user  found', 401);
+  }
 
   const validated = await bcrypt
     .compare(password, userData.hashed)
     .then(res => res);
 
-  if (!validated) return showApiError(ctx, 'Password is incorrect', 401);
+  if (!validated) {
+    return showApiError(ctx, 'Password is incorrect', 401);
+  }
 
   const team = findTeamByUser(userData.id);
 
@@ -101,7 +109,9 @@ export const postUserCreate = async ctx => {
     body: {user, team, password, country},
   } = ctx.request;
 
-  if (!user || !team || !password || !country) return showApiError(ctx, 'Missing data', 422);
+  if (!user || !team || !password || !country) {
+    return showApiError(ctx, 'Missing data', 422);
+  }
 
   if (password.length < 3 || user.length < 3 || team.length < 3) {
     ctx.status = 422;
@@ -121,6 +131,7 @@ export const postUserCreate = async ctx => {
   };
 
   const newTeam = await createNewTeam(uniqId, team, country);
+
   createUser(uniqId, user, hashed, newTeam.id);
 
   const data = {
@@ -140,12 +151,16 @@ export const postUserUpdate = async ctx => {
     body: {user, team, country},
   } = ctx.request;
 
-  if (!user || !team || !country) return showApiError(ctx, 'Missing data', 422);
-  if (user.length < 3 || team.length < 3) return showApiError(ctx, 'Username / team too short', 422);
+  if (!user || !team || !country) {
+    return showApiError(ctx, 'Missing data', 422);
+  }
+  if (user.length < 3 || team.length < 3) {
+    return showApiError(ctx, 'Username / team too short', 422);
+  }
 
   updateUserById(decoded.id, {username: user});
 
-  const newTeam = updateTeamByUser(decoded.id, {country: country, name: team});
+  const newTeam = updateTeamByUser(decoded.id, {country, name: team});
 
   const data = {
     id: decoded.id,

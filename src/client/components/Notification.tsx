@@ -5,8 +5,4 @@ const Notification = styled.div`
   display: none;
 `;
 
-export default () => (
-  <Notification>
-    Some message
-  </Notification>
-);
+export default () => <Notification>Some message</Notification>;

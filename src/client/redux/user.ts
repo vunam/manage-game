@@ -1,11 +1,11 @@
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
-import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
+import {catchError, map, mergeMap} from 'rxjs/operators';
 import {actions as historyActions} from './history';
 
 export interface RootState {
-  user?: Object;
+  user?: object;
   verifying: boolean;
 }
 

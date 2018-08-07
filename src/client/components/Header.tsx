@@ -1,7 +1,7 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { color, layout, spaces } from '../constants/styles';
+import {color, layout, spaces} from '../constants/styles';
 
 const Header = styled.header`
   display: flex;
@@ -32,7 +32,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export default ({ user }) => (
+export default ({user}) => (
   <Header>
     <Logo>Football Manager</Logo>
     {user && (

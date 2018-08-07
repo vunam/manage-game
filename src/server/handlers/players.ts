@@ -1,12 +1,12 @@
 import {isEqual} from 'lodash';
 import {showApiError, showApiResult} from '../helpers/response';
-import {getAllTeams} from '../services/teams';
 import {
+  findPlayerById,
   getAllPlayers,
   queryPlayers,
-  findPlayerById,
   updatePlayerById,
 } from '../services/players';
+import {getAllTeams} from '../services/teams';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -54,7 +54,9 @@ export const postAddTransfer = ctx => {
   const {id} = ctx.params;
   const {available, sellValue} = ctx.request.body;
 
-  if (!id || !sellValue) return showApiError(ctx, 'Missing data', 422);
+  if (!id || !sellValue) {
+    return showApiError(ctx, 'Missing data', 422);
+  }
 
   const currentPlayer = findPlayerById(id);
 
@@ -71,7 +73,9 @@ export const postAddTransfer = ctx => {
 export const postTransaction = ctx => {
   const {id, team} = ctx.params;
 
-  if (!id) return showApiError(ctx, 'Missing data', 422);
+  if (!id) {
+    return showApiError(ctx, 'Missing data', 422);
+  }
 
   // your team + current owners team
   const currentPlayer = findPlayerById(id);

@@ -1,10 +1,10 @@
+import {isEqual} from 'lodash';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {isEqual} from 'lodash';
+import Filter from '../components/Filter';
 import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
-import Filter from '../components/Filter';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 import {
@@ -13,8 +13,8 @@ import {
 } from '../redux/teams';
 import {selectors as userSelectors} from '../redux/user';
 
-import PlayerType from '../types/player';
-import TeamType from '../types/team';
+import PlayerType from '../types/Player';
+import TeamType from '../types/Team';
 
 interface Props {
   getPlayers: (Object?) => void;
@@ -103,7 +103,7 @@ class PlayerMarket extends React.Component<Props, State> {
               list={players}
               buyHandler={player => buyPlayer(player, user.team.id)}
               clickHandler={transferPlayer}
-              withTeam
+              withTeam={true}
             />
           </MarketLayout>
         </Inner>

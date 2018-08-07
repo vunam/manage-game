@@ -1,8 +1,8 @@
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
-import {map, mergeMap, catchError} from 'rxjs/operators';
 import {ajax} from 'rxjs/ajax';
-import TeamType from '../types/team';
+import {catchError, map, mergeMap} from 'rxjs/operators';
+import TeamType from '../types/Team';
 
 export interface RootState {
   list?: [TeamType];
@@ -37,12 +37,10 @@ export const selectors = {
 const getTeamsEpic: Epic<any, RootState> = action$ =>
   action$.ofType(GET_TEAMS_ATTEMPT).pipe(
     mergeMap(({payload}) =>
-      ajax
-        .get(`/api/teams`)
-        .pipe(
-          map(({response}) => actions.getTeamsSuccess(response.data)),
-          catchError(() => []),
-        ),
+      ajax.get(`/api/teams`).pipe(
+        map(({response}) => actions.getTeamsSuccess(response.data)),
+        catchError(() => []),
+      ),
     ),
   );
 

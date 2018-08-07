@@ -1,14 +1,15 @@
-
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
-import defaultReducers, { rootEpic } from '../redux';
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
+import {createEpicMiddleware} from 'redux-observable';
+import defaultReducers, {rootEpic} from '../redux';
 
 const epicMiddleware: any = createEpicMiddleware();
 
-export default (initialState) => {
+export default initialState => {
   const combinedReducer = combineReducers(defaultReducers);
-  const finalCreateStore = compose(applyMiddleware(epicMiddleware))(createStore);
+  const finalCreateStore = compose(applyMiddleware(epicMiddleware))(
+    createStore,
+  );
   const result = finalCreateStore(combinedReducer, initialState);
-  epicMiddleware.run(rootEpic)
+  epicMiddleware.run(rootEpic);
   return result;
-}
+};
