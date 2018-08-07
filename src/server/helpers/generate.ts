@@ -13,7 +13,7 @@ export const generatePlayer = (teamId, type) => ({
   team: teamId,
   type,
   status: 'NONE',
-  sellValue: 0,
+  sellValue: 1000000,
 });
 
 export const generateTeam = (userId, name, country) => ({

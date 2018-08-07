@@ -77,7 +77,7 @@ class Main extends React.Component<Props> {
       closeNotification();
     }
 
-    if (nextRoute !== nextProps.nextRoute) {
+    if (nextRoute !== nextProps.nextRoute && nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
     }
 

@@ -33,6 +33,7 @@ const ItemWide = styled.div`
 
 const ItemSmall = styled.div`
   flex: 1;
+  padding: 0 ${spaces.xs};
 `;
 
 export default ({
@@ -44,13 +45,13 @@ export default ({
 }: Props) => (
   <PlayerList>
     <Head>
-      {withTeam && <ItemWide>Team</ItemWide>}
+      {withTeam && <ItemSmall>Team</ItemSmall>}
       <ItemSmall>Position</ItemSmall>
       <ItemWide>Name</ItemWide>
       <ItemWide>Country</ItemWide>
       <ItemSmall>Age</ItemSmall>
-      <ItemWide>Value</ItemWide>
-      <ItemWide>Sell value</ItemWide>
+      <ItemSmall>Value</ItemSmall>
+      <ItemSmall>Sell value</ItemSmall>
       <ItemSmall>Action</ItemSmall>
     </Head>
     {list &&

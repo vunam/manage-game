@@ -1,5 +1,6 @@
 import {createActions, handleActions} from 'redux-actions';
-import {combineEpics} from 'redux-observable';
+import {combineEpics, Epic} from 'redux-observable';
+import {map} from 'rxjs/operators';
 
 export interface RootState {
   notification?: string;

@@ -1,12 +1,13 @@
 import {isEqual} from 'lodash';
 import {showApiError, showApiResult} from '../helpers/response';
+import {verifyAccess} from '../helpers/authentication';
 import {
   findPlayerById,
   getAllPlayers,
   queryPlayers,
   updatePlayerById,
 } from '../services/players';
-import {getAllTeams, findTeamById} from '../services/teams';
+import {getAllTeams, findTeamById, updateTeamById} from '../services/teams';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -64,7 +65,7 @@ export const postAddTransfer = ctx => {
 
   updatePlayerById(id, {
     status: statusAvailable ? 'AVAILABLE' : 'NONE',
-    sellValue: statusAvailable ? sellValue : currentPlayer.value,
+    sellValue: statusAvailable ? Number(sellValue) : currentPlayer.value,
   });
 
   showApiResult(ctx, 'success');
@@ -73,18 +74,53 @@ export const postAddTransfer = ctx => {
 export const postTransaction = ctx => {
   const {id, team} = ctx.params;
 
+  const currentUser = verifyAccess(ctx);
+
   if (!id || !team) {
     return showApiError(ctx, 'Missing data', 422);
   }
 
-  // are you allowed ?
+  const newTeam = findTeamById(team);
 
-  // your team + current owners team
-  const currentTeam = findTeamById(team);
+  if (newTeam.user !== currentUser.id) {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
   const currentPlayer = findPlayerById(id);
+  const currentTeam = findTeamById(currentPlayer.team);
+
+  console.log('aaa', currentPlayer.sellValue, newTeam.money);
+  if (currentPlayer.sellValue > newTeam.money) {
+    return showApiError(ctx, 'Not enough money', 400);
+  }
+
+  // Update new team's finance
+
+  const newTeamMoney = newTeam.money - currentPlayer.sellValue;
+  const newTeamValue = newTeam.value + currentPlayer.sellValue;
+
+  updateTeamById(newTeam.id, {
+    money: newTeamMoney,
+    value: newTeamValue,
+  });
+
+  // Update old team's finance
+
+  const currentTeamMoney = currentTeam.money + currentPlayer.sellValue;
+  const currentTeamValue = currentTeam.value - currentPlayer.value;
+
+  updateTeamById(currentPlayer.team, {
+    money: currentTeamMoney,
+    value: currentTeamValue,
+  });
 
   // Add in sale value, update budgets and validations
-  updatePlayerById(id, {team, status: 'NONE'});
+  updatePlayerById(id, {
+    team,
+    status: 'NONE',
+    value: currentPlayer.sellValue,
+    sellValue: currentPlayer.sellValue,
+  });
 
   showApiResult(ctx, 'success');
 };

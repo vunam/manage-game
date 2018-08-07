@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {spaces} from '../constants/styles';
+import {spaces, typography} from '../constants/styles';
 import PlayerType from '../types/Player';
 
 interface Props {
@@ -26,6 +26,15 @@ const ItemWide = styled.div`
 
 const ItemSmall = styled.div`
   flex: 1;
+  padding: 0 ${spaces.xs};
+  white-space: nowrap;
+`;
+
+const SellInput = styled.input`
+  width: 90px;
+  margin: 0 ${spaces.xs};
+  font-size: ${typography.normal};
+  text-align: right;
 `;
 
 class Player extends React.Component<PlayerType & Props, State> {
@@ -64,16 +73,20 @@ class Player extends React.Component<PlayerType & Props, State> {
 
     return (
       <PlayerStyled>
-        {withTeam && <ItemWide>{teamName}</ItemWide>}
+        {withTeam && <ItemSmall>{teamName}</ItemSmall>}
         <ItemSmall>{type}</ItemSmall>
         <ItemWide>
           {firstName} {lastName}
         </ItemWide>
         <ItemWide>{countryName}</ItemWide>
         <ItemSmall>{age}</ItemSmall>
-        <ItemWide>
+        <ItemSmall>
+          ${value}
+        </ItemSmall>
+        <ItemSmall>
+          $
           {sameTeam && !available ? (
-            <input
+            <SellInput
               key="input"
               type="text"
               defaultValue={`${value}`}
@@ -82,9 +95,6 @@ class Player extends React.Component<PlayerType & Props, State> {
           ) : (
             sellValue
           )}
-        </ItemWide>
-        <ItemSmall>
-          {value}
         </ItemSmall>
         <ItemSmall>
           {sameTeam ? (

@@ -21,6 +21,7 @@ const FormOuter = ({handleSubmit, submitHandler}) => (
     <Row>
       <label htmlFor="country">Country</label>
       <Field name="country" component="select">
+        <option value="">Choose country</option>
         {countryList.map(({name, code}) => (
           <option key={code} value={code}>
             {name}
