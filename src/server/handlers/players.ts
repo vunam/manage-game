@@ -6,7 +6,7 @@ import {
   queryPlayers,
   updatePlayerById,
 } from '../services/players';
-import { getAllTeams, findTeamById } from '../services/teams';
+import {getAllTeams, findTeamById} from '../services/teams';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;

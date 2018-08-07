@@ -3,6 +3,7 @@ import {combineEpics, Epic} from 'redux-observable';
 import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {actions as historyActions} from './history';
+import {actions as notificationActions} from './notification';
 
 export interface RootState {
   user?: object;
@@ -86,7 +87,7 @@ const loginEpic: Epic<any, RootState> = action$ =>
             actions.loginSuccess(response.data),
           ];
         }),
-        catchError(() => []),
+        catchError(({ response }) => [notificationActions.openNotification(response.error)]),
       ),
     ),
   );
@@ -118,7 +119,7 @@ const updateUserEpic: Epic<any, RootState> = action$ =>
             actions.updateSuccess(response.data),
           ];
         }),
-        catchError(() => []),
+        catchError(({error}) => [notificationActions.openNotification(error)]),
       ),
     ),
   );

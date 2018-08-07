@@ -30,7 +30,6 @@ const createNewTeam = async (userId, name, country) => {
   return newTeam;
 };
 
-
 export const postUserTokens = async ctx => {
   const decoded = verifyAccess(ctx);
 
@@ -96,8 +95,8 @@ export const postUserCreate = async ctx => {
   }
 
   // TODO check if user exists?
-
-  const hashed = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+  console.log(process.env)
+  const hashed = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
   const uniqId = uniq();
   const userData = {
     id: uniqId,

@@ -4,6 +4,7 @@ import history from './history';
 import players, {epics as playersEpics} from './players';
 import teams, {epics as teamsEpics} from './teams';
 import user, {epics as userEpics} from './user';
+import notification from './notification';
 
 export const rootEpic: object = combineEpics(
   playersEpics,
@@ -17,4 +18,5 @@ export default {
   players,
   teams,
   form: formReducer,
+  notification,
 };
