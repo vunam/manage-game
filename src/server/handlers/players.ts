@@ -60,8 +60,36 @@ export const getPlayers = async ctx => {
 
 export const postAddTransfer = ctx => {
   const {id} = ctx.params;
-  const {available} = ctx.request.body;
+  const {available, sellValue} = ctx.request.body;
 
+  if (!id || !sellValue) {
+    ctx.status = 422;
+    ctx.body = {error: 'Missing data'};
+    return;
+  }
+
+  const currentPlayer = db
+    .get('players')
+    .find({id})
+    .value();
+
+  const statusAvailable = available === 'true';
+
+  db.get('players')
+    .find({id})
+    .assign({
+      status: statusAvailable ? 'AVAILABLE' : 'NONE',
+      sellValue: statusAvailable ? sellValue : currentPlayer.value,
+    })
+    .write();
+
+  ctx.body = {
+    data: 'success',
+  };
+};
+
+export const postTransaction = ctx => {
+  const {id, team} = ctx.params;
 
   if (!id) {
     ctx.status = 422;
@@ -69,9 +97,17 @@ export const postAddTransfer = ctx => {
     return;
   }
 
-  const playerUpdated = db.get('players')
-    .find({ id })
-    .assign({status: available === 'true' ? 'AVAILABLE' : 'NONE'})
+  // your team + current owners team
+  const currentPlayer = db
+    .get('players')
+    .find({id})
+    .value();
+
+  // Add in sale value, update budgets and validations
+
+  db.get('players')
+    .find({id})
+    .assign({team, status: 'NONE'})
     .write();
 
   ctx.body = {

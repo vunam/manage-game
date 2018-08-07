@@ -17,6 +17,9 @@ const GET_PLAYERS_SUCCESS = 'players/get-players-success';
 const TRANSFER_PLAYER_ATTEMPT = 'players/transfer-player-attempt';
 const TRANSFER_PLAYER_SUCCESS = 'players/transfer-player-success';
 
+const BUY_PLAYER_ATTEMPT = 'players/buy-player-attempt';
+const BUY_PLAYER_SUCCESS = 'players/buy-player-success';
+
 const initialState = {
   list: null,
 };
@@ -26,6 +29,8 @@ export const {players: actions} = createActions({
   [GET_PLAYERS_SUCCESS]: null,
   [TRANSFER_PLAYER_ATTEMPT]: null,
   [TRANSFER_PLAYER_SUCCESS]: null,
+  [BUY_PLAYER_ATTEMPT]: null,
+  [BUY_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -72,10 +77,11 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
 
 const transferPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(TRANSFER_PLAYER_ATTEMPT).pipe(
-    mergeMap(({payload: { player, available, ...rest }}) =>
+    mergeMap(({payload: { player, available, sellValue, ...rest }}) =>
       ajax
         .post(`/api/players/${player}/transfer`, {
           available,
+          sellValue,
         })
         .pipe(
           mergeMap(({response}) => [
@@ -87,4 +93,21 @@ const transferPlayerEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-export const epics = combineEpics(getPlayersEpic, transferPlayerEpic);
+const buyPlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(BUY_PLAYER_ATTEMPT).pipe(
+    mergeMap(({payload: { player, team, available, ...rest }}) =>
+      ajax
+        .post(`/api/players/${player}/transaction/${team}`, {
+          available,
+        })
+        .pipe(
+          mergeMap(({response}) => [
+            actions.getPlayersAttempt(rest),
+            actions.buyPlayerSuccess(response.data),
+          ]),
+          catchError(() => []),
+        ),
+    ),
+  );
+
+export const epics = combineEpics(getPlayersEpic, transferPlayerEpic, buyPlayerEpic);

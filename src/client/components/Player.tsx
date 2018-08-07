@@ -5,12 +5,16 @@ import PlayerType from '../types/player';
 
 interface Props {
   withTeam?: boolean;
-  currentTeam: number;
-  clickHandler: (number: number, available: boolean) => void;
-  buyHandler?: (number: number) => void;
+  currentTeam: string;
+  clickHandler: (player: string, available: boolean, sellValue: number) => void;
+  buyHandler?: (player: string) => void;
 }
 
-const Player = styled.li`
+interface State {
+  currentSellValue: number;
+}
+
+const PlayerStyled = styled.li`
   display: flex;
   justify-content: space-between;
   margin: ${spaces.m} 0;
@@ -24,36 +28,75 @@ const ItemSmall = styled.div`
   flex: 1;
 `;
 
-export default ({
-  id,
-  teamName,
-  firstName,
-  lastName,
-  countryName,
-  type,
-  age,
-  value,
-  withTeam,
-  clickHandler,
-  status,
-  team,
-  currentTeam,
-  buyHandler,
-}: PlayerType & Props) => (
-  <Player>
-    {withTeam && <ItemWide>{teamName}</ItemWide>}
-    <ItemWide>{type}</ItemWide>
-    <ItemWide>{firstName}</ItemWide>
-    <ItemWide>{lastName}</ItemWide>
-    <ItemWide>{countryName}</ItemWide>
-    <ItemSmall>{age}</ItemSmall>
-    <ItemSmall>{value}</ItemSmall>
-    <ItemSmall>
-      {currentTeam === team ? (
-        <button onClick={() => clickHandler(id, status === 'NONE')}>
-          {status === 'NONE' ? 'Add Transfer' : 'Retract'}
-        </button>
-      ) : status === 'AVAILABLE' && <button onClick={() => buyHandler(id)}>BUY</button>}
-    </ItemSmall>
-  </Player>
-);
+class Player extends React.Component<PlayerType & Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentSellValue: props.sellValue,
+    };
+  }
+
+  changeSell = ({target}) =>
+    this.setState(() => ({currentSellValue: Number(target.value)}));
+
+  render() {
+    const {
+      id,
+      clickHandler,
+      status,
+      currentTeam,
+      buyHandler,
+      team,
+      teamName,
+      firstName,
+      lastName,
+      countryName,
+      type,
+      age,
+      value,
+      withTeam,
+      sellValue,
+    } = this.props;
+
+    const {currentSellValue} = this.state;
+    const available = status === 'AVAILABLE';
+    const sameTeam = currentTeam === team;
+
+    return (
+      <PlayerStyled>
+        {withTeam && <ItemWide>{teamName}</ItemWide>}
+        <ItemWide>{type}</ItemWide>
+        <ItemWide>
+          {firstName} {lastName}
+        </ItemWide>
+        <ItemWide>{countryName}</ItemWide>
+        <ItemSmall>{age}</ItemSmall>
+        <ItemWide>
+          {sameTeam && !available ? (
+            <input
+              key="input"
+              type="text"
+              defaultValue={`${value}`}
+              onChange={this.changeSell}
+            />
+          ) : (
+            sellValue
+          )}
+        </ItemWide>
+        <ItemSmall>
+          {sameTeam ? (
+            <button
+              key="button"
+              onClick={() => clickHandler(id, !available, currentSellValue)}>
+              {!available ? 'Add Transfer' : 'Retract'}
+            </button>
+          ) : (
+            available && <button onClick={() => buyHandler(id)}>BUY</button>
+          )}
+        </ItemSmall>
+      </PlayerStyled>
+    );
+  }
+}
+
+export default Player;

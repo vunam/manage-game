@@ -4,7 +4,7 @@ import * as body from 'koa-body';
 import * as Router from 'koa-router';
 import * as path from 'path';
 import {getTeams} from './handlers/teams';
-import {getPlayers, postAddTransfer} from './handlers/players';
+import {getPlayers, postAddTransfer, postTransaction} from './handlers/players';
 import {
   postUserLogin,
   postUserTokens,
@@ -31,6 +31,7 @@ router.get('/api/teams', getTeams);
 
 router.get('/api/players', getPlayers);
 router.post('/api/players/:id/transfer', postAddTransfer);
+router.post('/api/players/:id/transaction/:team', postTransaction);
 
 router.post('/api/user/create', postUserCreate);
 router.post('/api/user/update', postUserUpdate);

@@ -1,5 +1,5 @@
 export default interface TeamType {
-  id: number;
+  id: string;
   name: string;
   money: number;
   value: number;

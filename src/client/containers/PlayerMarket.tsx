@@ -18,7 +18,12 @@ import TeamType from '../types/team';
 
 interface Props {
   getPlayers: (Object?) => void;
-  transferPlayer: (player: number, available: boolean) => void;
+  transferPlayer: (
+    player: string,
+    available: boolean,
+    sellValue: number,
+  ) => void;
+  buyPlayer: (player: string, team: string) => void;
   getTeams: () => void;
   players: [PlayerType];
   user: {
@@ -84,7 +89,7 @@ class PlayerMarket extends React.Component<Props, State> {
   };
 
   render() {
-    const {players, user, teams, transferPlayer} = this.props;
+    const {players, user, teams, transferPlayer, buyPlayer} = this.props;
 
     return (
       <StyledPage>
@@ -96,9 +101,8 @@ class PlayerMarket extends React.Component<Props, State> {
             <PlayerList
               currentTeam={user.team.id}
               list={players}
-              clickHandler={(player, available) =>
-                transferPlayer(player, available)
-              }
+              buyHandler={player => buyPlayer(player, user.team.id)}
+              clickHandler={transferPlayer}
               withTeam
             />
           </MarketLayout>
@@ -123,11 +127,20 @@ const mapDispatchToProps = dispatch => ({
         ...filters,
       }),
     ),
-  transferPlayer: (player, available) =>
+  transferPlayer: (player, available, sellValue) =>
     dispatch(
       actions.transferPlayerAttempt({
         player,
         available,
+        withTeam: true,
+        sellValue,
+      }),
+    ),
+  buyPlayer: (player, team) =>
+    dispatch(
+      actions.buyPlayerAttempt({
+        player,
+        team,
         withTeam: true,
       }),
     ),

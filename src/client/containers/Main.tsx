@@ -56,7 +56,6 @@ class Main extends React.Component<Props> {
 
     if (nextRoute !== nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
-      clearNextRoute();
     }
 
     if (nextProps.location.pathname === '/logout') doLogout();

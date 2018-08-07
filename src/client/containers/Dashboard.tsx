@@ -11,8 +11,13 @@ import PlayerType from '../types/player';
 import TeamType from '../types/team';
 
 interface Props {
-  getPlayers: (team: number) => void;
-  transferPlayer: (player: number, team: number, available: boolean) => void;
+  getPlayers: (team: string) => void;
+  transferPlayer: (
+    player: string,
+    team: string,
+    available: boolean,
+    sellValue: number,
+  ) => void;
   players: [PlayerType];
   user: {
     team: TeamType;
@@ -46,8 +51,8 @@ class Dashboard extends React.Component<Props> {
           <PlayerList
             currentTeam={user.team.id}
             list={players}
-            clickHandler={(player, available) =>
-              transferPlayer(player, user.team.id, available)
+            clickHandler={(player, available, sellValue) =>
+              transferPlayer(player, user.team.id, available, sellValue)
             }
           />
         </Inner>
@@ -62,8 +67,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  transferPlayer: (player, team, available) =>
-    dispatch(actions.transferPlayerAttempt({player, team, available})),
+  transferPlayer: (player, team, available, sellValue) =>
+    dispatch(
+      actions.transferPlayerAttempt({player, team, available, sellValue}),
+    ),
   getPlayers: team => dispatch(actions.getPlayersAttempt({team})),
 });
 
