@@ -34,7 +34,9 @@ export const postUserTokens = async ctx => {
   const decoded = verifyAccess(ctx);
 
   if (decoded) {
-    showApiResult(ctx, decoded);
+    const team = findTeamByUser(decoded.id);
+
+    showApiResult(ctx, {...decoded, team});
   }
 };
 
@@ -72,7 +74,6 @@ export const postUserLogin = async ctx => {
     id: userData.id,
     role: userData.role,
     username: userData.username,
-    team,
   };
 
   setJwt(ctx, data);
@@ -113,10 +114,9 @@ export const postUserCreate = async ctx => {
     id: userData.id,
     role: userData.role,
     username: userData.username,
-    team: newTeam,
   };
 
-  setJwt(ctx, data);
+  setJwt(ctx, { ...data, team: newTeam });
   showApiResult(ctx, data);
 };
 
@@ -141,9 +141,11 @@ export const postUserUpdate = async ctx => {
     id: decoded.id,
     role: decoded.role,
     username: user,
-    team: newTeam,
   };
 
   setJwt(ctx, data);
-  showApiResult(ctx, data);
+  showApiResult(ctx, {
+    ...data,
+    team: newTeam,
+  });
 };

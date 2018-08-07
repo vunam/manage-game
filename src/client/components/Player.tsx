@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {spaces, typography} from '../constants/styles';
 import PlayerType from '../types/Player';
+import {toCurrency} from '../helpers/locale';
 
 interface Props {
   withTeam?: boolean;
@@ -80,11 +81,8 @@ class Player extends React.Component<PlayerType & Props, State> {
         </ItemWide>
         <ItemWide>{countryName}</ItemWide>
         <ItemSmall>{age}</ItemSmall>
+        <ItemSmall>{toCurrency(value)}</ItemSmall>
         <ItemSmall>
-          ${value}
-        </ItemSmall>
-        <ItemSmall>
-          $
           {sameTeam && !available ? (
             <SellInput
               key="input"
@@ -93,7 +91,7 @@ class Player extends React.Component<PlayerType & Props, State> {
               onChange={this.changeSell}
             />
           ) : (
-            sellValue
+            toCurrency(sellValue)
           )}
         </ItemSmall>
         <ItemSmall>
