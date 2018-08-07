@@ -7,6 +7,7 @@ import {createPlayer} from '../services/players';
 import {createTeam, findTeamByUser, updateTeamByUser} from '../services/teams';
 import {
   createUser,
+  findUserById,
   findUserByUsername,
   updateUserById,
 } from '../services/users';
@@ -35,8 +36,9 @@ export const postUserTokens = async ctx => {
 
   if (decoded) {
     const team = findTeamByUser(decoded.id);
+    const latestUser = findUserById(decoded.id);
 
-    showApiResult(ctx, {...decoded, team});
+    showApiResult(ctx, {id: decoded.id, username: latestUser.username, role: latestUser.role, team});
   }
 };
 
@@ -77,12 +79,12 @@ export const postUserLogin = async ctx => {
   };
 
   setJwt(ctx, data);
-  showApiResult(ctx, { ...data, team });
+  showApiResult(ctx, {...data, team});
 };
 
 export const postUserCreate = async ctx => {
   const {
-    body: {user, team, password, country},
+    body: {user, team, password, country, manage = false},
   } = ctx.request;
 
   if (!user || !team || !password || !country) {
@@ -95,7 +97,11 @@ export const postUserCreate = async ctx => {
     return;
   }
 
-  // TODO check if user exists?
+  const existing = findUserByUsername(user);
+
+  if (existing) {
+    return showApiError(ctx, 'Username already exists', 422);
+  }
 
   const hashed = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
   const uniqId = uniq();
@@ -116,11 +122,12 @@ export const postUserCreate = async ctx => {
     username: userData.username,
   };
 
-  setJwt(ctx, data);
+  if (!manage) setJwt(ctx, data);
+
   showApiResult(ctx, {...data, team: newTeam});
 };
 
-export const postUserUpdate = async ctx => {
+export const putUserUpdate = async ctx => {
   const decoded = verifyAccess(ctx);
   const {
     body: {user, team, country},
@@ -131,6 +138,12 @@ export const postUserUpdate = async ctx => {
   }
   if (user.length < 3 || team.length < 3) {
     return showApiError(ctx, 'Username / team too short', 422);
+  }
+
+  const existing = findUserByUsername(user);
+
+  if (existing && existing.username !== decoded.username) {
+    return showApiError(ctx, 'Username already exists', 422);
   }
 
   updateUserById(decoded.id, {username: user});

@@ -15,7 +15,7 @@ const Settings = ({user, submitHandler}) => (
     <p>Update your team settings here</p>
     {user && (
       <SettingsForm
-        submitHandler={submitHandler}
+        submitHandler={formData => submitHandler(formData, user.id)}
         initialValues={{
           team: user.team.name,
           country: user.team.country,
@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  submitHandler: formData => dispatch(actions.updateAttempt(formData)),
+  submitHandler: (formData, id) => dispatch(actions.updateAttempt({ id, ...formData})),
 });
 
 export default connect(

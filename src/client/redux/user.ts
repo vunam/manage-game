@@ -4,6 +4,7 @@ import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {actions as historyActions} from './history';
 import {actions as generalActions} from './general';
+import {actions as teamsActions} from './teams';
 
 export interface RootState {
   user?: object;
@@ -23,6 +24,9 @@ const CREATE_SUCCESS = 'user/create-success';
 const UPDATE_ATTEMPT = 'user/update-attempt';
 const UPDATE_SUCCESS = 'user/update-success';
 
+const DELETE_ATTEMPT = 'user/delete-attempt';
+const DELETE_SUCCESS = 'user/delete-success';
+
 const SET = 'user/set';
 const LOGOUT = 'user/logout';
 
@@ -41,6 +45,8 @@ export const {user: actions} = createActions({
   [CREATE_SUCCESS]: null,
   [UPDATE_ATTEMPT]: null,
   [UPDATE_SUCCESS]: null,
+  [DELETE_ATTEMPT]: null,
+  [DELETE_SUCCESS]: null,
   [SET]: null,
   [LOGOUT]: null,
 });
@@ -99,10 +105,11 @@ const createUserEpic: Epic<any, RootState> = action$ =>
       ajax.post('/api/user/create', payload).pipe(
         mergeMap(({response}) => {
           return [
-            historyActions.nextRoute('/dashboard'),
-            actions.set(response.data),
+            !payload.manage && historyActions.nextRoute('/dashboard'),
+            !payload.manage && actions.set(response.data),
             actions.createSuccess(response.data),
-          ];
+            payload.manage && teamsActions.getTeamsAttempt(),
+          ].filter(valid => valid);
         }),
         catchError(({ response, status }) => [
           generalActions.handleError({ response, status })]),
@@ -112,13 +119,29 @@ const createUserEpic: Epic<any, RootState> = action$ =>
 
 const updateUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(UPDATE_ATTEMPT).pipe(
-    mergeMap(({payload}) =>
-      ajax.post('/api/user/update', payload).pipe(
+    mergeMap(({payload: { id, ...body }}) =>
+      ajax({
+        url: `/api/user/update/${id}`, method: 'PUT', body }).pipe(
         mergeMap(({response}) => {
           return [
             historyActions.nextRoute('/dashboard'),
             actions.set(response.data),
             actions.updateSuccess(response.data),
+          ];
+        }),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status })]),
+      ),
+    ),
+  );
+
+const deleteUserEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(DELETE_ATTEMPT).pipe(
+    mergeMap(({payload}) =>
+      ajax.delete(`/api/user/${payload}`).pipe(
+        mergeMap(({response}) => {
+          return [
+            actions.deleteSuccess(response.data),
           ];
         }),
         catchError(({ response, status }) => [
@@ -160,4 +183,5 @@ export const epics = combineEpics(
   updateUserEpic,
   verifyEpic,
   logoutEpic,
+  deleteUserEpic,
 );

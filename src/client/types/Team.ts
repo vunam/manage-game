@@ -4,4 +4,5 @@ export default interface TeamType {
   money: number;
   value: number;
   country: string;
+  user: string;
 }

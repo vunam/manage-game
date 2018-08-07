@@ -24,6 +24,7 @@ import Login from './Login';
 import PlayerMarket from './PlayerMarket';
 import Settings from './Settings';
 import Signup from './Signup';
+import Teams from './Teams';
 
 interface Props {
   message?: string;
@@ -112,6 +113,12 @@ class Main extends React.Component<Props> {
                 exact={true}
                 path="/market"
                 component={PlayerMarket}
+              />,
+              <Route
+                key="teams"
+                exact={true}
+                path="/teams"
+                component={Teams}
               />,
               <Route
                 key="settings"
