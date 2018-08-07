@@ -11,10 +11,11 @@ export const getAllMessages = () =>
     .get(table)
     .value();
 
-export const findMessagesByUser = user =>
+export const findMessagesByTeam = team =>
   db
     .get(table)
-    .find({user})
+    .filter({team})
+    .reverse()
     .value();
 
 // WRITE

@@ -1,22 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import * as dayjs from 'dayjs';
+import MessageType from '../types/Message';
 import {spaces, typography} from '../constants/styles';
-
-interface Props {
-  date: string;
-  message: string;
-}
 
 const MessageStyled = styled.div`
 `;
 
-
 const Message = ({
   date,
   message,
-}: Props) => (
+}: MessageType) => (
   <MessageStyled>
-    {date} - {message}
+    {dayjs(date).format('YYYY-MM-DD HH:mm')} - {message}
   </MessageStyled>
 )
 

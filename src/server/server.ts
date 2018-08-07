@@ -5,6 +5,7 @@ import * as send from 'koa-send';
 import * as path from 'path';
 import {getPlayers, postAddTransfer, postTransaction} from './handlers/players';
 import {getTeams} from './handlers/teams';
+import {getMessages} from './handlers/messages';
 import {
   postLogout,
   postUserCreate,
@@ -28,6 +29,7 @@ app.use(async (ctx, next) => {
 
 // Routes
 
+router.get('/api/messages/:team', getMessages);
 router.get('/api/teams', getTeams);
 
 router.get('/api/players', getPlayers);

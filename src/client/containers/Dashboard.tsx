@@ -7,13 +7,15 @@ import MessagesList from '../components/MessagesList';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 import {selectors as userSelectors} from '../redux/user';
-import {selectors as messagesSelectors} from '../redux/messages';
+import {actions as messagesActions, selectors as messagesSelectors} from '../redux/messages';
 
 import PlayerType from '../types/Player';
 import TeamType from '../types/Team';
+import MessageType from '../types/Message';
 
 interface Props {
   getPlayers: (team: string) => void;
+  getMessages: (team: string) => void;
   transferPlayer: (
     player: string,
     team: string,
@@ -21,7 +23,7 @@ interface Props {
     sellValue: number,
   ) => void;
   players: [PlayerType];
-  messages: [object],
+  messages: [MessageType],
   user: {
     team: TeamType;
   };
@@ -35,16 +37,22 @@ const Inner = styled.div`
 
 class Dashboard extends React.Component<Props> {
   componentDidMount() {
-    const {user, getPlayers} = this.props;
+    const {user} = this.props;
     if (user) {
-      getPlayers(user.team.id);
+      this.fetchData();
     }
   }
   componentWillReceiveProps(nextProps) {
-    const {user, getPlayers} = this.props;
+    const {user} = this.props;
     if (!user && nextProps.user) {
-      getPlayers(user.team.id);
+      this.fetchData();
     }
+  }
+
+  fetchData = () => {
+    const {user, getPlayers, getMessages} = this.props;
+    getMessages(user.team.id);
+    getPlayers(user.team.id);
   }
 
   render() {
@@ -83,6 +91,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       actions.transferPlayerAttempt({player, team, available, sellValue}),
     ),
+  getMessages: team => dispatch(messagesActions.getMessagesAttempt(team)),
   getPlayers: team => dispatch(actions.getPlayersAttempt({team})),
 });
 

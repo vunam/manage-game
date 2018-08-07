@@ -12,7 +12,7 @@ const GET_MESSAGES_ATTEMPT = 'messages/get-messages-attempt';
 const GET_MESSAGES_SUCCESS = 'messages/get-messages-success';
 
 const initialState = {
-  list: null,
+  list: [],
 };
 
 export const {messages: actions} = createActions({

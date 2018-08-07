@@ -1,14 +1,5 @@
-export default interface PlayerType {
-  id: string;
-  firstName: string;
-  lastName: string;
-  country: string;
-  age: number;
-  value: number;
+export default interface MessageType {
   team: string;
-  type: string;
-  teamName?: string;
-  countryName?: string;
-  status: string;
-  sellValue: number;
+  date: string;
+  message: string;
 }
