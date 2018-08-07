@@ -45,11 +45,12 @@ export default ({
   <PlayerList>
     <Head>
       {withTeam && <ItemWide>Team</ItemWide>}
-      <ItemWide>Position</ItemWide>
+      <ItemSmall>Position</ItemSmall>
       <ItemWide>Name</ItemWide>
       <ItemWide>Country</ItemWide>
       <ItemSmall>Age</ItemSmall>
-      <ItemWide>Transfer value</ItemWide>
+      <ItemWide>Value</ItemWide>
+      <ItemWide>Sell value</ItemWide>
       <ItemSmall>Action</ItemSmall>
     </Head>
     {list &&

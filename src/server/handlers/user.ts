@@ -22,10 +22,10 @@ const createNewTeam = async (userId, name, country) => {
       createPlayer(player);
     });
 
-  generatePlayerType('GOALKEEPER', 3);
-  generatePlayerType('DEFENDER', 6);
-  generatePlayerType('MIDFIELDER', 6);
-  generatePlayerType('ATTACKER', 5);
+  generatePlayerType('Goal', 3);
+  generatePlayerType('Def', 6);
+  generatePlayerType('Mid', 6);
+  generatePlayerType('Att', 5);
 
   return newTeam;
 };
@@ -95,7 +95,7 @@ export const postUserCreate = async ctx => {
   }
 
   // TODO check if user exists?
-  console.log(process.env)
+
   const hashed = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
   const uniqId = uniq();
   const userData = {

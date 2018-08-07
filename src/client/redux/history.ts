@@ -1,7 +1,5 @@
 import {createActions, handleActions} from 'redux-actions';
-import {combineEpics, Epic} from 'redux-observable';
-import {ajax} from 'rxjs/ajax';
-import {catchError, map, mergeMap} from 'rxjs/operators';
+import {combineEpics} from 'redux-observable';
 
 export interface RootState {
   nextRoute: string;

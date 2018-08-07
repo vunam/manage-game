@@ -12,6 +12,10 @@ import {
 } from '../redux/history';
 import {actions} from '../redux/players';
 import {
+  actions as notificationActions,
+  selectors as notificationSelectors,
+} from '../redux/notification';
+import {
   actions as userActions,
   selectors as userSelectors,
 } from '../redux/user';
@@ -22,6 +26,7 @@ import Settings from './Settings';
 import Signup from './Signup';
 
 interface Props {
+  message?: string;
   nextRoute?: string;
   location: {
     pathname: string;
@@ -34,6 +39,7 @@ interface Props {
   verifyAccess: () => void;
   doLogout: () => void;
   clearNextRoute: () => void;
+  closeNotification: () => void;
 }
 
 const Layout = styled.section`
@@ -58,7 +64,18 @@ class Main extends React.Component<Props> {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const {nextRoute, history, doLogout, clearNextRoute} = this.props;
+    const {
+      location,
+      nextRoute,
+      history,
+      doLogout,
+      closeNotification,
+      clearNextRoute,
+    } = this.props;
+
+    if (location.pathname !== nextProps.location.pathname && nextProps.message) {
+      closeNotification();
+    }
 
     if (nextRoute !== nextProps.nextRoute) {
       history.push(nextProps.nextRoute);
@@ -70,7 +87,7 @@ class Main extends React.Component<Props> {
   }
 
   render() {
-    const {user, verifying} = this.props;
+    const {user, verifying, closeNotification, message} = this.props;
 
     if (verifying) {
       return 'Loading';
@@ -80,7 +97,7 @@ class Main extends React.Component<Props> {
       <Layout>
         <Header user={user} />
         <Scrollable>
-          <Notification />
+          <Notification close={closeNotification} message={message} />
           <Switch>
             <Route exact={true} path="/" component={Login} />
             {user && [
@@ -112,12 +129,14 @@ class Main extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
+  message: notificationSelectors.getNotification(state.notification),
   user: userSelectors.getUser(state.user),
   verifying: userSelectors.getVerifying(state.user),
   nextRoute: historySelectors.getNextRoute(state.history),
 });
 
 const mapDispatchToProps = dispatch => ({
+  closeNotification: () => dispatch(notificationActions.closeNotification()),
   verifyAccess: () => dispatch(userActions.verifyAttempt()),
   getPlayers: () => dispatch(actions.getPlayersAttempt()),
   doLogout: () => dispatch(userActions.logout()),

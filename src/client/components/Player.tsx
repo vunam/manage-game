@@ -65,7 +65,7 @@ class Player extends React.Component<PlayerType & Props, State> {
     return (
       <PlayerStyled>
         {withTeam && <ItemWide>{teamName}</ItemWide>}
-        <ItemWide>{type}</ItemWide>
+        <ItemSmall>{type}</ItemSmall>
         <ItemWide>
           {firstName} {lastName}
         </ItemWide>
@@ -83,6 +83,9 @@ class Player extends React.Component<PlayerType & Props, State> {
             sellValue
           )}
         </ItemWide>
+        <ItemSmall>
+          {value}
+        </ItemSmall>
         <ItemSmall>
           {sameTeam ? (
             <button

@@ -28,15 +28,4 @@ const Notification = ({close, message}) =>
     </NotificationStyled>
   ) : null;
 
-const mapStateToProps = state => ({
-  message: notificationSelectors.getNotification(state.notification),
-});
-
-const mapDispatchToProps = dispatch => ({
-  close: () => dispatch(notificationActions.closeNotification()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Notification);
+export default Notification
