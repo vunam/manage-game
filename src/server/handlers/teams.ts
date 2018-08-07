@@ -1,10 +1,8 @@
 import { getAllTeams } from '../services/teams';
+import {showApiResult} from '../helpers/response';
 
 export const getTeams = async ctx => {
   const result = getAllTeams();
 
-  ctx.body = {
-    meta: {},
-    data: result,
-  };
+  showApiResult(ctx, result);
 };

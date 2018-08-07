@@ -1,15 +1,19 @@
 import {isEqual} from 'lodash';
+import {showApiError, showApiResult} from '../helpers/response';
 import {getAllTeams} from '../services/teams';
-import {getAllPlayers, queryPlayers, findPlayerById, updatePlayerById} from '../services/players';
+import {
+  getAllPlayers,
+  queryPlayers,
+  findPlayerById,
+  updatePlayerById,
+} from '../services/players';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
 
   const {withTeam, min, max, firstName, lastName, ...search} = query;
 
-  let result = isEqual(search, {})
-    ? getAllPlayers()
-    : queryPlayers(search)
+  let result = isEqual(search, {}) ? getAllPlayers() : queryPlayers(search);
 
   if (withTeam) {
     const teams = getAllTeams().reduce(
@@ -43,21 +47,14 @@ export const getPlayers = async ctx => {
     result = result.filter(item => item.value <= Number(max));
   }
 
-  ctx.body = {
-    meta: {},
-    data: result,
-  };
+  showApiResult(ctx, result);
 };
 
 export const postAddTransfer = ctx => {
   const {id} = ctx.params;
   const {available, sellValue} = ctx.request.body;
 
-  if (!id || !sellValue) {
-    ctx.status = 422;
-    ctx.body = {error: 'Missing data'};
-    return;
-  }
+  if (!id || !sellValue) return showApiError(ctx, 'Missing data', 422);
 
   const currentPlayer = findPlayerById(id);
 
@@ -68,19 +65,13 @@ export const postAddTransfer = ctx => {
     sellValue: statusAvailable ? sellValue : currentPlayer.value,
   });
 
-  ctx.body = {
-    data: 'success',
-  };
+  showApiResult(ctx, 'success');
 };
 
 export const postTransaction = ctx => {
   const {id, team} = ctx.params;
 
-  if (!id) {
-    ctx.status = 422;
-    ctx.body = {error: 'Missing data'};
-    return;
-  }
+  if (!id) return showApiError(ctx, 'Missing data', 422);
 
   // your team + current owners team
   const currentPlayer = findPlayerById(id);
@@ -88,7 +79,5 @@ export const postTransaction = ctx => {
   // Add in sale value, update budgets and validations
   updatePlayerById(id, {team, status: 'NONE'});
 
-  ctx.body = {
-    data: 'success',
-  };
+  showApiResult(ctx, 'success');
 };
