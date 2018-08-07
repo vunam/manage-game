@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Player from '../components/Player';
+import Player from './Player';
 import {color, spaces} from '../constants/styles';
 import PlayerType from '../types/Player';
 
@@ -42,28 +42,29 @@ export default ({
   clickHandler,
   currentTeam,
   buyHandler,
-}: Props) => (
-  <PlayerList>
-    <Head>
-      {withTeam && <ItemSmall>Team</ItemSmall>}
-      <ItemSmall>Position</ItemSmall>
-      <ItemWide>Name</ItemWide>
-      <ItemWide>Country</ItemWide>
-      <ItemSmall>Age</ItemSmall>
-      <ItemSmall>Value</ItemSmall>
-      <ItemSmall>Sell value</ItemSmall>
-      <ItemSmall>Action</ItemSmall>
-    </Head>
-    {list &&
-      list.map(player => (
-        <Player
-          key={player.id}
-          {...player}
-          withTeam={withTeam}
-          clickHandler={clickHandler}
-          buyHandler={buyHandler}
-          currentTeam={currentTeam}
-        />
-      ))}
-  </PlayerList>
-);
+}: Props) =>
+  list ? (
+    <PlayerList>
+      <Head>
+        {withTeam && <ItemSmall>Team</ItemSmall>}
+        <ItemSmall>Position</ItemSmall>
+        <ItemWide>Name</ItemWide>
+        <ItemWide>Country</ItemWide>
+        <ItemSmall>Age</ItemSmall>
+        <ItemSmall>Value</ItemSmall>
+        <ItemSmall>Sell value</ItemSmall>
+        <ItemSmall>Action</ItemSmall>
+      </Head>
+      {list.length ?
+        list.map(player => (
+          <Player
+            key={player.id}
+            {...player}
+            withTeam={withTeam}
+            clickHandler={clickHandler}
+            buyHandler={buyHandler}
+            currentTeam={currentTeam}
+          />
+        )) : 'No matching players'}
+    </PlayerList>
+  ) : null;

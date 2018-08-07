@@ -3,9 +3,11 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
+import MessagesList from '../components/MessagesList';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 import {selectors as userSelectors} from '../redux/user';
+import {selectors as messagesSelectors} from '../redux/messages';
 
 import PlayerType from '../types/Player';
 import TeamType from '../types/Team';
@@ -45,7 +47,7 @@ class Dashboard extends React.Component<Props> {
   }
 
   render() {
-    const {players, user, transferPlayer} = this.props;
+    const {players, messages, user, transferPlayer} = this.props;
     if (!user) {
       return null;
     }
@@ -53,6 +55,8 @@ class Dashboard extends React.Component<Props> {
       <StyledPage>
         <QuickProfile {...user.team} />
         <Inner>
+          <h2>My messages</h2>
+          <MessagesList list={messages} />
           <h2>My players</h2>
           <PlayerList
             currentTeam={user.team.id}
@@ -68,6 +72,7 @@ class Dashboard extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
+  messages: messagesSelectors.getUser(state.user),
   user: userSelectors.getUser(state.user),
   players: selectors.getPlayersFull(state.players),
 });

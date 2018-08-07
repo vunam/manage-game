@@ -8,6 +8,7 @@ import {
   updatePlayerById,
 } from '../services/players';
 import {getAllTeams, findTeamById, updateTeamById} from '../services/teams';
+import {createMessage} from '../services/messages';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -89,7 +90,6 @@ export const postTransaction = ctx => {
   const currentPlayer = findPlayerById(id);
   const currentTeam = findTeamById(currentPlayer.team);
 
-  console.log('aaa', currentPlayer.sellValue, newTeam.money);
   if (currentPlayer.sellValue > newTeam.money) {
     return showApiError(ctx, 'Not enough money', 400);
   }
@@ -114,7 +114,13 @@ export const postTransaction = ctx => {
     value: currentTeamValue,
   });
 
-  // Add in sale value, update budgets and validations
+  createMessage({
+    date: new Date().toISOString(),
+    team: currentTeam.id,
+    newTeam: newTeam.id,
+    message: `${currentPlayer.firstName} ${currentPlayer.lastName} has been bought by ${newTeam.name} for $${currentPlayer.sellValue}.`,
+  });
+
   updatePlayerById(id, {
     team,
     status: 'NONE',

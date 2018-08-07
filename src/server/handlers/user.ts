@@ -116,8 +116,8 @@ export const postUserCreate = async ctx => {
     username: userData.username,
   };
 
-  setJwt(ctx, { ...data, team: newTeam });
-  showApiResult(ctx, data);
+  setJwt(ctx, data);
+  showApiResult(ctx, {...data, team: newTeam});
 };
 
 export const postUserUpdate = async ctx => {
