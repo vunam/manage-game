@@ -1,7 +1,6 @@
 import {isEqual} from 'lodash';
-import getDb from '../helpers/db';
-
-const db = getDb();
+import {getAllTeams} from '../services/teams';
+import {getAllPlayers, queryPlayers, findPlayerById, updatePlayerById} from '../services/players';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -9,22 +8,14 @@ export const getPlayers = async ctx => {
   const {withTeam, min, max, firstName, lastName, ...search} = query;
 
   let result = isEqual(search, {})
-    ? db
-        .cloneDeep()
-        .get('players')
-        .value()
-    : db
-        .get('players')
-        .cloneDeep()
-        .chain()
-        .filter(search)
-        .value();
+    ? getAllPlayers()
+    : queryPlayers(search)
 
   if (withTeam) {
-    const teams = db
-      .get('teams')
-      .value()
-      .reduce((prev, next) => ({...prev, [next.id]: next.name}), {});
+    const teams = getAllTeams().reduce(
+      (prev, next) => ({...prev, [next.id]: next.name}),
+      {},
+    );
 
     result = result.map(item => ({
       ...item,
@@ -68,20 +59,14 @@ export const postAddTransfer = ctx => {
     return;
   }
 
-  const currentPlayer = db
-    .get('players')
-    .find({id})
-    .value();
+  const currentPlayer = findPlayerById(id);
 
   const statusAvailable = available === 'true';
 
-  db.get('players')
-    .find({id})
-    .assign({
-      status: statusAvailable ? 'AVAILABLE' : 'NONE',
-      sellValue: statusAvailable ? sellValue : currentPlayer.value,
-    })
-    .write();
+  updatePlayerById(id, {
+    status: statusAvailable ? 'AVAILABLE' : 'NONE',
+    sellValue: statusAvailable ? sellValue : currentPlayer.value,
+  });
 
   ctx.body = {
     data: 'success',
@@ -98,17 +83,10 @@ export const postTransaction = ctx => {
   }
 
   // your team + current owners team
-  const currentPlayer = db
-    .get('players')
-    .find({id})
-    .value();
+  const currentPlayer = findPlayerById(id);
 
   // Add in sale value, update budgets and validations
-
-  db.get('players')
-    .find({id})
-    .assign({team, status: 'NONE'})
-    .write();
+  updatePlayerById(id, {team, status: 'NONE'});
 
   ctx.body = {
     data: 'success',

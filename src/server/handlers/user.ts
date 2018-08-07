@@ -1,47 +1,27 @@
 import * as uniq from 'uniqid';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import getDb from '../helpers/db';
 import {generatePlayer, generateTeam} from '../helpers/generate';
-
-const db = getDb();
+import {createTeam, findTeamByUser, updateTeamByUser} from '../services/teams';
+import {
+  createUser,
+  findUserByUsername,
+  updateUserById,
+} from '../services/users';
+import {createPlayer} from '../services/players';
 
 const SALT_ROUNDS = 10;
 const SECRET = 'something';
 
-const createUser = async (
-  id,
-  username,
-  hashed,
-  team = null,
-  role = 'owner',
-) => {
-  await db
-    .get('users')
-    .push({
-      id,
-      username,
-      team,
-      hashed,
-      role,
-    })
-    .write();
-};
-
-const createTeam = async (userId, name, country) => {
+const createNewTeam = async (userId, name, country) => {
   const newTeam = generateTeam(userId, name, country);
 
-  await db
-    .get('teams')
-    .push(newTeam)
-    .write();
+  createTeam(newTeam);
 
   const generatePlayerType = (type, total) =>
     new Array(total).fill({}).forEach(() => {
       const player = generatePlayer(newTeam.id, type);
-      db.get('players')
-        .push(player)
-        .write();
+      createPlayer(player);
     });
 
   generatePlayerType('GOALKEEPER', 3);
@@ -109,10 +89,7 @@ export const postUserLogin = async ctx => {
     return;
   }
 
-  const userData = await db
-    .get('users')
-    .find({username: user})
-    .value();
+  const userData = findUserByUsername(user);
 
   if (!userData) {
     ctx.status = 401;
@@ -130,10 +107,7 @@ export const postUserLogin = async ctx => {
     return;
   }
 
-  const team = await db
-    .get('teams')
-    .find({user: userData.id})
-    .value();
+  const team = findTeamByUser(userData.id);
 
   const data = {
     id: userData.id,
@@ -177,8 +151,8 @@ export const postUserCreate = async ctx => {
     role: 'owner',
   };
 
-  const newTeam = await createTeam(uniqId, team, country);
-  await createUser(uniqId, user, hashed, newTeam.id);
+  const newTeam = await createNewTeam(uniqId, team, country);
+  createUser(uniqId, user, hashed, newTeam.id);
 
   const data = {
     id: userData.id,
@@ -209,17 +183,10 @@ export const postUserUpdate = async ctx => {
     ctx.body = {error: 'username / team too short'};
     return;
   }
+  updateUserById(decoded.id, {username: user});
 
-  db.get('users')
-    .find({ id: decoded.id })
-    .assign({ username: user })
-    .write()
+  const newTeam = updateTeamByUser(decoded.id, {country: country, name: team});
 
-  const newTeam = db.get('teams')
-    .find({ user: decoded.id })
-    .assign({ country: country, name: team })
-    .write()
-  
   const data = {
     id: decoded.id,
     role: decoded.role,

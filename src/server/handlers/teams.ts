@@ -1,12 +1,7 @@
-import {isEqual} from 'lodash';
-import getDb from '../helpers/db';
-
-const db = getDb();
+import { getAllTeams } from '../services/teams';
 
 export const getTeams = async ctx => {
-  const result = db
-    .get('teams')
-    .value()
+  const result = getAllTeams();
 
   ctx.body = {
     meta: {},
