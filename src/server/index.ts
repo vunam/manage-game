@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import * as Koa from 'koa';
 import * as body from 'koa-body';
 import * as Router from 'koa-router';
@@ -14,6 +15,8 @@ import {
 } from './handlers/user';
 import htmlPage from './html';
 
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
 const app = new Koa();
 const router = new Router();
 
@@ -23,7 +26,6 @@ app.use(async (ctx, next) => {
   if (ctx.request.url.startsWith('/assets/bundle.js')) {
     return send(ctx, path.join('built', 'server', 'frontend', 'index.js'));
   }
-
   return next();
 });
 

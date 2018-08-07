@@ -6,7 +6,7 @@ import {
   queryPlayers,
   updatePlayerById,
 } from '../services/players';
-import {getAllTeams} from '../services/teams';
+import { getAllTeams, findTeamById } from '../services/teams';
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -73,11 +73,14 @@ export const postAddTransfer = ctx => {
 export const postTransaction = ctx => {
   const {id, team} = ctx.params;
 
-  if (!id) {
+  if (!id || !team) {
     return showApiError(ctx, 'Missing data', 422);
   }
 
+  // are you allowed ?
+
   // your team + current owners team
+  const currentTeam = findTeamById(team);
   const currentPlayer = findPlayerById(id);
 
   // Add in sale value, update budgets and validations

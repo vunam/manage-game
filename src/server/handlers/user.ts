@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import * as uniq from 'uniqid';
 import {generatePlayer, generateTeam} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
+import {verifyAccess, setJwt} from '../helpers/authentication';
 import {createPlayer} from '../services/players';
 import {createTeam, findTeamByUser, updateTeamByUser} from '../services/teams';
 import {
@@ -10,9 +10,6 @@ import {
   findUserByUsername,
   updateUserById,
 } from '../services/users';
-
-const SALT_ROUNDS = 10;
-const SECRET = 'something';
 
 const createNewTeam = async (userId, name, country) => {
   const newTeam = generateTeam(userId, name, country);
@@ -33,27 +30,6 @@ const createNewTeam = async (userId, name, country) => {
   return newTeam;
 };
 
-const setJwt = (ctx, data) => {
-  const token = jwt.sign(data, SECRET);
-  ctx.cookies.set('access_token', token, {maxAge: 30000000});
-
-  return token;
-};
-
-const verifyAccess = ctx => {
-  const access = ctx.cookies.get('access_token');
-  if (!access) {
-    showApiError(ctx, 'No access token', 401);
-    return false;
-  }
-
-  try {
-    return jwt.verify(access, SECRET);
-  } catch (e) {
-    showApiError(ctx, 'No access', 401);
-    return false;
-  }
-};
 
 export const postUserTokens = async ctx => {
   const decoded = verifyAccess(ctx);
@@ -121,7 +97,7 @@ export const postUserCreate = async ctx => {
 
   // TODO check if user exists?
 
-  const hashed = await bcrypt.hash(password, SALT_ROUNDS);
+  const hashed = await bcrypt.hash(password, process.env.SALT_ROUNDS);
   const uniqId = uniq();
   const userData = {
     id: uniqId,
