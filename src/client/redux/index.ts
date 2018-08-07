@@ -5,6 +5,7 @@ import players, {epics as playersEpics} from './players';
 import teams, {epics as teamsEpics} from './teams';
 import user, {epics as userEpics} from './user';
 import messages, {epics as messagesEpics} from './messages';
+import general, {epics as generalEpics} from './general';
 import notification from './notification';
 
 export const rootEpic: object = combineEpics(
@@ -13,6 +14,7 @@ export const rootEpic: object = combineEpics(
   teamsEpics,
   historyEpics,
   messagesEpics,
+  generalEpics,
 );
 
 export default {
@@ -21,6 +23,7 @@ export default {
   players,
   teams,
   messages,
+  general,
   form: formReducer,
   notification,
 };

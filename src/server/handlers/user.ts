@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt/bcrypt';
 import * as uniq from 'uniqid';
 import {generatePlayer, generateTeam} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
@@ -77,7 +77,7 @@ export const postUserLogin = async ctx => {
   };
 
   setJwt(ctx, data);
-  showApiResult(ctx, data);
+  showApiResult(ctx, { ...data, team });
 };
 
 export const postUserCreate = async ctx => {

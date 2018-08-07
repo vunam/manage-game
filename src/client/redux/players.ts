@@ -6,6 +6,7 @@ import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import countryList from '../constants/countryList';
 import PlayerType from '../types/Player';
+import {actions as generalActions} from './general';
 
 export interface RootState {
   list?: [PlayerType];
@@ -70,7 +71,8 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
         .get(`/api/players${payload ? `?${qs.stringify(payload)}` : ''}`)
         .pipe(
           map(({response}) => actions.getPlayersSuccess(response.data)),
-          catchError(() => []),
+          catchError(({ response, status }) => [
+            generalActions.handleError({ response, status })]),
         ),
     ),
   );
@@ -88,7 +90,8 @@ const transferPlayerEpic: Epic<any, RootState> = action$ =>
             actions.getPlayersAttempt(rest),
             actions.transferPlayerSuccess(response.data),
           ]),
-          catchError(() => []),
+          catchError(({ response, status }) => [
+            generalActions.handleError({ response, status })]),
         ),
     ),
   );
@@ -105,7 +108,8 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
             actions.getPlayersAttempt(rest),
             actions.buyPlayerSuccess(response.data),
           ]),
-          catchError(() => []),
+          catchError(({ response, status }) => [
+            generalActions.handleError({ response, status })]),
         ),
     ),
   );

@@ -3,7 +3,7 @@ import {combineEpics, Epic} from 'redux-observable';
 import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {actions as historyActions} from './history';
-import {actions as notificationActions} from './notification';
+import {actions as generalActions} from './general';
 
 export interface RootState {
   user?: object;
@@ -87,7 +87,8 @@ const loginEpic: Epic<any, RootState> = action$ =>
             actions.loginSuccess(response.data),
           ];
         }),
-        catchError(({ response }) => [notificationActions.openNotification(response.error)]),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status })]),
       ),
     ),
   );
@@ -103,7 +104,8 @@ const createUserEpic: Epic<any, RootState> = action$ =>
             actions.createSuccess(response.data),
           ];
         }),
-        catchError(() => []),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status })]),
       ),
     ),
   );
@@ -119,7 +121,8 @@ const updateUserEpic: Epic<any, RootState> = action$ =>
             actions.updateSuccess(response.data),
           ];
         }),
-        catchError(({error}) => [notificationActions.openNotification(error)]),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status })]),
       ),
     ),
   );
@@ -131,8 +134,8 @@ const verifyEpic: Epic<any, RootState> = action$ =>
         mergeMap(({response}) => {
           return [actions.set(response.data), actions.verifySuccess()];
         }),
-        catchError(() => [
-          historyActions.nextRoute('/'),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status }),
           actions.verifyFailed(),
         ]),
       ),
