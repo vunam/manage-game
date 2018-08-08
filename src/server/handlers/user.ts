@@ -4,7 +4,12 @@ import {generatePlayer, generateTeam} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
 import {verifyAccess, setJwt} from '../helpers/authentication';
 import {createPlayer} from '../services/players';
-import {createTeam, findTeamByUser, updateTeamByUser, deleteTeamByUser} from '../services/teams';
+import {
+  createTeam,
+  findTeamByUser,
+  updateTeamByUser,
+  deleteTeamByUser,
+} from '../services/teams';
 import {
   createUser,
   findUserById,
@@ -32,14 +37,46 @@ const createNewTeam = async (userId, name, country) => {
   return newTeam;
 };
 
+export const getUser = async ctx => {
+  const {id} = ctx.params;
+
+  const user = verifyAccess(ctx);
+  const latestUserData = findUserById(user.id);
+
+  if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
+  if (id) {
+    const team = findTeamByUser(id);
+    const latestUser = findUserById(id);
+
+    showApiResult(ctx, {
+      id,
+      username: latestUser.username,
+      role: latestUser.role,
+      team,
+    });
+  }
+};
+
 export const postUserTokens = async ctx => {
   const decoded = verifyAccess(ctx);
 
   if (decoded) {
-    const team = findTeamByUser(decoded.id);
-    const latestUser = findUserById(decoded.id);
+    try {
+      const team = findTeamByUser(decoded.id);
+      const latestUser = findUserById(decoded.id);
 
-    showApiResult(ctx, {id: decoded.id, username: latestUser.username, role: latestUser.role, team});
+      showApiResult(ctx, {
+        id: decoded.id,
+        username: latestUser.username,
+        role: latestUser.role,
+        team,
+      });
+    } catch (e) {
+      return showApiError(ctx, 'No access', 401);
+    }
   }
 };
 
@@ -130,9 +167,13 @@ export const postUserCreate = async ctx => {
 
 export const putUserUpdate = async ctx => {
   const decoded = verifyAccess(ctx);
+  const latestUserData = findUserById(decoded.id);
+
   const {
-    body: {user, team, country},
+    body: {user, team, country, manage = false},
   } = ctx.request;
+
+  const updateId = manage ? ctx.params.id : decoded.id;
 
   if (!user || !team || !country) {
     return showApiError(ctx, 'Missing data', 422);
@@ -143,21 +184,33 @@ export const putUserUpdate = async ctx => {
 
   const existing = findUserByUsername(user);
 
-  if (existing && existing.username !== decoded.username) {
+  if (manage) {
+    if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
+      return showApiError(ctx, 'Not allowed', 403);
+    }
+
+    if (
+      latestUserData.role !== 'manager' &&
+      latestUserData.role !== 'admin'
+    ) {
+      return showApiError(ctx, 'Not allowed', 403);
+    }
+  } else if (existing && existing.username !== decoded.username) {
     return showApiError(ctx, 'Username already exists', 422);
   }
 
-  updateUserById(decoded.id, {username: user});
+  updateUserById(updateId, {username: user});
 
-  const newTeam = updateTeamByUser(decoded.id, {country, name: team});
+  const newTeam = updateTeamByUser(updateId, {country, name: team});
 
   const data = {
-    id: decoded.id,
+    id: updateId,
     role: decoded.role,
     username: user,
   };
 
-  setJwt(ctx, data);
+  if (!manage) setJwt(ctx, data);
+
   showApiResult(ctx, {
     ...data,
     team: newTeam,
@@ -165,7 +218,7 @@ export const putUserUpdate = async ctx => {
 };
 
 export const deleteUser = async ctx => {
-  const { id } = ctx.params;
+  const {id} = ctx.params;
 
   const user = verifyAccess(ctx);
   const latestUserData = findUserById(user.id);

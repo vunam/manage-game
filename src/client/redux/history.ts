@@ -1,6 +1,6 @@
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
-import {mergeMap} from 'rxjs/operators';
+import {mergeMap, delay} from 'rxjs/operators';
 
 export interface RootState {
   nextRoute: string;
@@ -32,6 +32,7 @@ export const selectors = {
 
 const nextRouteEpic: Epic<any, RootState> = action$ =>
   action$.ofType(NEXT_ROUTE).pipe(
+    delay(100),
     mergeMap(({ payload }) => payload ? [actions.nextRoute(null)] : []),
   );
 

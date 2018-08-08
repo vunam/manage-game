@@ -5,36 +5,60 @@ import {color, layout, spaces} from '../constants/styles';
 import SettingsForm from '../forms/SettingsForm';
 import {actions, selectors} from '../redux/user';
 
+interface Props {
+  match: {
+    params: {
+      id: string;
+    }
+  };
+  user: any;
+  getUserAttempt: (id) => void;
+  submitHandler: (formData: object, id: string) => void;
+}
+
 const StyledPage = styled.div`
   padding: ${spaces.sm};
 `;
 
-const Settings = ({user, submitHandler}) => (
-  <StyledPage>
-    <h1>Team settings</h1>
-    <p>Update your team settings here</p>
-    {user && (
-      <SettingsForm
-        submitHandler={formData => submitHandler(formData, user.id)}
-        initialValues={{
-          team: user.team.name,
-          country: user.team.country,
-          user: user.username,
-        }}
-      />
-    )}
-  </StyledPage>
-);
+class Edit extends React.Component<Props> {
+  componentDidMount() {
+    const { match, getUserAttempt } = this.props;
+    getUserAttempt(match.params.id);
+  }
+  render() {
+    const {user, submitHandler} = this.props;
+
+    return (
+      <StyledPage>
+        <h1>Edit team</h1>
+        {user && (
+          <SettingsForm
+            submitHandler={formData => submitHandler(formData, user.id)}
+            initialValues={{
+              team: user.team.name,
+              country: user.team.country,
+              user: user.username,
+            }}
+          />
+        )}
+      </StyledPage>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
-  user: selectors.getUser(state.user),
+  user: selectors.getEditedUser(state.user),
 });
 
 const mapDispatchToProps = dispatch => ({
-  submitHandler: (formData, id) => dispatch(actions.updateAttempt({ id, ...formData})),
+  getUserAttempt: id =>
+    dispatch(actions.getUserAttempt(id)),
+  submitHandler: (formData, id) =>
+   
+    dispatch(actions.updateAttempt({id, manage: true, ...formData})),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Settings);
+)(Edit);

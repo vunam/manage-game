@@ -7,6 +7,7 @@ import {getPlayers, postAddTransfer, postTransaction} from './handlers/players';
 import {getTeams} from './handlers/teams';
 import {getMessages} from './handlers/messages';
 import {
+  getUser,
   postLogout,
   postUserCreate,
   postUserLogin,
@@ -37,6 +38,7 @@ router.get('/api/players', getPlayers);
 router.post('/api/players/:id/transfer', postAddTransfer);
 router.post('/api/players/:id/transaction/:team', postTransaction);
 
+router.get('/api/user/:id', getUser);
 router.post('/api/user/create', postUserCreate);
 router.put('/api/user/:id', putUserUpdate);
 router.delete('/api/user/:id', deleteUser);

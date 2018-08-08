@@ -27,11 +27,15 @@ const UPDATE_SUCCESS = 'user/update-success';
 const DELETE_ATTEMPT = 'user/delete-attempt';
 const DELETE_SUCCESS = 'user/delete-success';
 
+const GET_USER_ATTEMPT = 'user/get-user-attempt';
+const GET_USER_SUCCESS = 'user/get-user-success';
+
 const SET = 'user/set';
 const LOGOUT = 'user/logout';
 
 const initialState = {
   user: null,
+  editedUser: null,
   verifying: false,
 };
 
@@ -47,6 +51,8 @@ export const {user: actions} = createActions({
   [UPDATE_SUCCESS]: null,
   [DELETE_ATTEMPT]: null,
   [DELETE_SUCCESS]: null,
+  [GET_USER_ATTEMPT]: null,
+  [GET_USER_SUCCESS]: null,
   [SET]: null,
   [LOGOUT]: null,
 });
@@ -73,12 +79,21 @@ export default handleActions(
       ...state,
       verifying: false,
     }),
+    [GET_USER_ATTEMPT]: (state, action) => ({
+      ...state,
+      editedUser: null,
+    }),
+    [GET_USER_SUCCESS]: (state, action) => ({
+      ...state,
+      editedUser: action.payload,
+    }),
   },
   initialState,
 );
 
 export const selectors = {
   getUser: state => state.user,
+  getEditedUser: state => state.editedUser,
   getVerifying: state => state.verifying,
 };
 
@@ -124,10 +139,10 @@ const updateUserEpic: Epic<any, RootState> = action$ =>
         url: `/api/user/${id}`, method: 'PUT', body }).pipe(
         mergeMap(({response}) => {
           return [
-            historyActions.nextRoute('/dashboard'),
-            actions.set(response.data),
+            historyActions.nextRoute(body.manage ? '/teams' : '/dashboard'),
+            !body.manage && actions.set(response.data),
             actions.updateSuccess(response.data),
-          ];
+          ].filter(valid => valid);
         }),
         catchError(({ response, status }) => [
           generalActions.handleError({ response, status })]),
@@ -178,6 +193,17 @@ const logoutEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
+const getUserEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(GET_USER_ATTEMPT).pipe(
+    mergeMap(({payload}) =>
+      ajax.get(`/api/user/${payload}`).pipe(
+        map(({response}) => actions.getUserSuccess(response.data)),
+        catchError(({ response, status }) => [
+          generalActions.handleError({ response, status })]),
+      ),
+    ),
+  );
+
 export const epics = combineEpics(
   loginEpic,
   createUserEpic,
@@ -185,4 +211,5 @@ export const epics = combineEpics(
   verifyEpic,
   logoutEpic,
   deleteUserEpic,
+  getUserEpic,
 );

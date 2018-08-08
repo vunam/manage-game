@@ -10,12 +10,14 @@ import {
   actions as userActions,
   selectors as userSelectors,
 } from '../redux/user';
+import {actions as historyActions} from '../redux/history';
 import SignupForm from '../forms/SignupForm';
 
 import TeamType from '../types/Team';
 
 interface Props {
   getTeams: () => void;
+  editUser: (id) => void;
   deleteUser: (id) => void;
   createTeamHandler: () => void;
   user: {
@@ -48,7 +50,7 @@ class Teams extends React.Component<Props, State> {
   }
 
   render() {
-    const {teams, createTeamHandler, deleteUser} = this.props;
+    const {teams, editUser, createTeamHandler, deleteUser} = this.props;
 
     return (
       <StyledPage>
@@ -67,12 +69,18 @@ class Teams extends React.Component<Props, State> {
               </tr>
               {teams &&
                 teams.map(team => (
-                  <tr key={team.id}>
+                  <tr key={team.user}>
                     <td>{team.name}</td>
                     <td>{team.country}</td>
                     <td>{team.money}</td>
-                    <td><button>Edit</button></td>
-                    <td><button onClick={() => deleteUser(team.user)}>Delete</button></td>
+                    <td>
+                      <button onClick={() => editUser(team.user)}>Edit</button>
+                    </td>
+                    <td>
+                      <button onClick={() => deleteUser(team.user)}>
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -88,8 +96,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  editUser: id => dispatch(historyActions.nextRoute(`/edit-team/${id}`)),
   getTeams: () => dispatch(teamsActions.getTeamsAttempt()),
-  deleteUser: (id) => dispatch(userActions.deleteAttempt(id)),
+  deleteUser: id => dispatch(userActions.deleteAttempt(id)),
   createTeamHandler: formData =>
     dispatch(userActions.createAttempt({...formData, manage: true})),
 });
