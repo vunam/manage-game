@@ -26,13 +26,14 @@ const FormOuter = ({handleSubmit, submitHandler, admin = false}) => (
       ))}
     </Field>
     <Field name="user" label="Username" component={InputField} />
-    {admin && (
-      <Field name="role" label="Role" component={SelectField}>
+    {admin && [
+      <Field key="role" name="role" label="Role" component={SelectField}>
         <option value="owner">Owner</option>
         <option value="manager">League manager</option>
         <option value="admin">Admin</option>
-      </Field>
-    )}
+      </Field>,
+      <Field key="money" name="money" label="Money" component={InputField} />,
+    ]}
     <Button>Submit</Button>
   </StyledForm>
 );

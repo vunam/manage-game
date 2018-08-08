@@ -156,7 +156,7 @@ export const putUserUpdate = async ctx => {
   const isAdmin = latestUserData.role === 'admin';
 
   const {
-    body: {user, team, country, role, manage = false},
+    body: {user, team, country, role, money, manage = false},
   } = ctx.request;
 
   const updateId = manage ? ctx.params.id : currentUser.id;
@@ -183,12 +183,12 @@ export const putUserUpdate = async ctx => {
   }
 
   let updatedUser = updateUserById(updateId, {username: user});
+  let newTeam = updateTeamByUser(updateId, {country, name: team});
 
   if (isAdmin && role) {
     updatedUser = updateUserById(updateId, {role});
+    newTeam = updateTeamByUser(updateId, {money: parseInt(money, 10)});
   }
-
-  const newTeam = updateTeamByUser(updateId, {country, name: team});
 
   const data = {
     id: updateId,

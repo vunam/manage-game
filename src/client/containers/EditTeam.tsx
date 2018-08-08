@@ -44,6 +44,7 @@ class Edit extends React.Component<Props> {
               country: editedUser.team.country,
               user: editedUser.username,
               role: editedUser.role,
+              money: editedUser.team.money,
             }}
             admin={user.role === 'admin'}
           />
