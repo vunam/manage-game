@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../constants/styles';
+import {color, layout, spaces} from '../styles';
 import SignupForm from '../forms/SignupForm';
 import {actions, selectors} from '../redux/user';
 

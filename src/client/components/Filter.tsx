@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import countryList from '../constants/countryList';
-import {spaces} from '../constants/styles';
+import countryList from '../../constants/countryList';
+import {spaces} from '../styles';
 
 const FilterStyled = styled.div`
   width: 240px;
@@ -25,10 +25,11 @@ export default ({changeHandler, teams}) => (
     <InputGroup>
       <Label>Position</Label>
       <select onChange={({target}) => changeHandler('type', target.value)}>
-        <option value="GOALKEEPER">Goalkeeper</option>
-        <option value="MIDFIELDER">Midfielder</option>
-        <option value="ATTACKER">Attacker</option>
-        <option value="DEFENDER">Defender</option>
+        <option value="">All</option>
+        <option value="Goal">Goalkeeper</option>
+        <option value="Mid">Midfielder</option>
+        <option value="Att">Attacker</option>
+        <option value="Def">Defender</option>
       </select>
     </InputGroup>
     <InputGroup>

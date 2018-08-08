@@ -5,7 +5,7 @@ import {Route, Switch, withRouter} from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../components/Header';
 import Notification from '../components/Notification';
-import {layout, typography} from '../constants/styles';
+import {layout, typography} from '../styles';
 import {
   actions as historyActions,
   selectors as historySelectors,

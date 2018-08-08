@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {color, spaces} from '../constants/styles';
+import {color, spaces} from '../styles';
 import PlayerType from '../types/Player';
 import Player from './Player';
 

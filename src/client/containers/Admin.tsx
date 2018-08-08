@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import PlayerList from '../components/PlayerList';
-import {spaces} from '../constants/styles';
+import {spaces} from '../styles';
 import {actions as historyActions} from '../redux/history';
 import {actions, selectors} from '../redux/players';
 import {

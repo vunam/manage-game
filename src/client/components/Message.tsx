@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs';
 import * as React from 'react';
 import styled from 'styled-components';
-import {spaces, typography} from '../constants/styles';
+import {spaces, typography} from '../styles';
 import MessageType from '../types/Message';
 
 const MessageStyled = styled.div``;

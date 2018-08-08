@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../constants/styles';
+import {color, layout, spaces} from '../styles';
 import LoginForm from '../forms/LoginForm';
 import {actions, selectors} from '../redux/user';
 

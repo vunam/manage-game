@@ -4,7 +4,7 @@ import {combineEpics, Epic} from 'redux-observable';
 import {createSelector} from 'reselect';
 import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
-import countryList from '../constants/countryList';
+import countryList from '../../constants/countryList';
 import PlayerType from '../types/Player';
 import {actions as generalActions} from './general';
 import {actions as historyActions} from './history';

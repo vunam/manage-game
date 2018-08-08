@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../constants/styles';
+import {color, layout, spaces} from '../styles';
 import EditPLayerForm from '../forms/EditPLayerForm';
 import {
   actions as playersActions,
@@ -32,7 +32,8 @@ const StyledPage = styled.div`
 
 class Edit extends React.Component<Props> {
   componentDidMount() {
-    const {match, editPlayerAttempt} = this.props;
+    const {match, editPlayerAttempt, getTeams} = this.props;
+    getTeams();
     editPlayerAttempt(match.params.id);
   }
   render() {

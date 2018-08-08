@@ -152,9 +152,11 @@ export const postUserCreate = async ctx => {
 export const putUserUpdate = async ctx => {
   const currentUser = verifyAccess(ctx);
   const latestUserData = findUserById(currentUser.id);
+  const isManager = latestUserData.role === 'manager';
+  const isAdmin = latestUserData.role === 'admin';
 
   const {
-    body: {user, team, country, manage = false},
+    body: {user, team, country, role, manage = false},
   } = ctx.request;
 
   const updateId = manage ? ctx.params.id : currentUser.id;
@@ -169,24 +171,24 @@ export const putUserUpdate = async ctx => {
   const existing = findUserByUsername(user);
 
   if (manage) {
-    if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
+    if (!isManager && !isAdmin) {
       return showApiError(ctx, 'Not allowed', 403);
     }
 
-    if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
+    if (!isManager && !isAdmin) {
       return showApiError(ctx, 'Not allowed', 403);
     }
   } else if (existing && existing.username !== currentUser.username) {
     return showApiError(ctx, 'Username already exists', 422);
   }
 
-  updateUserById(updateId, {username: user});
+  const updatedUser = updateUserById(updateId, {username: user, role: role && isAdmin ? role : existing.role });
 
   const newTeam = updateTeamByUser(updateId, {country, name: team});
 
   const data = {
     id: updateId,
-    role: currentUser.role,
+    role: updatedUser.role,
     username: user,
   };
 

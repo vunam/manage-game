@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {color, spaces, typography} from '../constants/styles';
+import {color, spaces, typography} from '../styles';
 import {
   actions as notificationActions,
   selectors as notificationSelectors,

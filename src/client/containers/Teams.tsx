@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {spaces} from '../constants/styles';
+import {spaces} from '../styles';
 import SignupForm from '../forms/SignupForm';
 import {actions as historyActions} from '../redux/history';
 import {

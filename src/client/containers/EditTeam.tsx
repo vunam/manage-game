@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../constants/styles';
+import {color, layout, spaces} from '../styles';
 import SettingsForm from '../forms/SettingsForm';
 import {
   actions as teamsActions,
@@ -16,6 +16,7 @@ interface Props {
     };
   };
   user: any;
+  editedUser: any;
   getUserAttempt: (id) => void;
   submitHandler: (formData: object, id: string) => void;
 }
@@ -30,19 +31,21 @@ class Edit extends React.Component<Props> {
     getUserAttempt(match.params.id);
   }
   render() {
-    const {user, submitHandler} = this.props;
+    const {user, editedUser, submitHandler} = this.props;
 
     return (
       <StyledPage>
         <h1>Edit team</h1>
-        {user && (
+        {editedUser && (
           <SettingsForm
-            submitHandler={formData => submitHandler(formData, user.id)}
+            submitHandler={formData => submitHandler(formData, editedUser.id)}
             initialValues={{
-              team: user.team.name,
-              country: user.team.country,
-              user: user.username,
+              team: editedUser.team.name,
+              country: editedUser.team.country,
+              user: editedUser.username,
+              role: editedUser.role,
             }}
+            admin={user.role === 'admin'}
           />
         )}
       </StyledPage>
@@ -51,7 +54,8 @@ class Edit extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  user: selectors.getEditedUser(state.user),
+  user: selectors.getUser(state.user),
+  editedUser: selectors.getEditedUser(state.user),
 });
 
 const mapDispatchToProps = dispatch => ({

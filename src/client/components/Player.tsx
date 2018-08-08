@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {spaces, typography} from '../constants/styles';
+import {spaces, typography} from '../styles';
 import {toCurrency} from '../helpers/locale';
 import PlayerType from '../types/Player';
 

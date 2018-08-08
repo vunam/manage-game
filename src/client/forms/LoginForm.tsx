@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
-import {spaces} from '../constants/styles';
+import {spaces} from '../styles';
 
 const FORM_NAME = 'login';
 

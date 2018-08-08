@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../constants/styles';
+import {color, layout, spaces} from '../styles';
 
 const Header = styled.header`
   display: flex;

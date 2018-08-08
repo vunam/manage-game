@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
-import countryList from '../constants/countryList';
-import {spaces} from '../constants/styles';
+import countryList from '../../constants/countryList';
+import {spaces} from '../styles';
 
 const FORM_NAME = 'signup';
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Filter from '../components/Filter';
 import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
-import {spaces} from '../constants/styles';
+import {spaces} from '../styles';
 import {actions, selectors} from '../redux/players';
 import {
   actions as teamsActions,

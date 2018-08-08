@@ -37,7 +37,7 @@ app.use(async (ctx, next) => {
   return next();
 });
 
-// Routes
+/* Routes */
 
 router.get('/api/messages/:team', getMessages);
 router.get('/api/teams', getTeams);

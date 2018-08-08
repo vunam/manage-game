@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
-import countryList from '../constants/countryList';
-import {spaces} from '../constants/styles';
+import countryList from '../../constants/countryList';
+import {spaces} from '../styles';
 
 const FORM_NAME = 'edit-player';
 
@@ -19,6 +19,7 @@ const FormOuter = ({handleSubmit, submitHandler, teams}) => (
         <Row>
           <label htmlFor="team">Team</label>
           <Field name="team" component="select">
+            <option value="">None</option>
             {teams.map(({name, id}) => (
               <option key={id} value={id}>
                 {name}

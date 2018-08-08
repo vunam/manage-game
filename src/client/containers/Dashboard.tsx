@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import MessagesList from '../components/MessagesList';
 import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
-import {spaces} from '../constants/styles';
+import {spaces} from '../styles';
 import {
   actions as messagesActions,
   selectors as messagesSelectors,

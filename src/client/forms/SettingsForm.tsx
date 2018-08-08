@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
-import countryList from '../constants/countryList';
-import {spaces} from '../constants/styles';
+import countryList from '../../constants/countryList';
+import {spaces} from '../styles';
 
 const FORM_NAME = 'settings';
 
@@ -12,7 +12,7 @@ const Row = styled.div`
   margin: ${spaces.sm} 0;
 `;
 
-const FormOuter = ({handleSubmit, submitHandler, admin}) => (
+const FormOuter = ({handleSubmit, submitHandler, admin = false }) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
     <Row>
       <label htmlFor="team">Team name</label>
@@ -34,8 +34,8 @@ const FormOuter = ({handleSubmit, submitHandler, admin}) => (
     </Row>
     {admin && (
       <Row>
-        <label htmlFor="country">Role</label>
-        <Field name="country" component="select">
+        <label htmlFor="role">Role</label>
+        <Field name="role" component="select">
           <option value="owner">Owner</option>
           <option value="manager">League manager</option>
           <option value="admin">Admin</option>
