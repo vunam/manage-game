@@ -9,6 +9,7 @@ interface Props {
   currentTeam: string;
   clickHandler: (player: string, available: boolean, sellValue: number) => void;
   buyHandler?: (player: string) => void;
+  admin: boolean;
 }
 
 interface State {
@@ -66,6 +67,7 @@ class Player extends React.Component<PlayerType & Props, State> {
       value,
       withTeam,
       sellValue,
+      admin,
     } = this.props;
 
     const {currentSellValue} = this.state;
@@ -94,18 +96,29 @@ class Player extends React.Component<PlayerType & Props, State> {
             toCurrency(sellValue)
           )}
         </ItemSmall>
-        <ItemSmall>
-          {sameTeam ? (
-            <button
-              key="button"
-              onClick={() => clickHandler(id, !available, currentSellValue)}
-            >
-              {!available ? 'Add Transfer' : 'Retract'}
-            </button>
-          ) : (
-            available && <button onClick={() => buyHandler(id)}>BUY</button>
-          )}
-        </ItemSmall>
+        {admin ? (
+          [
+            <ItemSmall key="edit">
+              <button>Edit</button>
+            </ItemSmall>,
+            <ItemSmall key="delete">
+              <button>Delete</button>
+            </ItemSmall>,
+          ]
+        ) : (
+          <ItemSmall>
+            {sameTeam ? (
+              <button
+                key="button"
+                onClick={() => clickHandler(id, !available, currentSellValue)}
+              >
+                {!available ? 'Add Transfer' : 'Retract'}
+              </button>
+            ) : (
+              available && <button onClick={() => buyHandler(id)}>BUY</button>
+            )}
+          </ItemSmall>
+        )}
       </PlayerStyled>
     );
   }

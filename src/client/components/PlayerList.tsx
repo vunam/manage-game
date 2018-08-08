@@ -7,9 +7,12 @@ import PlayerType from '../types/Player';
 interface Props {
   list: [PlayerType];
   withTeam?: boolean;
+  admin?: boolean;
   currentTeam: string;
   clickHandler?: (id: string, available: boolean, sellValue: number) => void;
   buyHandler?: (id: string) => void;
+  playerEdit?: (id: string) => void;
+  playerDelete?: (id: string) => void;
 }
 
 const PlayerList = styled.ul`
@@ -42,6 +45,7 @@ export default ({
   clickHandler,
   currentTeam,
   buyHandler,
+  admin = false,
 }: Props) =>
   list ? (
     <PlayerList>
@@ -53,7 +57,9 @@ export default ({
         <ItemSmall>Age</ItemSmall>
         <ItemSmall>Value</ItemSmall>
         <ItemSmall>Sell value</ItemSmall>
-        <ItemSmall>Action</ItemSmall>
+        {!admin && <ItemSmall>Action</ItemSmall>}
+        {admin && <ItemSmall>Edit</ItemSmall>}
+        {admin && <ItemSmall>Delete</ItemSmall>}
       </Head>
       {list.length ?
         list.map(player => (
@@ -64,6 +70,7 @@ export default ({
             clickHandler={clickHandler}
             buyHandler={buyHandler}
             currentTeam={currentTeam}
+            admin={admin}
           />
         )) : 'No matching players'}
     </PlayerList>

@@ -67,7 +67,7 @@ export const postUserTokens = async ctx => {
     try {
       const team = findTeamByUser(decoded.id);
       const latestUser = findUserById(decoded.id);
-
+      console.log(decoded.id)
       const data = {
         id: latestUser.id,
         role: latestUser.role,

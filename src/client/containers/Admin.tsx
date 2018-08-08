@@ -62,6 +62,7 @@ class PlayerMarket extends React.Component<Props, State> {
             currentTeam={user.team.id}
             list={players}
             withTeam={true}
+            admin={true}
           />
         </Inner>
       </StyledPage>
