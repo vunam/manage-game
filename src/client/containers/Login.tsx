@@ -14,7 +14,7 @@ const LoginPage = ({submitHandler}) => (
   <StyledPage>
     <h1>Login</h1>
     <LoginForm submitHandler={submitHandler} />
-    or sign up <Link to="/signup">here</Link>
+    ..or click <Link to="/signup">here</Link> to sign up.
   </StyledPage>
 );
 

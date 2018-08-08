@@ -3,6 +3,9 @@ import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
 import {spaces} from '../styles';
+import InputField from '../components/InputField';
+import SelectField from '../components/SelectField';
+import Button from '../components/Button';
 
 const FORM_NAME = 'signup';
 
@@ -14,30 +17,24 @@ const Row = styled.div`
 
 const FormOuter = ({handleSubmit, submitHandler}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
-    <Row>
-      <label htmlFor="team">Team name</label>
-      <Field name="team" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="country">Country</label>
-      <Field name="country" component="select">
-        <option value="">Choose country</option>
-        {countryList.map(({name, code}) => (
-          <option key={code} value={code}>
-            {name}
-          </option>
-        ))}
-      </Field>
-    </Row>
-    <Row>
-      <label htmlFor="user">Username</label>
-      <Field name="user" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="password">Password</label>
-      <Field name="password" component="input" type="password" />
-    </Row>
-    <button>Submit</button>
+    <Field name="team" label="Team name" component={InputField} />
+    <Field name="country" label="Country" component={SelectField}>
+      <option value="">Choose country</option>
+      {countryList.map(({name, code}) => (
+        <option key={code} value={code}>
+          {name}
+        </option>
+      ))}
+    </Field>
+    <Field name="user" label="Username" component={InputField} />
+    <Field
+      name="password"
+      label="Password"
+      component={InputField}
+      type="password"
+    />
+
+    <Button>Submit</Button>
   </StyledForm>
 );
 

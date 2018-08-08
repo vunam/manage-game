@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 import {spaces, typography} from '../styles';
 import {toCurrency} from '../helpers/locale';
 import PlayerType from '../types/Player';
@@ -105,23 +106,23 @@ class Player extends React.Component<PlayerType & Props, State> {
         {admin ? (
           [
             <ItemSmall key="edit">
-              <button onClick={() => clickHandler(id)}>Edit</button>
+              <Button onClick={() => clickHandler(id)}>Edit</Button>
             </ItemSmall>,
             <ItemSmall key="delete">
-              <button onClick={() => deleteHandler(id)}>Delete</button>
+              <Button onClick={() => deleteHandler(id)}>Delete</Button>
             </ItemSmall>,
           ]
         ) : (
           <ItemSmall>
             {sameTeam ? (
-              <button
+              <Button
                 key="button"
                 onClick={() => clickHandler(id, !available, currentSellValue)}
               >
                 {!available ? 'Add Transfer' : 'Retract'}
-              </button>
+              </Button>
             ) : (
-              available && <button onClick={() => buyHandler(id)}>BUY</button>
+              available && <Button onClick={() => buyHandler(id)}>BUY</Button>
             )}
           </ItemSmall>
         )}

@@ -5,6 +5,8 @@ No DB specified so I opted for lowdb (flat-file) for set up simplicity (no docke
 - `yarn db:init`
 - `yarn dev`
 
+Go to `http://localhost:9000/` to see the app.
+
 No global dependencies needed besides `yarn` and node (*I'm on 8.9.4*).
 Once set up you can use the admin account using admin/admin or sign yourself up as a team owner.
 

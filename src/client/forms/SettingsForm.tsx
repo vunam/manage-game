@@ -3,6 +3,9 @@ import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
 import {spaces} from '../styles';
+import InputField from '../components/InputField';
+import SelectField from '../components/SelectField';
+import Button from '../components/Button';
 
 const FORM_NAME = 'settings';
 
@@ -12,37 +15,25 @@ const Row = styled.div`
   margin: ${spaces.sm} 0;
 `;
 
-const FormOuter = ({handleSubmit, submitHandler, admin = false }) => (
+const FormOuter = ({handleSubmit, submitHandler, admin = false}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
-    <Row>
-      <label htmlFor="team">Team name</label>
-      <Field name="team" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="country">Country</label>
-      <Field name="country" component="select">
-        {countryList.map(({name, code}) => (
-          <option key={code} value={code}>
-            {name}
-          </option>
-        ))}
-      </Field>
-    </Row>
-    <Row>
-      <label htmlFor="user">Username</label>
-      <Field name="user" component="input" />
-    </Row>
+    <Field name="team" label="Team name" component={InputField} />
+    <Field name="country" label="Country" component={SelectField}>
+      {countryList.map(({name, code}) => (
+        <option key={code} value={code}>
+          {name}
+        </option>
+      ))}
+    </Field>
+    <Field name="user" label="Username" component={InputField} />
     {admin && (
-      <Row>
-        <label htmlFor="role">Role</label>
-        <Field name="role" component="select">
-          <option value="owner">Owner</option>
-          <option value="manager">League manager</option>
-          <option value="admin">Admin</option>
-        </Field>
-      </Row>
+      <Field name="role" label="Role" component={SelectField}>
+        <option value="owner">Owner</option>
+        <option value="manager">League manager</option>
+        <option value="admin">Admin</option>
+      </Field>
     )}
-    <button>Submit</button>
+    <Button>Submit</Button>
   </StyledForm>
 );
 

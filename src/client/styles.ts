@@ -1,5 +1,5 @@
 export const color = {
-  primary: '#2274A5',
+  primary: '#250b4e',
   secondary: '#1B998B',
   dark: '#131B23',
   light: '#E9F1F7',
@@ -10,10 +10,11 @@ export const color = {
   semiDarkGray: '#999',
   darkGray: '#666',
   extraDarkGray: '#333',
+  amber: '#ffc217'
 };
 
 export const layout = {
-  header: '6.4rem',
+  header: '8rem',
 };
 
 export const typography = {
@@ -28,7 +29,7 @@ export const typography = {
 export const spaces = {
   xxxs: '0.4rem',
   xxs: '0.8rem',
-  xs: '0.2rem',
+  xs: '1.2rem',
   s: '1.6rem',
   sm: '2rem',
   m: '2.4rem',

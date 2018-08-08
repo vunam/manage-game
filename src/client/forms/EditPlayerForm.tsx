@@ -3,6 +3,8 @@ import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
 import {spaces} from '../styles';
+import InputField from '../components/InputField';
+import Button from '../components/Button';
 
 const FORM_NAME = 'edit-player';
 
@@ -47,27 +49,13 @@ const FormOuter = ({handleSubmit, submitHandler, teams}) => (
         <option value="Mid">Midfielder</option>
       </Field>
     </Row>
-    <Row>
-      <label htmlFor="value">Value</label>
-      <Field name="value" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="sellValue">Sell Value</label>
-      <Field name="sellValue" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="age">Age</label>
-      <Field name="age" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="firstName">First name</label>
-      <Field name="firstName" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="lastName">Last name</label>
-      <Field name="lastName" component="input" />
-    </Row>
-    <button>Submit</button>
+
+    <Field name="value" label="Value" component={InputField} />
+    <Field name="sellValue" label="Sell Value" component={InputField} />
+    <Field name="age" label="Age" component={InputField} />
+    <Field name="firstName" label="First name" component={InputField} />
+    <Field name="lastName" label="Last name" component={InputField} />
+    <Button>Submit</Button>
   </StyledForm>
 );
 

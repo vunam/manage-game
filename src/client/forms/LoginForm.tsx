@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import {spaces} from '../styles';
+import InputField from '../components/InputField';
+import Button from '../components/Button';
 
 const FORM_NAME = 'login';
 
@@ -13,15 +15,16 @@ const Row = styled.div`
 
 const FormOuter = ({handleSubmit, submitHandler}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
-    <Row>
-      <label htmlFor="user">Username</label>
-      <Field name="user" component="input" />
-    </Row>
-    <Row>
-      <label htmlFor="password">Password</label>
-      <Field name="password" component="input" type="password" />
-    </Row>
-    <button>Submit</button>
+    <Field name="user" label="Username" component={InputField} />
+
+    <Field
+      name="password"
+      label="Password"
+      component={InputField}
+      type="password"
+    />
+
+    <Button>Submit</Button>
   </StyledForm>
 );
 

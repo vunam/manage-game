@@ -76,7 +76,6 @@ class Main extends React.Component<Props> {
       history,
       doLogout,
       closeNotification,
-      clearNextRoute,
     } = this.props;
 
     if (
@@ -96,7 +95,7 @@ class Main extends React.Component<Props> {
   }
 
   render() {
-    const {user, verifying, closeNotification, message} = this.props;
+    const {user, location, verifying, closeNotification, message} = this.props;
 
     if (verifying) {
       return 'Loading';
@@ -107,7 +106,7 @@ class Main extends React.Component<Props> {
 
     return (
       <Layout>
-        <Header user={user} />
+        <Header location={location} user={user} />
         <Scrollable>
           <Notification close={closeNotification} message={message} />
           <Switch>
