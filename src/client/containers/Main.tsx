@@ -26,6 +26,7 @@ import Settings from './Settings';
 import Signup from './Signup';
 import Teams from './Teams';
 import EditTeam from './EditTeam';
+import EditPlayer from './EditPlayer';
 import Admin from './Admin';
 
 interface Props {
@@ -35,7 +36,9 @@ interface Props {
     pathname: string;
   };
   verifying: boolean;
-  user: object;
+  user: {
+    role: string;
+  };
   history: {
     push: (str: string) => void;
   };
@@ -96,6 +99,9 @@ class Main extends React.Component<Props> {
       return 'Loading';
     }
 
+    const isAdmin = user && user.role === 'admin';
+    const isManagerAdmin = user && (user.role === 'manager' || isAdmin);
+
     return (
       <Layout>
         <Header user={user} />
@@ -117,30 +123,36 @@ class Main extends React.Component<Props> {
                 component={PlayerMarket}
               />,
               <Route
-                key="teams"
-                exact={true}
-                path="/teams"
-                component={Teams}
-              />,
-              <Route
-                key="admin"
-                exact={true}
-                path="/admin"
-                component={Admin}
-              />,
-              <Route
                 key="settings"
                 exact={true}
                 path="/settings"
                 component={Settings}
               />,
-              <Route
+              isAdmin && <Route
+                key="admin"
+                exact={true}
+                path="/admin"
+                component={Admin}
+              />,
+              isAdmin && <Route
+                key="edit-player"
+                exact={true}
+                path="/edit-player/:id"
+                component={EditPlayer}
+              />,
+              isManagerAdmin && <Route
+                key="teams"
+                exact={true}
+                path="/teams"
+                component={Teams}
+              />,
+              isManagerAdmin && <Route
                 key="edit"
                 exact={true}
                 path="/edit-team/:id"
                 component={EditTeam}
               />,
-            ]}
+            ].filter(valid => valid)}
             <Route exact={true} path="/signup" component={Signup} />,
           </Switch>
         </Scrollable>

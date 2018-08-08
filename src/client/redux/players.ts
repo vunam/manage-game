@@ -10,6 +10,7 @@ import {actions as generalActions} from './general';
 
 export interface RootState {
   list?: [PlayerType];
+  editedPlayer: any;
 }
 
 const GET_PLAYERS_ATTEMPT = 'players/get-players-attempt';
@@ -27,8 +28,12 @@ const CREATE_PLAYER_SUCCESS = 'players/create-player-success';
 const DELETE_PLAYER_ATTEMPT = 'players/delete-player-attempt';
 const DELETE_PLAYER_SUCCESS = 'players/delete-player-success';
 
+const EDIT_PLAYER_ATTEMPT = 'players/edit-player-attempt';
+const EDIT_PLAYER_SUCCESS = 'players/edit-player-success';
+
 const initialState = {
   list: null,
+  editedPlayer: null,
 };
 
 export const {players: actions} = createActions({
@@ -42,6 +47,8 @@ export const {players: actions} = createActions({
   [CREATE_PLAYER_SUCCESS]: null,
   [DELETE_PLAYER_ATTEMPT]: null,
   [DELETE_PLAYER_SUCCESS]: null,
+  [EDIT_PLAYER_ATTEMPT]: null,
+  [EDIT_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -72,6 +79,7 @@ export const selectors = {
         };
       }),
   ),
+  getEditedPlayer: state => state.editedPlayer,
 };
 
 const getPlayersEpic: Epic<any, RootState> = action$ =>
@@ -156,10 +164,27 @@ const deletePlayerEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
+const editPlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(EDIT_PLAYER_ATTEMPT).pipe(
+    mergeMap(({ payload }) =>
+      ajax
+        .put(`/api/players/${payload}`)
+        .pipe(
+          mergeMap(({response}) => [
+            actions.editPlayerSuccess(response.data),
+            // TODO back to admin
+          ]),
+          catchError(({ response, status }) => [
+            generalActions.handleError({ response, status })]),
+        ),
+    ),
+  );
+
 export const epics = combineEpics(
   getPlayersEpic,
   transferPlayerEpic,
   buyPlayerEpic,
   createPlayerEpic,
   deletePlayerEpic,
+  editPlayerEpic,
 );

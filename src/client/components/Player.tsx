@@ -6,7 +6,7 @@ import {toCurrency} from '../helpers/locale';
 
 interface Props {
   withTeam?: boolean;
-  currentTeam: string;
+  currentTeam?: string;
   clickHandler: (player: string, available?: boolean, sellValue?: number) => void;
   buyHandler?: (player: string) => void;
   deleteHandler?: (player: string) => void;

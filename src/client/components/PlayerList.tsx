@@ -8,7 +8,7 @@ interface Props {
   list: [PlayerType];
   withTeam?: boolean;
   admin?: boolean;
-  currentTeam: string;
+  currentTeam?: string;
   clickHandler?: (id: string, available?: boolean, sellValue?: number) => void;
   buyHandler?: (id: string) => void;
   playerEdit?: (id: string) => void;

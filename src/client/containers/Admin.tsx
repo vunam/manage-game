@@ -1,12 +1,10 @@
-import {isEqual} from 'lodash';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import Filter from '../components/Filter';
 import PlayerList from '../components/PlayerList';
-import QuickProfile from '../components/QuickProfile';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
+import {actions as historyActions} from '../redux/history';
 import {
   actions as teamsActions,
   selectors as teamsSelectors,
@@ -19,12 +17,9 @@ import TeamType from '../types/Team';
 interface Props {
   getPlayers: (Object?) => void;
   createNewPlayer: () => void;
+  editPlayer: (id: string) => void;
   deletePlayer: (id: string) => void;
   players: [PlayerType];
-  user: {
-    team: TeamType;
-  };
-  teams: [TeamType];
 }
 
 interface State {
@@ -52,7 +47,7 @@ class PlayerMarket extends React.Component<Props, State> {
   }
 
   render() {
-    const {players, user, createNewPlayer, deletePlayer} = this.props;
+    const {players, createNewPlayer, deletePlayer, editPlayer} = this.props;
 
     return (
       <StyledPage>
@@ -60,10 +55,10 @@ class PlayerMarket extends React.Component<Props, State> {
           <h2>Player admin</h2>
           <button onClick={createNewPlayer}>Create new player</button>
           <PlayerList
-            currentTeam={user.team.id}
             list={players}
             withTeam={true}
             admin={true}
+            clickHandler={editPlayer}
             deleteHandler={deletePlayer}
           />
         </Inner>
@@ -73,11 +68,11 @@ class PlayerMarket extends React.Component<Props, State> {
 }
 
 const mapStateToProps = state => ({
-  user: userSelectors.getUser(state.user),
   players: selectors.getPlayersFull(state.players),
 });
 
 const mapDispatchToProps = dispatch => ({
+  editPlayer: id => dispatch(historyActions.nextRoute(`/edit-player/${id}`)),
   createNewPlayer: () => dispatch(actions.createPlayerAttempt()),
   deletePlayer: (id) => dispatch(actions.deletePlayerAttempt(id)),
   getPlayers: (filters = {}) =>

@@ -150,7 +150,6 @@ export const postTransaction = ctx => {
   showApiResult(ctx, 'success');
 };
 
-
 export const deletePlayer = ctx => {
   const {id} = ctx.params;
 
