@@ -24,7 +24,9 @@ db.json will be created. If you edit this, restart the app manually.
 - ~~REST api / accesstoken~~
 - ~~admin create player~~
 - ~~admin delete~~
-- admin edit
+- ~~admin edit~~
 - admin change roles
+
+- bonus: refactoring
 - bonus: ui / ux
 - bonus: unit / e2e

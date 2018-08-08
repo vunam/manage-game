@@ -7,6 +7,7 @@ import {catchError, map, mergeMap} from 'rxjs/operators';
 import countryList from '../constants/countryList';
 import PlayerType from '../types/Player';
 import {actions as generalActions} from './general';
+import {actions as historyActions} from './history';
 
 export interface RootState {
   list?: [PlayerType];
@@ -31,6 +32,9 @@ const DELETE_PLAYER_SUCCESS = 'players/delete-player-success';
 const EDIT_PLAYER_ATTEMPT = 'players/edit-player-attempt';
 const EDIT_PLAYER_SUCCESS = 'players/edit-player-success';
 
+const UPDATE_PLAYER_ATTEMPT = 'players/update-player-attempt';
+const UPDATE_PLAYER_SUCCESS = 'players/update-player-success';
+
 const initialState = {
   list: null,
   editedPlayer: null,
@@ -49,6 +53,8 @@ export const {players: actions} = createActions({
   [DELETE_PLAYER_SUCCESS]: null,
   [EDIT_PLAYER_ATTEMPT]: null,
   [EDIT_PLAYER_SUCCESS]: null,
+  [UPDATE_PLAYER_ATTEMPT]: null,
+  [UPDATE_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -56,6 +62,15 @@ export default handleActions(
     [GET_PLAYERS_SUCCESS]: (state, action) => ({
       ...state,
       list: action.payload,
+    }),
+    [EDIT_PLAYER_SUCCESS]: (state, action) => ({
+      ...state,
+      list: null,
+      editedPlayer: action.payload,
+    }),
+    [UPDATE_PLAYER_SUCCESS]: (state, action) => ({
+      ...state,
+      editedPlayer: null,
     }),
   },
   initialState,
@@ -168,10 +183,22 @@ const deletePlayerEpic: Epic<any, RootState> = action$ =>
 const editPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(EDIT_PLAYER_ATTEMPT).pipe(
     mergeMap(({payload}) =>
-      ajax.put(`/api/players/${payload}`).pipe(
+      ajax.get(`/api/players/${payload}`).pipe(
+        mergeMap(({response}) => [actions.editPlayerSuccess(response.data)]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
+      ),
+    ),
+  );
+
+const updatePlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(UPDATE_PLAYER_ATTEMPT).pipe(
+    mergeMap(({payload: {id, ...formData}}) =>
+      ajax.put(`/api/players/${id}`, formData).pipe(
         mergeMap(({response}) => [
-          actions.editPlayerSuccess(response.data),
-          // TODO back to admin
+          actions.updatePlayerSuccess(response.data),
+          historyActions.nextRoute('/admin'),
         ]),
         catchError(({response, status}) => [
           generalActions.handleError({response, status}),
@@ -187,4 +214,5 @@ export const epics = combineEpics(
   createPlayerEpic,
   deletePlayerEpic,
   editPlayerEpic,
+  updatePlayerEpic,
 );

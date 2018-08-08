@@ -5,6 +5,7 @@ import * as send from 'koa-send';
 import * as path from 'path';
 import {
   getPlayer,
+  putPlayer,
   getPlayers,
   postAddTransfer,
   postTransaction,
@@ -44,6 +45,7 @@ router.get('/api/teams', getTeams);
 router.post('/api/players/create', postCreatePlayer);
 router.delete('/api/players/:id', deletePlayer);
 router.get('/api/players/:id', getPlayer);
+router.put('/api/players/:id', putPlayer);
 router.get('/api/players', getPlayers);
 router.post('/api/players/:id/transfer', postAddTransfer);
 router.post('/api/players/:id/transaction/:team', postTransaction);

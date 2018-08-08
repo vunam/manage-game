@@ -8,7 +8,6 @@ import {
   actions as teamsActions,
   selectors as teamsSelectors,
 } from '../redux/teams';
-import TeamType from '../types/Team';
 
 interface Props {
   match: {

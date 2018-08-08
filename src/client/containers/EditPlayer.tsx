@@ -58,10 +58,16 @@ const mapStateToProps = state => ({
   player: playersSelectors.getEditedPlayer(state.players),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   getTeams: () => dispatch(teamsActions.getTeamsAttempt()),
   editPlayerAttempt: id => dispatch(playersActions.editPlayerAttempt(id)),
-  submitHandler: formData => dispatch(playersActions.updateAttempt(formData)),
+  submitHandler: formData =>
+    dispatch(
+      playersActions.updatePlayerAttempt({
+        id: ownProps.match.params.id,
+        ...formData,
+      }),
+    ),
 });
 
 export default connect(
