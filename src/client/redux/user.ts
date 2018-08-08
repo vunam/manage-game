@@ -1,10 +1,12 @@
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
+import {reset} from 'redux-form';
 import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {actions as generalActions} from './general';
 import {actions as historyActions} from './history';
 import {actions as teamsActions} from './teams';
+import {FORM_NAME} from '../forms/SignupForm';
 
 export interface RootState {
   user?: object;
@@ -126,6 +128,7 @@ const createUserEpic: Epic<any, RootState> = action$ =>
       ajax.post('/api/user/create', payload).pipe(
         mergeMap(({response}) => {
           return [
+            reset(FORM_NAME),
             !payload.manage && historyActions.nextRoute('/dashboard'),
             !payload.manage && actions.set(response.data),
             actions.createSuccess(response.data),

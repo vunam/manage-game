@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import InputField from '../components/InputField';
 import SelectField from '../components/SelectField';
 
-const FORM_NAME = 'settings';
+export const FORM_NAME = 'settings';
 
 const StyledForm = styled(Form)``;
 
