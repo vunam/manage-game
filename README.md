@@ -1,4 +1,4 @@
-[preview.jpg]
+![Alt-Text](http://git.toptal.com/Vu-Nam-Nguyen/vu-nam-nguyen/raw/master/preview.jpg)
 
 No DB specified so I opted for lowdb (flat-file) for set up simplicity (no docker stuff with mongo / postgres), but I have structured in a way where it can be easily replaced by any DB.
  
