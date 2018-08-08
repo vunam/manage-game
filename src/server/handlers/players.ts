@@ -8,9 +8,11 @@ import {
   getAllPlayers,
   queryPlayers,
   updatePlayerById,
+  deletePlayerById,
 } from '../services/players';
 import {generatePlayer} from '../helpers/generate';
 import {getAllTeams, findTeamById, updateTeamById} from '../services/teams';
+import {findUserById} from '../services/users';
 import {createMessage} from '../services/messages';
 
 export const postCreatePlayer = ctx => {
@@ -144,6 +146,48 @@ export const postTransaction = ctx => {
     value: currentPlayer.sellValue,
     sellValue: currentPlayer.sellValue,
   });
+
+  showApiResult(ctx, 'success');
+};
+
+
+export const deletePlayer = ctx => {
+  const {id} = ctx.params;
+
+  const currentUser = verifyAccess(ctx);
+  const latestUserData = findUserById(currentUser.id);
+
+  if (!id) {
+    return showApiError(ctx, 'Missing id', 422);
+  }
+
+  if (latestUserData.role !== 'admin') {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
+  const currentPlayer = findPlayerById(id);
+
+  if (!currentPlayer) {
+    return showApiError(ctx, 'Player does not exist', 403);
+  }
+  const team = findTeamById(currentPlayer.team);
+  if (team) {
+    const teamValue = team.value + currentPlayer.value;
+
+    updateTeamById(currentPlayer.team, {
+      value: teamValue,
+    });
+
+    createMessage({
+      date: new Date().toISOString(),
+      team: currentPlayer.team,
+      message: `${currentPlayer.firstName} ${
+        currentPlayer.lastName
+      } has been deleted.`,
+    });
+  }
+
+  deletePlayerById(id);
 
   showApiResult(ctx, 'success');
 };

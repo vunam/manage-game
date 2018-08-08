@@ -40,3 +40,9 @@ export const updatePlayerById = (id, data) =>
     .find({id})
     .assign(data)
     .write();
+
+export const deletePlayerById = id =>
+  db
+    .get(table)
+    .remove({id})
+    .write();

@@ -19,6 +19,7 @@ import TeamType from '../types/Team';
 interface Props {
   getPlayers: (Object?) => void;
   createNewPlayer: () => void;
+  deletePlayer: (id: string) => void;
   players: [PlayerType];
   user: {
     team: TeamType;
@@ -51,7 +52,7 @@ class PlayerMarket extends React.Component<Props, State> {
   }
 
   render() {
-    const {players, user, createNewPlayer} = this.props;
+    const {players, user, createNewPlayer, deletePlayer} = this.props;
 
     return (
       <StyledPage>
@@ -63,6 +64,7 @@ class PlayerMarket extends React.Component<Props, State> {
             list={players}
             withTeam={true}
             admin={true}
+            deleteHandler={deletePlayer}
           />
         </Inner>
       </StyledPage>
@@ -77,6 +79,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createNewPlayer: () => dispatch(actions.createPlayerAttempt()),
+  deletePlayer: (id) => dispatch(actions.deletePlayerAttempt(id)),
   getPlayers: (filters = {}) =>
     dispatch(
       actions.getPlayersAttempt({

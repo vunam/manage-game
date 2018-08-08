@@ -55,9 +55,9 @@ class Teams extends React.Component<Props, State> {
     return (
       <StyledPage>
         <Inner>
-          <h2>Create team</h2>
+          <h2>Create user &amp; team</h2>
           <SignupForm submitHandler={createTeamHandler} />
-          <h2>Manage teams</h2>
+          <h2>Manage users / teams</h2>
           <Table>
             <tbody>
               <tr>

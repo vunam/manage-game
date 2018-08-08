@@ -9,10 +9,10 @@ interface Props {
   withTeam?: boolean;
   admin?: boolean;
   currentTeam: string;
-  clickHandler?: (id: string, available: boolean, sellValue: number) => void;
+  clickHandler?: (id: string, available?: boolean, sellValue?: number) => void;
   buyHandler?: (id: string) => void;
   playerEdit?: (id: string) => void;
-  playerDelete?: (id: string) => void;
+  deleteHandler?: (id: string) => void;
 }
 
 const PlayerList = styled.ul`
@@ -46,6 +46,7 @@ export default ({
   currentTeam,
   buyHandler,
   admin = false,
+  deleteHandler,
 }: Props) =>
   list ? (
     <PlayerList>
@@ -71,6 +72,7 @@ export default ({
             buyHandler={buyHandler}
             currentTeam={currentTeam}
             admin={admin}
+            deleteHandler={deleteHandler}
           />
         )) : 'No matching players'}
     </PlayerList>

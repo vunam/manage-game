@@ -19,4 +19,4 @@ const team = {
   value: 20000000,
 };
 
-db.defaults({players: [], users: [admin], teams: [team], messages: []}).write();
+db.setState({players: [], users: [admin], teams: [team], messages: []}).write();

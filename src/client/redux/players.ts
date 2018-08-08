@@ -24,6 +24,9 @@ const BUY_PLAYER_SUCCESS = 'players/buy-player-success';
 const CREATE_PLAYER_ATTEMPT = 'players/create-player-attempt';
 const CREATE_PLAYER_SUCCESS = 'players/create-player-success';
 
+const DELETE_PLAYER_ATTEMPT = 'players/delete-player-attempt';
+const DELETE_PLAYER_SUCCESS = 'players/delete-player-success';
+
 const initialState = {
   list: null,
 };
@@ -37,6 +40,8 @@ export const {players: actions} = createActions({
   [BUY_PLAYER_SUCCESS]: null,
   [CREATE_PLAYER_ATTEMPT]: null,
   [CREATE_PLAYER_SUCCESS]: null,
+  [DELETE_PLAYER_ATTEMPT]: null,
+  [DELETE_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -119,14 +124,30 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
-const createPlayerEpic: Epic<any, RootState> = action$ =>
-  action$.ofType(CREATE_PLAYER_ATTEMPT).pipe(
-    mergeMap(() =>
+  const createPlayerEpic: Epic<any, RootState> = action$ =>
+    action$.ofType(CREATE_PLAYER_ATTEMPT).pipe(
+      mergeMap(() =>
+        ajax
+          .post(`/api/players/create`)
+          .pipe(
+            mergeMap(({response}) => [
+              actions.createPlayerSuccess(response.data),
+              actions.getPlayersAttempt({ withTeam: true })
+            ]),
+            catchError(({ response, status }) => [
+              generalActions.handleError({ response, status })]),
+          ),
+      ),
+    );
+
+const deletePlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(DELETE_PLAYER_ATTEMPT).pipe(
+    mergeMap(({ payload }) =>
       ajax
-        .post(`/api/players/create`)
+        .delete(`/api/players/${payload}`)
         .pipe(
           mergeMap(({response}) => [
-            actions.createPlayerSuccess(response.data),
+            actions.deletePlayerSuccess(response.data),
             actions.getPlayersAttempt({ withTeam: true })
           ]),
           catchError(({ response, status }) => [
@@ -140,4 +161,5 @@ export const epics = combineEpics(
   transferPlayerEpic,
   buyPlayerEpic,
   createPlayerEpic,
+  deletePlayerEpic,
 );

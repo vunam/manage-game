@@ -5,6 +5,8 @@ Runs lowdb for set up simplicity (no docker stuff with mongo / postgres);
 - yarn db:init
 - yarn dev
 
+Once set up you can use the admin account using admin/admin or sign up as user. 
+
 db.json will be created. If you edit this, restart the app manually.
 
 *ToDos*

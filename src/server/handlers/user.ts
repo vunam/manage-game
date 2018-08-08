@@ -61,13 +61,13 @@ export const getUser = async ctx => {
 };
 
 export const postUserTokens = async ctx => {
-  const decoded = verifyAccess(ctx);
+  const currentUser = verifyAccess(ctx);
 
-  if (decoded) {
+  if (currentUser) {
     try {
-      const team = findTeamByUser(decoded.id);
-      const latestUser = findUserById(decoded.id);
-      console.log(decoded.id)
+      const team = findTeamByUser(currentUser.id);
+      const latestUser = findUserById(currentUser.id);
+      console.log(currentUser.id)
       const data = {
         id: latestUser.id,
         role: latestUser.role,
@@ -171,14 +171,14 @@ export const postUserCreate = async ctx => {
 };
 
 export const putUserUpdate = async ctx => {
-  const decoded = verifyAccess(ctx);
-  const latestUserData = findUserById(decoded.id);
+  const currentUser = verifyAccess(ctx);
+  const latestUserData = findUserById(currentUser.id);
 
   const {
     body: {user, team, country, manage = false},
   } = ctx.request;
 
-  const updateId = manage ? ctx.params.id : decoded.id;
+  const updateId = manage ? ctx.params.id : currentUser.id;
 
   if (!user || !team || !country) {
     return showApiError(ctx, 'Missing data', 422);
@@ -200,7 +200,7 @@ export const putUserUpdate = async ctx => {
     ) {
       return showApiError(ctx, 'Not allowed', 403);
     }
-  } else if (existing && existing.username !== decoded.username) {
+  } else if (existing && existing.username !== currentUser.username) {
     return showApiError(ctx, 'Username already exists', 422);
   }
 
@@ -210,7 +210,7 @@ export const putUserUpdate = async ctx => {
 
   const data = {
     id: updateId,
-    role: decoded.role,
+    role: currentUser.role,
     username: user,
   };
 

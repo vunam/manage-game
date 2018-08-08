@@ -7,8 +7,9 @@ import {toCurrency} from '../helpers/locale';
 interface Props {
   withTeam?: boolean;
   currentTeam: string;
-  clickHandler: (player: string, available: boolean, sellValue: number) => void;
+  clickHandler: (player: string, available?: boolean, sellValue?: number) => void;
   buyHandler?: (player: string) => void;
+  deleteHandler?: (player: string) => void;
   admin: boolean;
 }
 
@@ -68,6 +69,7 @@ class Player extends React.Component<PlayerType & Props, State> {
       withTeam,
       sellValue,
       admin,
+      deleteHandler,
     } = this.props;
 
     const {currentSellValue} = this.state;
@@ -99,10 +101,11 @@ class Player extends React.Component<PlayerType & Props, State> {
         {admin ? (
           [
             <ItemSmall key="edit">
-              <button>Edit</button>
+              <button
+                onClick={() => clickHandler(id)}>Edit</button>
             </ItemSmall>,
             <ItemSmall key="delete">
-              <button>Delete</button>
+              <button onClick={() => deleteHandler(id)}>Delete</button>
             </ItemSmall>,
           ]
         ) : (
