@@ -12,7 +12,7 @@ const Row = styled.div`
   margin: ${spaces.sm} 0;
 `;
 
-const FormOuter = ({handleSubmit, submitHandler}) => (
+const FormOuter = ({handleSubmit, submitHandler, admin}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
     <Row>
       <label htmlFor="team">Team name</label>
@@ -32,6 +32,16 @@ const FormOuter = ({handleSubmit, submitHandler}) => (
       <label htmlFor="user">Username</label>
       <Field name="user" component="input" />
     </Row>
+    {admin && (
+      <Row>
+        <label htmlFor="country">Role</label>
+        <Field name="country" component="select">
+          <option value="owner">Owner</option>
+          <option value="manager">League manager</option>
+          <option value="admin">Admin</option>
+        </Field>
+      </Row>
+    )}
     <button>Submit</button>
   </StyledForm>
 );

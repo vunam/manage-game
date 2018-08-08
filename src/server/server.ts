@@ -3,25 +3,25 @@ import * as body from 'koa-body';
 import * as Router from 'koa-router';
 import * as send from 'koa-send';
 import * as path from 'path';
-import {
-  getPlayer,
-  putPlayer,
-  getPlayers,
-  postAddTransfer,
-  postTransaction,
-  postCreatePlayer,
-  deletePlayer,
-} from './handlers/players';
-import {getTeams} from './handlers/teams';
 import {getMessages} from './handlers/messages';
 import {
+  deletePlayer,
+  getPlayer,
+  getPlayers,
+  postAddTransfer,
+  postCreatePlayer,
+  postTransaction,
+  putPlayer,
+} from './handlers/players';
+import {getTeams} from './handlers/teams';
+import {
+  deleteUser,
   getUser,
   postLogout,
   postUserCreate,
   postUserLogin,
   postUserTokens,
   putUserUpdate,
-  deleteUser,
 } from './handlers/user';
 import htmlPage from './html';
 

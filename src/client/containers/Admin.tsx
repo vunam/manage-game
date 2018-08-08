@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 import PlayerList from '../components/PlayerList';
 import {spaces} from '../constants/styles';
-import {actions, selectors} from '../redux/players';
 import {actions as historyActions} from '../redux/history';
+import {actions, selectors} from '../redux/players';
 import {
   actions as teamsActions,
   selectors as teamsSelectors,

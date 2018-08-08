@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Message from './Message';
-import MessageType from '../types/Message';
 import {color, spaces} from '../constants/styles';
+import MessageType from '../types/Message';
+import Message from './Message';
 
 interface Props {
   list: [MessageType];

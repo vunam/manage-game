@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "db:init": "ts-node --project ./typescript/server.conf.json ./src/server/db/migration.ts",
-    "dev": "dotenv -e .env.dev & yarn dev:server & webpack-dev-server --config ./webpack/config.js",
+    "dev": "yarn dev:server & webpack-dev-server --config ./webpack/config.js",
     "dev:server": "nodemon --watch 'src/server/**/*.ts' --exec 'ts-node --project ./typescript/server.conf.json' ./src/server/index.ts",
     "lint": "tslint -c ./tslint.json './src/**/*.ts*'",
     "prettier": "prettier --write \"./src/**/*.t{s,sx}\"",

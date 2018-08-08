@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
+import MessagesList from '../components/MessagesList';
 import PlayerList from '../components/PlayerList';
 import QuickProfile from '../components/QuickProfile';
-import MessagesList from '../components/MessagesList';
 import {spaces} from '../constants/styles';
-import {actions, selectors} from '../redux/players';
-import {selectors as userSelectors} from '../redux/user';
 import {
   actions as messagesActions,
   selectors as messagesSelectors,
 } from '../redux/messages';
+import {actions, selectors} from '../redux/players';
+import {selectors as userSelectors} from '../redux/user';
 
+import MessageType from '../types/Message';
 import PlayerType from '../types/Player';
 import TeamType from '../types/Team';
-import MessageType from '../types/Message';
 
 interface Props {
   getPlayers: (team: string) => void;

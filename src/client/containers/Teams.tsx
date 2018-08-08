@@ -2,6 +2,8 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {spaces} from '../constants/styles';
+import SignupForm from '../forms/SignupForm';
+import {actions as historyActions} from '../redux/history';
 import {
   actions as teamsActions,
   selectors as teamsSelectors,
@@ -10,8 +12,6 @@ import {
   actions as userActions,
   selectors as userSelectors,
 } from '../redux/user';
-import {actions as historyActions} from '../redux/history';
-import SignupForm from '../forms/SignupForm';
 
 import TeamType from '../types/Team';
 
@@ -26,8 +26,6 @@ interface Props {
   teams: [TeamType];
 }
 
-interface State {}
-
 const StyledPage = styled.div``;
 
 const Inner = styled.div`
@@ -39,12 +37,7 @@ const Table = styled.table`
   text-align: left;
 `;
 
-class Teams extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+class Teams extends React.Component<Props> {
   componentDidMount() {
     this.props.getTeams();
   }

@@ -1,19 +1,19 @@
-import {isEqual} from 'lodash';
 import * as Chance from 'chance';
-import {showApiError, showApiResult} from '../helpers/response';
+import {isEqual} from 'lodash';
 import {verifyAccess} from '../helpers/authentication';
+import {generatePlayer} from '../helpers/generate';
+import {showApiError, showApiResult} from '../helpers/response';
+import {createMessage} from '../services/messages';
 import {
   createPlayer,
+  deletePlayerById,
   findPlayerById,
   getAllPlayers,
   queryPlayers,
   updatePlayerById,
-  deletePlayerById,
 } from '../services/players';
-import {generatePlayer} from '../helpers/generate';
-import {getAllTeams, findTeamById, updateTeamById} from '../services/teams';
+import {findTeamById, getAllTeams, updateTeamById} from '../services/teams';
 import {findUserById} from '../services/users';
-import {createMessage} from '../services/messages';
 
 export const postCreatePlayer = ctx => {
   const currentUser = verifyAccess(ctx);
@@ -216,7 +216,7 @@ export const putPlayer = ctx => {
     status,
   });
 
-  showApiResult(ctx, currentPlayer);
+  showApiResult(ctx, updatedPlayer);
 };
 
 export const deletePlayer = ctx => {

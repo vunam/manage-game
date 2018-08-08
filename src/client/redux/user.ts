@@ -2,8 +2,8 @@ import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
 import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
-import {actions as historyActions} from './history';
 import {actions as generalActions} from './general';
+import {actions as historyActions} from './history';
 import {actions as teamsActions} from './teams';
 
 export interface RootState {

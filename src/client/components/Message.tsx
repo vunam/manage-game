@@ -1,6 +1,6 @@
+import * as dayjs from 'dayjs';
 import * as React from 'react';
 import styled from 'styled-components';
-import * as dayjs from 'dayjs';
 import {spaces, typography} from '../constants/styles';
 import MessageType from '../types/Message';
 

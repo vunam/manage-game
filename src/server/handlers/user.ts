@@ -1,41 +1,20 @@
 import * as bcrypt from 'bcrypt/bcrypt';
 import * as uniq from 'uniqid';
-import {generatePlayer, generateTeam} from '../helpers/generate';
+import {setJwt, verifyAccess} from '../helpers/authentication';
+import {createTeamWithPlayers} from '../helpers/generate';
 import {showApiError, showApiResult} from '../helpers/response';
-import {verifyAccess, setJwt} from '../helpers/authentication';
-import {createPlayer} from '../services/players';
 import {
-  createTeam,
+  deleteTeamByUser,
   findTeamByUser,
   updateTeamByUser,
-  deleteTeamByUser,
 } from '../services/teams';
 import {
   createUser,
+  deleteUserById,
   findUserById,
   findUserByUsername,
   updateUserById,
-  deleteUserById,
 } from '../services/users';
-
-const createNewTeam = async (userId, name, country) => {
-  const newTeam = generateTeam(userId, name, country);
-
-  createTeam(newTeam);
-
-  const generatePlayerType = (type, total) =>
-    new Array(total).fill({}).forEach(() => {
-      const player = generatePlayer(newTeam.id, type);
-      createPlayer(player);
-    });
-
-  generatePlayerType('Goal', 3);
-  generatePlayerType('Def', 6);
-  generatePlayerType('Mid', 6);
-  generatePlayerType('Att', 5);
-
-  return newTeam;
-};
 
 export const getUser = async ctx => {
   const {id} = ctx.params;
@@ -63,25 +42,23 @@ export const getUser = async ctx => {
 export const postUserTokens = async ctx => {
   const currentUser = verifyAccess(ctx);
 
-  if (currentUser) {
-    try {
-      const team = findTeamByUser(currentUser.id);
-      const latestUser = findUserById(currentUser.id);
+  try {
+    const team = findTeamByUser(currentUser.id);
+    const latestUser = findUserById(currentUser.id);
 
-      const data = {
-        id: latestUser.id,
-        role: latestUser.role,
-        username: latestUser.username,
-      };
+    const data = {
+      id: latestUser.id,
+      role: latestUser.role,
+      username: latestUser.username,
+    };
 
-      setJwt(ctx, data);
-      showApiResult(ctx, {
-        ...data,
-        team,
-      });
-    } catch (e) {
-      return showApiError(ctx, 'No access', 401);
-    }
+    setJwt(ctx, data);
+    showApiResult(ctx, {
+      ...data,
+      team,
+    });
+  } catch (e) {
+    return showApiError(ctx, 'No access', 401);
   }
 };
 
@@ -155,7 +132,7 @@ export const postUserCreate = async ctx => {
     role: 'owner',
   };
 
-  const newTeam = await createNewTeam(uniqId, team, country);
+  const newTeam = await createTeamWithPlayers(uniqId, team, country);
 
   createUser(uniqId, user, hashed, newTeam.id);
 
@@ -165,7 +142,9 @@ export const postUserCreate = async ctx => {
     username: userData.username,
   };
 
-  if (!manage) setJwt(ctx, data);
+  if (!manage) {
+    setJwt(ctx, data);
+  }
 
   showApiResult(ctx, {...data, team: newTeam});
 };
@@ -211,7 +190,9 @@ export const putUserUpdate = async ctx => {
     username: user,
   };
 
-  if (!manage) setJwt(ctx, data);
+  if (!manage) {
+    setJwt(ctx, data);
+  }
 
   showApiResult(ctx, {
     ...data,

@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {color, layout, spaces} from '../constants/styles';
 import SettingsForm from '../forms/SettingsForm';
-import {actions, selectors} from '../redux/user';
 import {
   actions as teamsActions,
   selectors as teamsSelectors,
 } from '../redux/teams';
+import {actions, selectors} from '../redux/user';
 
 interface Props {
   match: {

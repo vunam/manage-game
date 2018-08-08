@@ -1,6 +1,6 @@
 import {createActions, handleActions} from 'redux-actions';
 import {combineEpics, Epic} from 'redux-observable';
-import {mergeMap, delay} from 'rxjs/operators';
+import {delay, mergeMap} from 'rxjs/operators';
 
 export interface RootState {
   nextRoute: string;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Player from './Player';
 import {color, spaces} from '../constants/styles';
 import PlayerType from '../types/Player';
+import Player from './Player';
 
 interface Props {
   list: [PlayerType];

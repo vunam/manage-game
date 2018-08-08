@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {spaces, typography} from '../constants/styles';
-import PlayerType from '../types/Player';
 import {toCurrency} from '../helpers/locale';
+import PlayerType from '../types/Player';
 
 interface Props {
   withTeam?: boolean;

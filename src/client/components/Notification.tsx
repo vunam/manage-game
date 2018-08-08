@@ -1,11 +1,11 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
+import {color, spaces, typography} from '../constants/styles';
 import {
   actions as notificationActions,
   selectors as notificationSelectors,
 } from '../redux/notification';
-import {spaces, typography, color} from '../constants/styles';
 
 const NotificationStyled = styled.div`
   padding: ${spaces.sm};
