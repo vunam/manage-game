@@ -15,7 +15,7 @@ export default () => `<html>
         font-family: 'Montserrat', sans-serif;
       }
     </style>
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,700|Montserrat:300,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Montserrat:300,900" rel="stylesheet">
   </head>
   <body>
     <div id="root"></div>

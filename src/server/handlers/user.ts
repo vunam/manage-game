@@ -67,7 +67,7 @@ export const postUserTokens = async ctx => {
     try {
       const team = findTeamByUser(currentUser.id);
       const latestUser = findUserById(currentUser.id);
-      console.log(currentUser.id)
+
       const data = {
         id: latestUser.id,
         role: latestUser.role,
@@ -194,10 +194,7 @@ export const putUserUpdate = async ctx => {
       return showApiError(ctx, 'Not allowed', 403);
     }
 
-    if (
-      latestUserData.role !== 'manager' &&
-      latestUserData.role !== 'admin'
-    ) {
+    if (latestUserData.role !== 'manager' && latestUserData.role !== 'admin') {
       return showApiError(ctx, 'Not allowed', 403);
     }
   } else if (existing && existing.username !== currentUser.username) {

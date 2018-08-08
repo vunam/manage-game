@@ -31,7 +31,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  submitHandler: (formData, id) => dispatch(actions.updateAttempt({ id, ...formData})),
+  submitHandler: (formData, id) =>
+    dispatch(actions.updateAttempt({id, ...formData})),
 });
 
 export default connect(

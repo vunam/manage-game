@@ -89,8 +89,9 @@ const getPlayersEpic: Epic<any, RootState> = action$ =>
         .get(`/api/players${payload ? `?${qs.stringify(payload)}` : ''}`)
         .pipe(
           map(({response}) => actions.getPlayersSuccess(response.data)),
-          catchError(({ response, status }) => [
-            generalActions.handleError({ response, status })]),
+          catchError(({response, status}) => [
+            generalActions.handleError({response, status}),
+          ]),
         ),
     ),
   );
@@ -108,8 +109,9 @@ const transferPlayerEpic: Epic<any, RootState> = action$ =>
             actions.getPlayersAttempt(rest),
             actions.transferPlayerSuccess(response.data),
           ]),
-          catchError(({ response, status }) => [
-            generalActions.handleError({ response, status })]),
+          catchError(({response, status}) => [
+            generalActions.handleError({response, status}),
+          ]),
         ),
     ),
   );
@@ -126,57 +128,55 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
             actions.getPlayersAttempt(rest),
             actions.buyPlayerSuccess(response.data),
           ]),
-          catchError(({ response, status }) => [
-            generalActions.handleError({ response, status })]),
+          catchError(({response, status}) => [
+            generalActions.handleError({response, status}),
+          ]),
         ),
     ),
   );
 
-  const createPlayerEpic: Epic<any, RootState> = action$ =>
-    action$.ofType(CREATE_PLAYER_ATTEMPT).pipe(
-      mergeMap(() =>
-        ajax
-          .post(`/api/players/create`)
-          .pipe(
-            mergeMap(({response}) => [
-              actions.createPlayerSuccess(response.data),
-              actions.getPlayersAttempt({ withTeam: true })
-            ]),
-            catchError(({ response, status }) => [
-              generalActions.handleError({ response, status })]),
-          ),
+const createPlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(CREATE_PLAYER_ATTEMPT).pipe(
+    mergeMap(() =>
+      ajax.post(`/api/players/create`).pipe(
+        mergeMap(({response}) => [
+          actions.createPlayerSuccess(response.data),
+          actions.getPlayersAttempt({withTeam: true}),
+        ]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
-    );
+    ),
+  );
 
 const deletePlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(DELETE_PLAYER_ATTEMPT).pipe(
-    mergeMap(({ payload }) =>
-      ajax
-        .delete(`/api/players/${payload}`)
-        .pipe(
-          mergeMap(({response}) => [
-            actions.deletePlayerSuccess(response.data),
-            actions.getPlayersAttempt({ withTeam: true })
-          ]),
-          catchError(({ response, status }) => [
-            generalActions.handleError({ response, status })]),
-        ),
+    mergeMap(({payload}) =>
+      ajax.delete(`/api/players/${payload}`).pipe(
+        mergeMap(({response}) => [
+          actions.deletePlayerSuccess(response.data),
+          actions.getPlayersAttempt({withTeam: true}),
+        ]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
+      ),
     ),
   );
 
 const editPlayerEpic: Epic<any, RootState> = action$ =>
   action$.ofType(EDIT_PLAYER_ATTEMPT).pipe(
-    mergeMap(({ payload }) =>
-      ajax
-        .put(`/api/players/${payload}`)
-        .pipe(
-          mergeMap(({response}) => [
-            actions.editPlayerSuccess(response.data),
-            // TODO back to admin
-          ]),
-          catchError(({ response, status }) => [
-            generalActions.handleError({ response, status })]),
-        ),
+    mergeMap(({payload}) =>
+      ajax.put(`/api/players/${payload}`).pipe(
+        mergeMap(({response}) => [
+          actions.editPlayerSuccess(response.data),
+          // TODO back to admin
+        ]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
+      ),
     ),
   );
 

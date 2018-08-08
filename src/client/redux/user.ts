@@ -108,8 +108,9 @@ const loginEpic: Epic<any, RootState> = action$ =>
             actions.loginSuccess(response.data),
           ];
         }),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );
@@ -126,17 +127,21 @@ const createUserEpic: Epic<any, RootState> = action$ =>
             payload.manage && teamsActions.getTeamsAttempt(),
           ].filter(valid => valid);
         }),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );
 
 const updateUserEpic: Epic<any, RootState> = action$ =>
   action$.ofType(UPDATE_ATTEMPT).pipe(
-    mergeMap(({payload: { id, ...body }}) =>
+    mergeMap(({payload: {id, ...body}}) =>
       ajax({
-        url: `/api/user/${id}`, method: 'PUT', body }).pipe(
+        url: `/api/user/${id}`,
+        method: 'PUT',
+        body,
+      }).pipe(
         mergeMap(({response}) => {
           return [
             historyActions.nextRoute(body.manage ? '/teams' : '/dashboard'),
@@ -144,8 +149,9 @@ const updateUserEpic: Epic<any, RootState> = action$ =>
             actions.updateSuccess(response.data),
           ].filter(valid => valid);
         }),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );
@@ -160,8 +166,9 @@ const deleteUserEpic: Epic<any, RootState> = action$ =>
             actions.deleteSuccess(response.data),
           ];
         }),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );
@@ -173,8 +180,8 @@ const verifyEpic: Epic<any, RootState> = action$ =>
         mergeMap(({response}) => {
           return [actions.set(response.data), actions.verifySuccess()];
         }),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status }),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
           actions.verifyFailed(),
         ]),
       ),
@@ -198,8 +205,9 @@ const getUserEpic: Epic<any, RootState> = action$ =>
     mergeMap(({payload}) =>
       ajax.get(`/api/user/${payload}`).pipe(
         map(({response}) => actions.getUserSuccess(response.data)),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );

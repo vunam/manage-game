@@ -7,7 +7,10 @@ import MessagesList from '../components/MessagesList';
 import {spaces} from '../constants/styles';
 import {actions, selectors} from '../redux/players';
 import {selectors as userSelectors} from '../redux/user';
-import {actions as messagesActions, selectors as messagesSelectors} from '../redux/messages';
+import {
+  actions as messagesActions,
+  selectors as messagesSelectors,
+} from '../redux/messages';
 
 import PlayerType from '../types/Player';
 import TeamType from '../types/Team';
@@ -23,7 +26,7 @@ interface Props {
     sellValue: number,
   ) => void;
   players: [PlayerType];
-  messages: [MessageType],
+  messages: [MessageType];
   user: {
     team: TeamType;
   };
@@ -53,7 +56,7 @@ class Dashboard extends React.Component<Props> {
     const {user, getPlayers, getMessages} = this.props;
     getMessages(user.team.id);
     getPlayers(user.team.id);
-  }
+  };
 
   render() {
     const {players, messages, user, transferPlayer} = this.props;

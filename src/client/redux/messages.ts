@@ -5,7 +5,6 @@ import {catchError, map, mergeMap} from 'rxjs/operators';
 import TeamType from '../types/Team';
 import {actions as generalActions} from './general';
 
-
 export interface RootState {
   list?: [TeamType];
 }
@@ -41,8 +40,9 @@ const getMessagesEpic: Epic<any, RootState> = action$ =>
     mergeMap(({payload}) =>
       ajax.get(`/api/messages/${payload}`).pipe(
         map(({response}) => actions.getMessagesSuccess(response.data)),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );

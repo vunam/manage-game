@@ -12,12 +12,21 @@ const Row = styled.div`
   margin: ${spaces.sm} 0;
 `;
 
-const FormOuter = ({handleSubmit, submitHandler}) => (
+const FormOuter = ({handleSubmit, submitHandler, teams}) => (
   <StyledForm onSubmit={handleSubmit(submitHandler)}>
-    <Row>
-      <label htmlFor="team">Team name</label>
-      <Field name="team" component="input" />
-    </Row>
+    {teams &&
+      teams.length && (
+        <Row>
+          <label htmlFor="team">Team</label>
+          <Field name="team" component="select">
+            {teams.map(({name, id}) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </Field>
+        </Row>
+      )}
     <Row>
       <label htmlFor="country">Country</label>
       <Field name="country" component="select">
@@ -29,8 +38,33 @@ const FormOuter = ({handleSubmit, submitHandler}) => (
       </Field>
     </Row>
     <Row>
-      <label htmlFor="user">Username</label>
-      <Field name="user" component="input" />
+      <label htmlFor="type">Type</label>
+      <Field name="type" component="select">
+        <option value="Goal">Goalkeeper</option>
+        <option value="Def">Defender</option>
+        <option value="Att">Attacker</option>
+        <option value="Mid">Midfielder</option>
+      </Field>
+    </Row>
+    <Row>
+      <label htmlFor="value">Value</label>
+      <Field name="value" component="input" />
+    </Row>
+    <Row>
+      <label htmlFor="sellValue">Sell Value</label>
+      <Field name="sellValue" component="input" />
+    </Row>
+    <Row>
+      <label htmlFor="age">Age</label>
+      <Field name="age" component="input" />
+    </Row>
+    <Row>
+      <label htmlFor="firstName">First name</label>
+      <Field name="firstName" component="input" />
+    </Row>
+    <Row>
+      <label htmlFor="lastName">Last name</label>
+      <Field name="lastName" component="input" />
     </Row>
     <button>Submit</button>
   </StyledForm>

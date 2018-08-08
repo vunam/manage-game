@@ -45,8 +45,8 @@ export const updateTeamByUser = (user, data) =>
     .assign(data)
     .write();
 
-export const deleteTeamByUser = (user) =>
-db
-  .get(table)
-  .remove({user})
-  .write();
+export const deleteTeamByUser = user =>
+  db
+    .get(table)
+    .remove({user})
+    .write();

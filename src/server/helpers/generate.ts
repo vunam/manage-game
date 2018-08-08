@@ -16,7 +16,7 @@ export const generatePlayer = (teamId, type) => ({
   sellValue: 1000000,
 });
 
-export const generateTeam = (userId, name,  country) => ({
+export const generateTeam = (userId, name, country) => ({
   id: uniq(),
   country: country || chance.country(),
   name,

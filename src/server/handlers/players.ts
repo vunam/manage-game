@@ -21,11 +21,37 @@ export const postCreatePlayer = ctx => {
     return showApiError(ctx, 'Permission denied', 403);
   }
   const chance = new Chance();
-  const player = generatePlayer('', chance.pickone(['Goal', 'Def', 'Mid', 'Att']));
+  const player = generatePlayer(
+    '',
+    chance.pickone(['Goal', 'Def', 'Mid', 'Att']),
+  );
 
   createPlayer(player);
 
   return showApiResult(ctx, player);
+};
+
+export const getPlayer = ctx => {
+  const {id} = ctx.params;
+
+  const currentUser = verifyAccess(ctx);
+  const latestUserData = findUserById(currentUser.id);
+
+  if (!id) {
+    return showApiError(ctx, 'Missing id', 422);
+  }
+
+  if (latestUserData.role !== 'admin') {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
+  const currentPlayer = findPlayerById(id);
+
+  if (!currentPlayer) {
+    return showApiError(ctx, 'Player does not exist', 403);
+  }
+
+  showApiResult(ctx, currentPlayer);
 };
 
 export const getPlayers = async ctx => {
@@ -92,7 +118,6 @@ export const postAddTransfer = ctx => {
 
 export const postTransaction = ctx => {
   const {id, team} = ctx.params;
-
   const currentUser = verifyAccess(ctx);
 
   if (!id || !team) {
@@ -148,6 +173,50 @@ export const postTransaction = ctx => {
   });
 
   showApiResult(ctx, 'success');
+};
+
+export const putPlayer = ctx => {
+  const {id} = ctx.params;
+  const {
+    team,
+    firstName,
+    lastName,
+    value,
+    sellValue,
+    age,
+    type,
+    status,
+  } = ctx.request.body;
+
+  const currentUser = verifyAccess(ctx);
+  const latestUserData = findUserById(currentUser.id);
+
+  if (!id) {
+    return showApiError(ctx, 'Missing id', 422);
+  }
+
+  if (latestUserData.role !== 'admin') {
+    return showApiError(ctx, 'Not allowed', 403);
+  }
+
+  const currentPlayer = findPlayerById(id);
+
+  if (!currentPlayer) {
+    return showApiError(ctx, 'Player does not exist', 403);
+  }
+
+  const updatedPlayer = updatePlayerById(id, {
+    team,
+    firstName,
+    lastName,
+    value,
+    sellValue,
+    age,
+    type,
+    status,
+  });
+
+  showApiResult(ctx, currentPlayer);
 };
 
 export const deletePlayer = ctx => {

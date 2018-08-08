@@ -62,18 +62,19 @@ export default ({
         {admin && <ItemSmall>Edit</ItemSmall>}
         {admin && <ItemSmall>Delete</ItemSmall>}
       </Head>
-      {list.length ?
-        list.map(player => (
-          <Player
-            key={player.id}
-            {...player}
-            withTeam={withTeam}
-            clickHandler={clickHandler}
-            buyHandler={buyHandler}
-            currentTeam={currentTeam}
-            admin={admin}
-            deleteHandler={deleteHandler}
-          />
-        )) : 'No matching players'}
+      {list.length
+        ? list.map(player => (
+            <Player
+              key={player.id}
+              {...player}
+              withTeam={withTeam}
+              clickHandler={clickHandler}
+              buyHandler={buyHandler}
+              currentTeam={currentTeam}
+              admin={admin}
+              deleteHandler={deleteHandler}
+            />
+          ))
+        : 'No matching players'}
     </PlayerList>
   ) : null;

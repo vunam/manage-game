@@ -24,7 +24,9 @@ const handleErrorEpic: Epic<any, RootState> = action$ =>
   action$.ofType(HANDLE_ERROR).pipe(
     mergeMap(({payload}) => {
       return [
-        payload.status && payload.status === 401 && historyActions.nextRoute('/'),
+        payload.status &&
+          payload.status === 401 &&
+          historyActions.nextRoute('/'),
         notificationActions.openNotification(payload.response.error),
       ].filter(data => data);
     }),

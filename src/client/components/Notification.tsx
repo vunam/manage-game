@@ -28,4 +28,4 @@ const Notification = ({close, message}) =>
     </NotificationStyled>
   ) : null;
 
-export default Notification
+export default Notification;

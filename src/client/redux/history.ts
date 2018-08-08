@@ -33,7 +33,7 @@ export const selectors = {
 const nextRouteEpic: Epic<any, RootState> = action$ =>
   action$.ofType(NEXT_ROUTE).pipe(
     delay(100),
-    mergeMap(({ payload }) => payload ? [actions.nextRoute(null)] : []),
+    mergeMap(({payload}) => (payload ? [actions.nextRoute(null)] : [])),
   );
 
 export const epics = combineEpics(nextRouteEpic);

@@ -53,7 +53,7 @@ class PlayerMarket extends React.Component<Props, State> {
       <StyledPage>
         <Inner>
           <h2>Player admin</h2>
-          <button onClick={createNewPlayer}>Create new player</button>
+          <button onClick={createNewPlayer}>Create new player +</button>
           <PlayerList
             list={players}
             withTeam={true}
@@ -74,7 +74,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editPlayer: id => dispatch(historyActions.nextRoute(`/edit-player/${id}`)),
   createNewPlayer: () => dispatch(actions.createPlayerAttempt()),
-  deletePlayer: (id) => dispatch(actions.deletePlayerAttempt(id)),
+  deletePlayer: id => dispatch(actions.deletePlayerAttempt(id)),
   getPlayers: (filters = {}) =>
     dispatch(
       actions.getPlayersAttempt({

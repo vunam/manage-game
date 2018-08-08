@@ -52,7 +52,7 @@ export const updateUserById = (id, data) =>
     .assign(data)
     .write();
 
-export const deleteUserById = (id) =>
+export const deleteUserById = id =>
   db
     .get(table)
     .remove({id})

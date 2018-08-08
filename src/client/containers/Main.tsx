@@ -79,7 +79,10 @@ class Main extends React.Component<Props> {
       clearNextRoute,
     } = this.props;
 
-    if (location.pathname !== nextProps.location.pathname && nextProps.message) {
+    if (
+      location.pathname !== nextProps.location.pathname &&
+      nextProps.message
+    ) {
       closeNotification();
     }
 
@@ -109,50 +112,59 @@ class Main extends React.Component<Props> {
           <Notification close={closeNotification} message={message} />
           <Switch>
             <Route exact={true} path="/" component={Login} />
-            {user && [
-              <Route
-                key="dash"
-                exact={true}
-                path="/dashboard"
-                component={Dashboard}
-              />,
-              <Route
-                key="market"
-                exact={true}
-                path="/market"
-                component={PlayerMarket}
-              />,
-              <Route
-                key="settings"
-                exact={true}
-                path="/settings"
-                component={Settings}
-              />,
-              isAdmin && <Route
-                key="admin"
-                exact={true}
-                path="/admin"
-                component={Admin}
-              />,
-              isAdmin && <Route
-                key="edit-player"
-                exact={true}
-                path="/edit-player/:id"
-                component={EditPlayer}
-              />,
-              isManagerAdmin && <Route
-                key="teams"
-                exact={true}
-                path="/teams"
-                component={Teams}
-              />,
-              isManagerAdmin && <Route
-                key="edit"
-                exact={true}
-                path="/edit-team/:id"
-                component={EditTeam}
-              />,
-            ].filter(valid => valid)}
+            {user &&
+              [
+                <Route
+                  key="dash"
+                  exact={true}
+                  path="/dashboard"
+                  component={Dashboard}
+                />,
+                <Route
+                  key="market"
+                  exact={true}
+                  path="/market"
+                  component={PlayerMarket}
+                />,
+                <Route
+                  key="settings"
+                  exact={true}
+                  path="/settings"
+                  component={Settings}
+                />,
+                isAdmin && (
+                  <Route
+                    key="admin"
+                    exact={true}
+                    path="/admin"
+                    component={Admin}
+                  />
+                ),
+                isAdmin && (
+                  <Route
+                    key="edit-player"
+                    exact={true}
+                    path="/edit-player/:id"
+                    component={EditPlayer}
+                  />
+                ),
+                isManagerAdmin && (
+                  <Route
+                    key="teams"
+                    exact={true}
+                    path="/teams"
+                    component={Teams}
+                  />
+                ),
+                isManagerAdmin && (
+                  <Route
+                    key="edit"
+                    exact={true}
+                    path="/edit-team/:id"
+                    component={EditTeam}
+                  />
+                ),
+              ].filter(valid => valid)}
             <Route exact={true} path="/signup" component={Signup} />,
           </Switch>
         </Scrollable>

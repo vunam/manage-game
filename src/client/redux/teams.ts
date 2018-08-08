@@ -40,8 +40,9 @@ const getTeamsEpic: Epic<any, RootState> = action$ =>
     mergeMap(({payload}) =>
       ajax.get(`/api/teams`).pipe(
         map(({response}) => actions.getTeamsSuccess(response.data)),
-        catchError(({ response, status }) => [
-          generalActions.handleError({ response, status })]),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
       ),
     ),
   );
