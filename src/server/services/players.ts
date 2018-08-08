@@ -9,6 +9,7 @@ export const getAllPlayers = () =>
   db
     .cloneDeep()
     .get(table)
+    .reverse()
     .value();
 
 export const queryPlayers = search =>

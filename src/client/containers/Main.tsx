@@ -26,6 +26,7 @@ import Settings from './Settings';
 import Signup from './Signup';
 import Teams from './Teams';
 import EditTeam from './EditTeam';
+import Admin from './Admin';
 
 interface Props {
   message?: string;
@@ -120,6 +121,12 @@ class Main extends React.Component<Props> {
                 exact={true}
                 path="/teams"
                 component={Teams}
+              />,
+              <Route
+                key="admin"
+                exact={true}
+                path="/admin"
+                component={Admin}
               />,
               <Route
                 key="settings"

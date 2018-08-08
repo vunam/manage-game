@@ -39,7 +39,8 @@ export default ({user}) => (
       <Nav>
         <StyledLink to="/dashboard">Dashboard</StyledLink>
         <StyledLink to="/market">Player market</StyledLink>
-        {user.role === 'manager' && <StyledLink to="/teams">Teams</StyledLink>}
+        {(user.role === 'manager' || user.role === 'admin') && <StyledLink to="/teams">Teams</StyledLink>}
+        {user.role === 'admin' && <StyledLink to="/admin">Admin</StyledLink>}
         <StyledLink to="/settings">Settings</StyledLink>
         <StyledLink to="/logout">Log out</StyledLink>
       </Nav>

@@ -68,10 +68,15 @@ export const postUserTokens = async ctx => {
       const team = findTeamByUser(decoded.id);
       const latestUser = findUserById(decoded.id);
 
-      showApiResult(ctx, {
-        id: decoded.id,
-        username: latestUser.username,
+      const data = {
+        id: latestUser.id,
         role: latestUser.role,
+        username: latestUser.username,
+      };
+
+      setJwt(ctx, data);
+      showApiResult(ctx, {
+        ...data,
         team,
       });
     } catch (e) {

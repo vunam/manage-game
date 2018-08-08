@@ -21,6 +21,9 @@ const TRANSFER_PLAYER_SUCCESS = 'players/transfer-player-success';
 const BUY_PLAYER_ATTEMPT = 'players/buy-player-attempt';
 const BUY_PLAYER_SUCCESS = 'players/buy-player-success';
 
+const CREATE_PLAYER_ATTEMPT = 'players/create-player-attempt';
+const CREATE_PLAYER_SUCCESS = 'players/create-player-success';
+
 const initialState = {
   list: null,
 };
@@ -32,6 +35,8 @@ export const {players: actions} = createActions({
   [TRANSFER_PLAYER_SUCCESS]: null,
   [BUY_PLAYER_ATTEMPT]: null,
   [BUY_PLAYER_SUCCESS]: null,
+  [CREATE_PLAYER_ATTEMPT]: null,
+  [CREATE_PLAYER_SUCCESS]: null,
 });
 
 export default handleActions(
@@ -114,8 +119,25 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
+const createPlayerEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(CREATE_PLAYER_ATTEMPT).pipe(
+    mergeMap(() =>
+      ajax
+        .post(`/api/players/create`)
+        .pipe(
+          mergeMap(({response}) => [
+            actions.createPlayerSuccess(response.data),
+            actions.getPlayersAttempt({ withTeam: true })
+          ]),
+          catchError(({ response, status }) => [
+            generalActions.handleError({ response, status })]),
+        ),
+    ),
+  );
+
 export const epics = combineEpics(
   getPlayersEpic,
   transferPlayerEpic,
   buyPlayerEpic,
+  createPlayerEpic,
 );

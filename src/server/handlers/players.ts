@@ -1,14 +1,30 @@
 import {isEqual} from 'lodash';
+import * as Chance from 'chance';
 import {showApiError, showApiResult} from '../helpers/response';
 import {verifyAccess} from '../helpers/authentication';
 import {
+  createPlayer,
   findPlayerById,
   getAllPlayers,
   queryPlayers,
   updatePlayerById,
 } from '../services/players';
+import {generatePlayer} from '../helpers/generate';
 import {getAllTeams, findTeamById, updateTeamById} from '../services/teams';
 import {createMessage} from '../services/messages';
+
+export const postCreatePlayer = ctx => {
+  const currentUser = verifyAccess(ctx);
+  if (currentUser.role !== 'admin') {
+    return showApiError(ctx, 'Permission denied', 403);
+  }
+  const chance = new Chance();
+  const player = generatePlayer('', chance.pickone(['Goal', 'Def', 'Mid', 'Att']));
+
+  createPlayer(player);
+
+  return showApiResult(ctx, player);
+};
 
 export const getPlayers = async ctx => {
   const {query} = ctx.request;
@@ -117,7 +133,9 @@ export const postTransaction = ctx => {
   createMessage({
     date: new Date().toISOString(),
     team: currentTeam.id,
-    message: `${currentPlayer.firstName} ${currentPlayer.lastName} has been bought by ${newTeam.name} for $${currentPlayer.sellValue}.`,
+    message: `${currentPlayer.firstName} ${
+      currentPlayer.lastName
+    } has been bought by ${newTeam.name} for $${currentPlayer.sellValue}.`,
   });
 
   updatePlayerById(id, {
