@@ -86,11 +86,11 @@ export const getPlayers = async ctx => {
   }
 
   if (min) {
-    result = result.filter(item => item.value >= Number(min));
+    result = result.filter(item => item.sellValue >= Number(min));
   }
 
   if (max && max !== '-1') {
-    result = result.filter(item => item.value <= Number(max));
+    result = result.filter(item => item.sellValue <= Number(max));
   }
 
   showApiResult(ctx, result);

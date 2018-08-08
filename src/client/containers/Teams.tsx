@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {spaces} from '../styles';
 import SignupForm from '../forms/SignupForm';
+import countryList from '../../constants/countryList';
 import {actions as historyActions} from '../redux/history';
 import {
   actions as teamsActions,
@@ -65,7 +66,7 @@ class Teams extends React.Component<Props> {
                 teams.map(team => (
                   <tr key={team.user}>
                     <td>{team.name}</td>
-                    <td>{team.country}</td>
+                    <td>{countryList.find(({ code}) => team.country === code).name}</td>
                     <td>{team.money}</td>
                     <td>
                       <Button onClick={() => editUser(team.user)}>Edit</Button>
