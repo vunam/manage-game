@@ -182,7 +182,11 @@ export const putUserUpdate = async ctx => {
     return showApiError(ctx, 'Username already exists', 422);
   }
 
-  const updatedUser = updateUserById(updateId, {username: user, role: role && isAdmin ? role : existing.role });
+  let updatedUser = updateUserById(updateId, {username: user});
+
+  if (isAdmin && role) {
+    updatedUser = updateUserById(updateId, {role});
+  }
 
   const newTeam = updateTeamByUser(updateId, {country, name: team});
 

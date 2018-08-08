@@ -10,7 +10,7 @@ export const color = {
   semiDarkGray: '#999',
   darkGray: '#666',
   extraDarkGray: '#333',
-  amber: '#ffc217'
+  amber: '#ffc217',
 };
 
 export const layout = {

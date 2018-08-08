@@ -10,7 +10,8 @@
     "arrow-parens": false,
     "semicolon": [true, "always", "ignore-interfaces", "ignore-bound-class-methods"],
     "member-access": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "ordered-imports": false
   },
   "rulesDirectory": []
 }

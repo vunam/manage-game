@@ -39,7 +39,8 @@ interface StyledLinkProps {
 
 const StyledLink = styled(Link)`
   padding: ${spaces.m};
-  color: ${({to, pathname}: StyledLinkProps) => (to === pathname ? color.amber : color.light)};
+  color: ${({to, pathname}: StyledLinkProps) =>
+    to === pathname ? color.amber : color.light};
   font-weight: bold;
   text-decoration: none;
   &:last-child {

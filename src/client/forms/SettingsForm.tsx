@@ -3,9 +3,9 @@ import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
 import {spaces} from '../styles';
+import Button from '../components/Button';
 import InputField from '../components/InputField';
 import SelectField from '../components/SelectField';
-import Button from '../components/Button';
 
 const FORM_NAME = 'settings';
 

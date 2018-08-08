@@ -12,6 +12,7 @@ import {
   actions as userActions,
   selectors as userSelectors,
 } from '../redux/user';
+import Button from '../components/Button';
 
 import TeamType from '../types/Team';
 
@@ -67,12 +68,12 @@ class Teams extends React.Component<Props> {
                     <td>{team.country}</td>
                     <td>{team.money}</td>
                     <td>
-                      <button onClick={() => editUser(team.user)}>Edit</button>
+                      <Button onClick={() => editUser(team.user)}>Edit</Button>
                     </td>
                     <td>
-                      <button onClick={() => deleteUser(team.user)}>
+                      <Button onClick={() => deleteUser(team.user)}>
                         Delete
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 ))}

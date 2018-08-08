@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from './Button';
-import {spaces, typography} from '../styles';
 import {toCurrency} from '../helpers/locale';
+import {spaces, typography} from '../styles';
 import PlayerType from '../types/Player';
 
 interface Props {

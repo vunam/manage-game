@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {color, layout, spaces} from '../styles';
+import {spaces} from '../styles';
 import SignupForm from '../forms/SignupForm';
-import {actions, selectors} from '../redux/user';
+import {actions} from '../redux/user';
 
 const StyledPage = styled.div`
   padding: ${spaces.sm};

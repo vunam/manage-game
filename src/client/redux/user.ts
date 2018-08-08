@@ -30,6 +30,9 @@ const DELETE_SUCCESS = 'user/delete-success';
 const GET_USER_ATTEMPT = 'user/get-user-attempt';
 const GET_USER_SUCCESS = 'user/get-user-success';
 
+const REFRESH_USER_ATTEMPT = 'user/refresh-user-attempt';
+const REFRESH_USER_SUCCESS = 'user/refresh-user-success';
+
 const SET = 'user/set';
 const LOGOUT = 'user/logout';
 
@@ -53,6 +56,8 @@ export const {user: actions} = createActions({
   [DELETE_SUCCESS]: null,
   [GET_USER_ATTEMPT]: null,
   [GET_USER_SUCCESS]: null,
+  [REFRESH_USER_ATTEMPT]: null,
+  [REFRESH_USER_SUCCESS]: null,
   [SET]: null,
   [LOGOUT]: null,
 });
@@ -188,6 +193,20 @@ const verifyEpic: Epic<any, RootState> = action$ =>
     ),
   );
 
+const refreshUserEpic: Epic<any, RootState> = action$ =>
+  action$.ofType(REFRESH_USER_ATTEMPT).pipe(
+    mergeMap(() =>
+      ajax.post('/api/user/tokens', {}).pipe(
+        mergeMap(({response}) => {
+          return [actions.set(response.data)];
+        }),
+        catchError(({response, status}) => [
+          generalActions.handleError({response, status}),
+        ]),
+      ),
+    ),
+  );
+
 const logoutEpic: Epic<any, RootState> = action$ =>
   action$.ofType(LOGOUT).pipe(
     mergeMap(() =>
@@ -220,4 +239,5 @@ export const epics = combineEpics(
   logoutEpic,
   deleteUserEpic,
   getUserEpic,
+  refreshUserEpic,
 );

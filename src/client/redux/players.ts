@@ -6,6 +6,7 @@ import {ajax} from 'rxjs/ajax';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import countryList from '../../constants/countryList';
 import PlayerType from '../types/Player';
+import {actions as userActions} from './user';
 import {actions as generalActions} from './general';
 import {actions as historyActions} from './history';
 
@@ -140,6 +141,7 @@ const buyPlayerEpic: Epic<any, RootState> = action$ =>
         })
         .pipe(
           mergeMap(({response}) => [
+            userActions.refreshUserAttempt(),
             actions.getPlayersAttempt(rest),
             actions.buyPlayerSuccess(response.data),
           ]),

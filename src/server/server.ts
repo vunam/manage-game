@@ -64,5 +64,7 @@ router.get('/*', ctx => {
 
 app.use(router.routes());
 
-// tslint:disable-next-line
-app.listen(5000, () => console.log('Server started'));
+app.listen(5000, () =>
+  // tslint:disable-next-line
+  console.log('Server started on port 5000, proxy on http://localhost:9000'),
+);

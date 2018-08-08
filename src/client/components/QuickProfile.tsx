@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
-import {color, typography, spaces} from '../styles';
 import {toCurrency} from '../helpers/locale';
+import {color, typography, spaces} from '../styles';
 
 const QuickProfile = styled.div`
   display: flex;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import PlayerList from '../components/PlayerList';
+import Button from '../components/Button';
 import {spaces} from '../styles';
 import {actions as historyActions} from '../redux/history';
 import {actions, selectors} from '../redux/players';
@@ -52,8 +53,10 @@ class PlayerMarket extends React.Component<Props, State> {
     return (
       <StyledPage>
         <Inner>
-          <h2>Player admin</h2>
-          <button onClick={createNewPlayer}>Create new player +</button>
+          <h2>Create player</h2>
+          <Button onClick={createNewPlayer}>Create new player +</Button>
+
+          <h2>All players</h2>
           <PlayerList
             list={players}
             withTeam={true}

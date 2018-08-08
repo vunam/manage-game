@@ -8,7 +8,7 @@ No DB specified so I opted for lowdb (flat-file) for set up simplicity (no docke
 Go to `http://localhost:9000/` to see the app.
 
 No global dependencies needed besides `yarn` and node (*I'm on 8.9.4*).
-Once set up you can use the admin account using admin/admin or sign yourself up as a team owner.
+Once set up you can use the admin account using admin/admin (no players) or sign yourself up as a team owner (20 generated players).
 
 db.json will be created. If you edit this, restart the app manually.
 

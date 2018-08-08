@@ -3,8 +3,8 @@ import {Field, Form, reduxForm} from 'redux-form';
 import styled from 'styled-components';
 import countryList from '../../constants/countryList';
 import {spaces} from '../styles';
-import InputField from '../components/InputField';
 import Button from '../components/Button';
+import InputField from '../components/InputField';
 
 const FORM_NAME = 'edit-player';
 

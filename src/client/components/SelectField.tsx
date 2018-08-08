@@ -12,7 +12,7 @@ const Row = styled.div`
     position: absolute;
     bottom: ${spaces.sm};
     right: ${spaces.xxs};
-    content: "▼";
+    content: '▼';
     font-size: ${typography.extraSmall};
   }
 `;

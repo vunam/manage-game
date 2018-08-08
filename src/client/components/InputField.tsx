@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import {spaces, typography, color} from '../styles';
+import {color, spaces, typography} from '../styles';
 
 const Row = styled.div`
   margin: ${spaces.sm} 0;
@@ -9,7 +9,7 @@ const Row = styled.div`
 `;
 
 const InputStyled = styled.input`
-  margin: ${spaces.xs}  0;
+  margin: ${spaces.xs} 0;
   padding: ${spaces.xxs} ${spaces.xs};
   width: 100%;
   border: 1px solid ${color.gray};
@@ -18,7 +18,7 @@ const InputStyled = styled.input`
   max-width: 400px;
 `;
 
-const InputField = ({ input, label, errorMessage, ...props }) => (
+const InputField = ({input, label, errorMessage, ...props}) => (
   <Row>
     <label>{label}</label>
     <InputStyled {...input} {...props} />

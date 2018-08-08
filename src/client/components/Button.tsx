@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs';
 import * as React from 'react';
 import styled from 'styled-components';
-import {spaces, typography, color} from '../styles';
+import {color, spaces} from '../styles';
 
 const ButtonStyled = styled.button`
   min-width: 100px;
@@ -16,8 +16,6 @@ const ButtonStyled = styled.button`
   }
 `;
 
-const Button = (props) => (
-  <ButtonStyled {...props} />
-);
+const Button = props => <ButtonStyled {...props} />;
 
 export default Button;
